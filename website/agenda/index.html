@@ -1,26 +1,916 @@
 <!DOCTYPE html>
-<html> <head>
-<title>calcms</title> <meta name="viewport" content="width=device-width; initial-scale=1; maximum-scale=1">
-<meta charset="utf-8"> <meta http-equiv="Cache-Control" content="no-cache">
-<link rel="stylesheet" href="/css/style.css"> <!--calcms start-->
-<link rel="alternate" type="application/atom+xml" title="Sendeplan Atom" href="/agenda/atom/" /> <link rel="alternate" type="application/rss+xml" title="Sendeplan RSS" href="/agenda/rss/" />
-<link rel="alternate" type="application/atom+xml" title="Sendekommentare" href="/agenda/feed_kommentare/" /> <link rel="stylesheet" type="text/css" media="screen" href="/agenda/css/calcms.css" />
-<script type="text/javascript" src="/agenda/js/jquery.min.js"></script> <script type="text/javascript" src="/agenda/js/calcms.js"></script>
-<script type="text/javascript" src="/agenda/js/calcms.cust.js"></script> <!--calcms end--></head> <body>
-<div id="container"> <header id="header">
-<h1><a href="/">calcms</a></h1> </header>
-<nav id="nav-main"> <ul>
-<li> <a href="/">home</a></li> <li>
-<a href="/agenda/programm.html">schedule</a> </li>
-<li> <a href="/agenda/planung/">editor</a></li> <li>
-<a href="/download.html">download</a> </li></ul> </nav>
-<div id="content"> <article ><!-- include daily schedule with excerpt --> <div id="calcms_list" class="content">bitte warten</div></article> <aside class="left">
-<center> <h2>Programm</h2>
-<div class="content"> <!-- include short list of schedules -->
-<div id="calcms_menu">bitte warten...</div> </div>
-<h2>Kommende Sendung</h2> <div class="content"><!-- show coming shows --> <div id="calcms_playlist">bitte warten…</div></div> </center></aside> <aside class="right">
-<center> <h2>Kalender</h2>
-<div class="content"> <!-- show calendar -->
-<div id="calcms_calendar">bitte warten...</div> </div>
-<h2>Suche</h2> <div class="content"><!-- calcms search start --><div id="calcms_search"><input id="calcms_search_field" name="search" value="" /><input value="suchen" onclick="calcms.selectSearchEventListener();return false;" type="button" /><a id="calcms_search_show_details" href="#" onclick="calcms.showAdvancedSearch('calcms_enhanced_search');return false;">erweitert</a><br /> <div id="calcms_enhanced_search" style="display: none;">Archiv <input type="checkbox" name="calcms_archive" id="calcms_archive" /><span id="calcms_categories"></span><span id="calcms_series_names"></span><span id="calcms_programs"></span></div> </div><!-- calcms search end --> </div></center> </aside></div> <footer>calcms 2010 - 2017 by <a href="http://radiopiloten.de">http://radiopiloten.de</a></footer> </div></body> </html>
+<html lang="de">
+	<head>
+  		<meta charset="UTF-8">
+  		<title>coloRadio Dresden - Freies Radio</title>
+  		<meta name="viewport" content="width=device-width,initial-scale=1" />
+  		<meta http-equiv="Cache-Control" content="no-cache">
+  		<meta http-equiv="Content-Style-Type" content="text/css" />
+  		<meta http-equiv="imagetoolbar" content="no" />
+  		<meta http-equiv="imagetoolbar" content="false" />
+  		<meta name="Robots" content="noindex,nofollow" />
+  		<meta name="mssmarttagspreventparsing" content="TRUE" />
+  		<meta name="msthemecompatible" content="no" />
 
+		<meta name="Author" content="coloRadio Dresden">
+		<meta name="Keywords" content="coloRadio,Dresden,Radio,freies,UKW,stream,livestream,programm" />
+		<meta name="Description" lang="de" content="coloRadio, das Freie Radio in Dresden, UKW: 98,4 & 99,3 MHz | Mo-Fr 18-23 & Sa+So 12-24 Uhr">
+		<meta name="Description" lang="en" content="coloRadio, das Freie Radio in Dresden, UKW: 98,4 & 99,3 MHz | Mo-Fr 18-23 & Sa+So 12-24 Uhr">
+		<meta name="DC.title" content="coloRadio Dresden"/>
+		<meta name="dc.source" CONTENT="">
+		<meta name="dc.relation" CONTENT="">
+		<meta name="dc.keywords" CONTENT="coloRadio,Dresden,Radio,freies,UKW,stream,livestream,programm">
+		<meta name="dc.description" CONTENT="coloRadio, das Freie Radio in Dresden, UKW: 98,4 & 99,3 MHz | Mo-Fr 18-23 & Sa+So 12-24 Uhr">
+		<meta name="Robots" content="index,follow" />
+			
+		<meta property="og:title" content="coloRadio Dresden"/>
+		<meta property="og:type" content="website"/>
+		<meta property="fb:app_id" content="966242223397117" />
+		<meta property="og:url" content="https://programm.coloradio.org"/>
+		<meta property="og:image" content="https://programm.coloradio.org/agenda/img/banner/cropped-coloradio_sternenhimmel-3.jpg"/>
+		<meta property="og:site_name" content="coloRadio Dresden"/>
+		<meta property="og:description" content="coloRadio, das Freie Radio in Dresden, UKW: 98,4 & 99,3 MHz | Mo-Fr 18-23 & Sa+So 12-24 Uhr"/>
+
+		<link rel="profile" href="http://gmpg.org/xfn/11">
+  		<link rel="alternate" type="application/atom+xml" title="Sendeplan Atom" href="/agenda/atom/" /> 
+  		<link rel="alternate" type="application/rss+xml" title="Sendeplan RSS" href="/agenda/rss/" />
+		<link rel="alternate" type="application/atom+xml" title="Sendekommentare" href="/agenda/feed_kommentare/" /> 
+
+  		<link rel="dns-prefetch" href="//fueralle.org" />
+  		<link rel="SHORTCUT ICON" href="favicon.ico">
+
+		<link rel="apple-touch-icon" sizes="180x180" href="/agenda/img/favicons/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/agenda/img/favicons/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/agenda/img/favicons/favicon-16x16.png">
+		<link rel="manifest" href="/agenda/img/favicons/site.webmanifest">
+		<link rel="mask-icon" href="/agenda/img/favicons/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#ffc40d">
+		<meta name="theme-color" content="#ffffff">
+
+
+		<style>
+
+			/* LOADER */
+
+			.pace { -webkit-pointer-events: none; pointer-events: none;
+					-webkit-user-select: none; -moz-user-select: none; user-select: none;
+  					-webkit-perspective: 12rem; -moz-perspective: 12rem; -ms-perspective: 12rem; -o-perspective: 12rem; perspective: 12rem;
+  					z-index: 2000; position: fixed; height: 6rem; width: 6rem; margin: auto; top: 0; left: 0; right: 0; bottom: 0;
+					}
+
+			.pace.pace-inactive .pace-progress { display: none;	}
+
+			.pace .pace-progress {
+  					position: fixed; z-index: 2000; display: block; position: absolute; left: 0; top: 0; height: 6rem; width: 6rem !important; line-height: 6rem; font-size: 2rem;
+  					border-radius: 50%; background: rgba(199, 142, 0, 1.0); color: #fff; font-family: "Helvetica Neue", sans-serif; font-weight: 100; text-align: center;
+  					-webkit-animation: pace-theme-center-circle-spin linear infinite 2s; -moz-animation: pace-theme-center-circle-spin linear infinite 2s; -ms-animation: pace-theme-center-circle-spin linear infinite 2s;
+  					-o-animation: pace-theme-center-circle-spin linear infinite 2s; animation: pace-theme-center-circle-spin linear infinite 2s;
+  					-webkit-transform-style: preserve-3d; -moz-transform-style: preserve-3d; -ms-transform-style: preserve-3d; -o-transform-style: preserve-3d; transform-style: preserve-3d;
+					}
+
+			.pace .pace-progress:after { content: attr(data-progress-text); display: block; }
+
+			@-webkit-keyframes pace-theme-center-circle-spin { from { -webkit-transform: rotateY(0deg) } to { -webkit-transform: rotateY(360deg) } }
+			@-moz-keyframes pace-theme-center-circle-spin { from { -moz-transform: rotateY(0deg) } to { -moz-transform: rotateY(360deg) } }
+			@-ms-keyframes pace-theme-center-circle-spin { from { -ms-transform: rotateY(0deg) } to { -ms-transform: rotateY(360deg) } }
+			@-o-keyframes pace-theme-center-circle-spin { from { -o-transform: rotateY(0deg) } to { -o-transform: rotateY(360deg) } }
+			@keyframes pace-theme-center-circle-spin { from { transform: rotateY(0deg) } to { transform: rotateY(360deg) } }
+
+		</style>
+
+		<link rel="stylesheet" type="text/css" href="/css/coloRadio.css" />
+
+		<!-- PACE LOADER  / http://github.hubspot.com/pace/docs/welcome/  -->
+		<script src="/agenda/script/pace.1.0.0.min.js"></script>
+
+		<!-- JQUERY library -->
+		<script src="/agenda/script/jquery-3.2.1.min.js"></script>
+
+		<!-- HTML5 Audio Player : mediaplayer.js -->
+		<script src="/agenda/player/mejs/mediaelement-and-player.min.js"></script>
+
+		<!-- mediaplayer.js Plugins -->
+		<!-- <script src="player/mejs/plugins/speed/speed.min.js"></script>
+		<script src="player/mejs/plugins/speed/speed-i18n.js"></script>-->
+
+	    <!--calcms start-->
+		<script type="text/javascript" src="/agenda/js/calcms.js"></script>
+		<script type="text/javascript" src="/agenda/js/calcms.cust.js"></script> <!--calcms end-->
+    	<!--calcms end-->
+
+		<script>			
+
+			$(document).ready(function() {
+
+				/* PLAYER */
+
+				$('#audioplayer').mediaelementplayer({
+					// Add configuration here (properties & values)
+					// pluginPath: "/path/to/shims/",
+
+					/* alwaysShowControls: true,*/
+					hideVolumeOnTouchDevices: true,
+            		features: ['playpause','volume','progress','current','duration','tracks','fullscreen'],
+            		audioVolume: 'horizontal'
+					});
+
+				});
+
+
+
+			$(function () {
+				$(document.body).on('click', '.playfile' ,function(e){
+			    	e.preventDefault();
+
+					var playerId = $('#audio-player_container').find('.mejs__container').attr('id');
+					var player = mejs.players[playerId];
+
+					if (!player.paused) {
+						player.pause();
+					}
+
+					player.remove();
+
+					$('audio').each(function() {
+						$(this).remove();
+					});
+
+					var link = $(this).prop('href');
+					var title = $(this).prop('title');
+
+					// alert(title);
+
+					$('#nowplaying').html('Es läuft: '+title);
+
+
+	                        jQuery('<audio>', {
+	                                id: 'audioplayer',
+	                                class: 'mejs__player',
+	                                src: link,
+	                                type: 'audio/mpeg',
+	                                controls: 'controls'
+	                        }).appendTo('#audio-player_container');
+	                       
+	                        // $('#player').append('Your browser does not support the audio element');
+
+	                        // $('#audioplayer_html5').play();
+
+	                        $('#audioplayer').mediaelementplayer({
+	                        	hideVolumeOnTouchDevices: true,
+	            				features: ['playpause','volume','progress','current','duration','tracks','fullscreen'],
+	            				audioVolume: 'horizontal',
+	            				context: this, 
+	            				success: function (mediaElement, domObject) {
+	                                // call the play method
+	                                mediaElement.play();
+
+	                                $("#okay_play_container" ).fadeIn(500).css({"display": "block"});
+									setTimeout("$(\"#okay_play_container\").fadeOut('slow')", 2240);
+	                                }
+	                        });
+			          });
+				});
+
+			/* PAUSE BUTTON EMPTIES NOWPLAYING CONTAINER */
+
+			$(function () {
+				$(document.body).on('click', '.mejs__pause' ,function(e){
+					$('#nowplaying').html('');
+					});
+				});
+
+
+			/* INITIALISIERUNG DES JQUERY UI ACCORDIONS */
+
+			/*
+			$( function() {
+			    $( ".accordion" ).accordion({ collapsible: true });
+			  	});
+			*/
+			
+
+
+		/* PROGRAMM VIA CALCMS ABFRAGEN */
+
+	    jQuery( document ).ready(function(){
+        	//load next shows into current playlist
+        	if (window.location.href == 'https://programm.coloradio.org/agenda/')
+        		{
+	        	// if(jQuery('#coming_shows').length!=0) jQuery('#coming_shows').load('/agenda/playlistLong/');
+	        	if(jQuery('#sendungen').length!=0) jQuery('#sendungen').load('/agenda/sendungen/');
+	        	$('#navi_show_programmliste').html('');
+	        	$('#calcms_list').html('');
+	        	if(jQuery('#calcms_calendar').length!=0) jQuery('#calcms_calendar').load('/agenda/kalender/');
+        		}
+
+    		$( "#li_tab2 label" ).click(function (){
+
+				if (window.location.href == 'https://programm.coloradio.org/agenda/')
+        			{
+        			$('#calcms_search_field').val('');
+	        		jQuery('#sendungen').load('/agenda/sendungen/');
+	        		$('#calcms_list').html('');
+	        		$('.show_programmliste').css({"display": "none"});
+        			}
+
+        		window.history.pushState('object or string', 'Title', 'https://programm.coloradio.org/agenda/');
+
+				});
+
+
+    		/* SUCHE STANDARDMÄßIG IM ADVANCED MODUS ANZEIGEN */
+
+    		calcms.showAdvancedSearch('calcms_enhanced_search');
+
+    		/* ABFRAGE CURRENT EVENT */
+    		
+    		$('#current_event_id').load('/agenda/running_event_id/', function( response, status, xhr ) {
+
+    			if (response == '' )
+    				{
+    				// alert('kein event');
+    				// DERZEIT SPIELT KEIN EVENT, ZUMINDEST KEINER LT PROGRAMM
+
+    				var currentEventID = '23314';
+					$('#event_list_id_23314').addClass('running');
+					$('#event_list_id_'+currentEventID).append(' is running');
+    				}
+    			else
+    				{
+    				var currentEventID = $('#current_event_id').html();
+    				currentEventID = '23314';
+					$('#event_list_id_'+currentEventID).append(' is running');
+    				}
+
+  				if ( status == "error" ) {
+    				var msg = "Sorry but there was an error: ";
+    				$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
+  					}
+				});
+
+    		
+    		
+
+		});
+
+        	$(document).on('click', '.click_for_detail', function(e) { 
+
+        		e.preventDefault();
+				var eventID = $(this).prop('id').substr(14);
+				// alert(eventID);
+
+				$.ajax({
+					type: 'get',
+				    url: 'https://programm.coloradio.org/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
+				    /* data: {werk_id : werkID, zustand : zustand},*/
+
+				    success: function (result)
+						{
+						// alert(result);
+						$('#sendungen').html(result);
+						$('#navi_show_programmliste').html('<a class="show_programmliste" href="" title="Zurück zur Übersicht"></a>');
+
+						// schreibe URL neu / ohne Reload
+						// document.title = response.pageTitle;
+     					// window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", urlPath);
+
+					    }
+				});
+
+        	 });
+
+        	$(document).on('click', '.zeige_sendungsdetails', function(e) { 
+
+        		e.preventDefault();
+				var eventID = $(this).prop('id').substr(14);
+				// alert(eventID);
+
+				$.ajax({
+					type: 'get',
+				    url: 'https://programm.coloradio.org/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
+				    /* data: {werk_id : werkID, zustand : zustand},*/
+
+				    success: function (result)
+						{
+						// alert(result);
+						$('#sendungen').html(result);
+
+						// schreibe URL neu / ohne Reload
+						// document.title = response.pageTitle;
+     					// window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", urlPath);
+
+					    }
+				});
+
+        	 });
+
+			$(document).on('click', '.show_programmliste', function(e) { 
+
+        		e.preventDefault();
+				var eventID = $(this).prop('id').substr(14);
+				// alert(eventID);
+
+
+				if ($('#calcms_search_field').val() == '')
+					{
+					
+					if(jQuery('#sendungen').length!=0) jQuery('#sendungen').load('/agenda/sendungen/');
+					$('#navi_show_programmliste').html('');
+					$('#calcms_list').html('');
+					}
+				else
+					{
+					calcms.selectSearchEventListener();	
+					}
+
+				
+        	 });
+
+
+        	$(document).on('click', '.reload_page', function(e) { 
+        		e.preventDefault();
+				var eventID = $(this).prop('id').substr(7);
+				// alert(eventID);
+
+				$.ajax({
+					type: 'get',
+				    url: 'https://programm.coloradio.org/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
+
+				    success: function (result)
+						{
+						$('#sendungen').html(result);
+						$('html, body').animate({scrollTop:$(document).height()}, 'slow');
+					    }
+				});
+        	 });
+
+
+
+
+			/* SEARCH FORM */
+
+			/* ARCHIVE SWITCH TEXT */		
+
+			$(document).on('click', '#calcms_archive', function(e) { 
+
+				if ($(this).is(':checked'))
+
+					{
+					$('#archive_select_info').html('Suche <b>Vergangenes</b> / Kommendes');
+					}
+				else
+					{
+					$('#archive_select_info').html('Suche Vergangenes / <b>Kommendes</b>');					
+					}
+        	 	});
+
+
+			/* LINK TO TAB NAVIGATION */
+
+			$(document).on('click', '.gototab', function(e) { 
+        		e.preventDefault();
+
+        		tabNow = $(this).attr('href'); 
+        		$(tabNow).trigger("click");
+
+        	 });
+
+			/* GET TIMESTAMP FROM SERVER */
+
+			jQuery( document ).ready(function(){
+				jQuery('#timestamp').load('timestamp.cgi');
+			});
+
+
+				/*
+				now = $.now();
+				timestampNow = '1521003426';
+
+				alert(now);
+				
+				if ( now > timestampNow)
+					{
+					alert(timestampNow);
+					}
+				*/
+
+
+			/* GET LATEST COMMENTS */
+
+			$(document).on('click', '#li_tab3 label', function(e) { 
+			
+					// alert('tab3');
+
+       				jQuery('#neueste_kommentare').load('/agenda/neueste_kommentare/');
+				});
+
+
+
+
+							
+		</script>
+
+		<!-- HTML5 shiv : HTML5 in older IE browsers -->
+		<!-- Include the HTML5 shiv in a conditional comment and after any stylesheets. -->
+		<!-- https://github.com/aFarkas/html5shiv -->
+
+		<!--[if lt IE 9]>
+		    <script src="script/html5shiv3.7.3.js"></script>
+		<![endif]-->
+
+		<!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+	</head>
+	<body>
+		<div id="login_info">
+			<span id="base_info">Das Freie Radio in Dresden, UKW: 98,4 & 99,3 MHz | Mo-Fr 18-23 & Sa+So 12-24 Uhr</span> 
+			<a class="logoutlink" title="Click to Log In" href="planung" target="_blank">Login</a> | 
+			<a class="logoutlink impressumslink gototab" href="#tab7">Impressum</a>
+			<a class="fancybox iframe logoutlink hide" href="help_info.php">Benutzer*innenhilfe</a><br>
+		</div>
+
+		<div id="nowplaying"></div>
+
+		<div style="text-align:center;">
+	
+
+			<div class="audio-player" id="audio-player_container">
+				<div class="cover">
+					<div class="covertext"></div>
+					<div class="streifen streifen1"></div>
+					<div class="streifen streifen2"></div>
+					<div class="streifen streifen3"></div>
+					<div class="streifen streifen4"></div>
+					<div class="streifen streifen5"></div>
+					<div class="streifen streifen6"></div>								
+				</div>
+				<div class="infobox">					
+				</div>
+				<div class="playchoice">
+
+					<!--<a href="http://streaming.fueralle.org:8000/coloradio_160.mp3?_=1" title="coloRadio LIVE in guter Tonqualität" class="playfile choicebutton">LIVE</a>-->
+					<!--<a href="http://streaming.fueralle.org:8000/coloradio_56.mp3?_=2" title="coloRadio LIVE in niedriger Tonqualität" class="playfile choicebutton">LIVE low</a><br>-->
+
+				</div>
+				<audio class="mejs__player" id="audioplayer" preload="none" style="" controls="controls">
+					<source type="audio/mpeg" src="http://streaming.fueralle.org:8000/coloradio_160.mp3?_=1" />
+					<source type="audio/mpeg" src="http://streaming.fueralle.org:8000/coloradio_56.mp3?_=2" />
+					<source type="audio/mpeg" src="http://streaming.fueralle.org:8000/corax.mp3?_=3" />
+					Dein Browser unterstützt kein Audio-Element. Dadurch wird das Abspielen hier nicht ermöglicht. Du kannst aber die folgende Internetverlinkung nutzen, um das Radio zu hören: http://streaming.fueralle.org:8000/coloradio_160.mp3?_=1  Oder natürlich, wenn Du gerade in Dresden bist, ein Radio mit UKW-Empfang. Unter den Frequenzen 98,4 & 99,3 MHz. Montag bis Freitag von je 18 bis 23 Uhr und am Wochenende von 12 bis 24 Uhr. 
+				</audio>
+			</div>
+
+		</div>
+
+		<ul class="tabs">
+			<li>
+				<input type="radio" name="tabs" id="tab1" />
+				<label for="tab1" id="tab1_label" >Über uns</label>
+				<div id="tab-content1" class="tab-content">
+					<div class="tab_text_content">
+
+						<img src="/agenda/img/logos/coloRadio_Logo.png" width="120" alt="coloRadio Logo" style="display:none;visibility:hidden;"><br><br>
+
+						<h1>Über coloRadio</h1>
+						
+						<p>coloRadio ist ein nicht-kommerzielles Lokalradio, das man in Dresden und Umgebung auf den Frequenzen 98,4 &amp; 99,3 MHz empfangen und weltweit im Livestream <script>document.write('<a href="#tab4" class="gototab">hören</a>');</script><noscript>hören</noscript> kann.</p><br>
+
+						<p>coloRadio ist ein Freies Radio. Das bedeutet, dass wir keinem Geldgeber oder anderem Interessensvertreter gehorchen müssen. Dabei orientieren wir uns an der <b>Charta</b> des Bundesverbandes der Freien Radios in Deutschland.</p><br>
+
+						<p>Das Programm bei coloRadio wird gestaltet durch zahlreiche, ehrenamtlich arbeitende Radiomacher*innen. Das sind Menschen wie du und ich, denn jede*r kann bei coloRadio mitmachen!</p><br>
+
+						<p>Wenn du auch <script>document.write('<a class="gototab" href="#tab5">mitmachen</a>');</script> <noscript><b>mitmachen</b></noscript> möchtest, dann <script>document.write('<a class="gototab" href="#tab7">schreib uns</a>');</script> <noscript><b>schreib uns</b></noscript> oder komm uns besuchen. Unsere Studios findest du im Zentralwerk: <a href="http://www.openstreetmap.org/node/4709919325" target="_blank">Riesaer Straße 32, 01127 Dresden-Pieschen</a></p><br>
+
+						<h1>Wichtige Links</h1>
+		
+						* <a href="http://freie-radios.de/ueber-uns/charta.html" target="_blank">Charta des Bundesverbandes Freier Radios</a><br>
+
+						<h1>coloRadio wird gefördert durch:</h1>
+						
+						* Jugendamt der Stadt Dresden<br>
+						* Amt für Kultur und Denkmalschutz der Stadt Dresden<br>
+						* Europäische Union<br>
+						* Europäischen Sozialfonds für Deutschland<br>
+						* Ehrenamtsförderung “Wir für Sachsen”
+
+						<br><br><br>
+					</div>
+		        </div>
+			</li>
+
+
+			<li id="li_tab2">
+				<input type="radio" name="tabs" id="tab2" checked />
+				<label for="tab2" id="tab2_label" class="tagestab">PROGRAMM</label>
+				<div id="tab-content2" class="tab-content">
+					<div class="tab_text_content programmseite">
+
+
+							<!-- calcms search start -->
+
+							<!--<h3>Suche</h3>-->
+							<div id="calcms_search">
+								<form class="searchfieldform" action="#" onsubmit="calcms.selectSearchEventListener();return false;">
+									<input id="calcms_search_field" placeholder="Durchsuche das Programm" name="search" value="" onclick="calcms.selectSearchEventListener();return false;"/>
+								</form>
+								<input id="programm_search_button" class="programm_search_button" value="suchen" onclick="calcms.selectSearchEventListener();return false;" type="button" />
+
+									<span id="calcms_series_names"></span> 
+									<span id="archive_select_info">Schalter <b>Vergangenes</b> / Kommendes</span> <input type="checkbox" name="calcms_archive" id="calcms_archive" checked />
+								<!--<span id="calcms_programs"></span>-->
+								<!--<span id="calcms_categories"></span>-->
+									<span id="calcms_enhanced_search" style="display:none;"></span> 
+								
+							</div>
+
+							<!-- calcms search end -->
+
+
+						<!--<h1>Programm</h1>-->
+
+							<!-- show coming shows --> 
+							
+						    <!--<h3>Coming Shows</h3>-->
+						    <!--<span>(coming_shows, Jquery, Aufruf index.html : /agenda/playlistLong/)</span>-->
+						    <div id="coming_shows" style="display:none;"></div>
+
+						    <div id="navi_show_programmliste"></div>
+
+						    <!--<h3>Sendungen</h3>-->
+						    <div id="sendungen"></div>						    
+
+							<!-- include short list of schedules -->
+
+							<!--<h3>CALCMS Menu</h3>-->
+							<!--<span>(calcms_menu, CGI/Perl)</span>-->
+							<div id="calcms_menu"></div>
+
+							<div style="clear:both"></div>
+
+							<!-- Sendungsdetails -->
+
+							<!--<h3>Sendungsdetails</h3>-->
+							<div id="calcms_list" class="content"></div>
+
+							<!-- show calendar -->
+
+							<!--<h3>Kalender</h3>-->
+							<div id="calcms_calendar" style="display:none;"></div>
+
+							<!--<h3>Playlist</h3>
+
+							Kommt bei der Initialisierung in calcms.cust.js gleich von selbst mit. calcms.showPlaylist(); Zeile 417<br><br>-->
+
+                    		<div id="calcms_playlist" style="display:none;"></div> 
+
+                    		
+						<noscript>
+
+							<iframe src="events.cgi?template=event_playlist_long.html&time=future&limit=20" width="100%" height="100%" frameborder="0" name="programm">PROGRAMM VON coloRadio</iframe>
+
+						</noscript>
+					</div>
+				</div>
+			</li>
+
+			<li>
+			   	<input type="radio" name="tabs" id="tab4" />
+			   	<label for="tab4" id="tab4_label">Hören <a href="http://streaming.fueralle.org:8000/coloradio_160.mp3?_=1" class="playfile" title="coloRadio LIVE in guter Tonqualität"><img src="/agenda/img/player/playbutton_weiss.png" style="" alt="playbutton"></a></label>
+			    <div id="tab-content4" class="tab-content">
+		    		<div class="tab_text_content">
+
+		    			<h1>Sendezeiten</h1>
+
+		    			Montag bis Freitag von je 18 bis 23 Uhr und am Wochenende von 12 bis 24 Uhr. 
+
+		    			<h1>Im Radio / UKW</h1>
+
+		    			Wenn Du gerade in Dresden bist und ein Radio mit UKW-Empfang zur Hand hast kannst Du coloRadio unter den Frequenzen 98,4 & 99,3 MHz empfangen.
+
+		    			<h1>LIVE online hören</h1>
+
+						Abspielen:<br><br>
+
+						<a href="http://streaming.fueralle.org:8000/coloradio_160.mp3?_=1" title="coloRadio LIVE in guter Tonqualität" class="playfile">&#9654; als MP3-Stream in erhöhter Qualität (160kbps)</a><br><br>
+
+						<a href="http://streaming.fueralle.org:8000/coloradio_56.mp3?_=2" title="coloRadio LIVE in niedriger Tonqualität" class="playfile">&#9654; als MP3-Stream in niedriger Klangqualität (56kbps)</a><br><br>
+						
+						Tipp: Vor dem Abspielen Seite neu laden (Refresh-Button oder F5), <br>sonst hört Ihr eventuell Altes!<br>
+
+						<h1>Bei Sendepause</h1>
+
+						Leider können wir aufgrund der GEMA/GVL-Rechte die Streams nur zu unserer Sendezeit bespielen. Außerhalb dieser Zeiten legen wir euch Radio Corax (Halle a.d. Saale) ans Herz. <br><br>
+
+						<a href="http://streaming.fueralle.org:8000/corax.mp3?_=3" title="Freies Radio Corax aus Halle (a.d. Saale)" class="playfile">&#9654; Radio Corax abspielen</a>
+
+						<h1>Links für den externen Player</h1>
+
+						Wenn Du auf Deinem Gerät einen eigenen bevorzugte Abspielsoftware hast, kannst Du die folgenden Links nutzen, um von der Abspielsoftware aus das Radio als Stream anzuhören.<br><br>
+
+						<a href="http://streaming.fueralle.org:8000/coloradio_160.mp3.m3u" target="_blank">http://streaming.fueralle.org:8000/coloradio_160.mp3.m3u</a><br>
+						<a href="http://streaming.fueralle.org:8000/coloradio_160.ogg.m3u" target="_blank">http://streaming.fueralle.org:8000/coloradio_160.ogg.m3u</a><br>
+						<a href="http://streaming.fueralle.org:8000/coloradio_48.aac.m3u" target="_blank">http://streaming.fueralle.org:8000/coloradio_48.aac.m3u</a><br>
+						<a href="http://streaming.fueralle.org:8000/coloradio_56.mp3.m3u" target="_blank">http://streaming.fueralle.org:8000/coloradio_56.mp3.m3u</a><br>
+
+						<h1>Sendungen im Audioarchiv</h1>
+
+						<a href="https://www.freie-radios.net/radio/coloradio" target="_blank">https://www.freie-radios.net/radio/coloradio</a><br>
+
+						<h1>Anleitungen</h1>
+
+						* Radiogerätempfehlungen</br>
+						* Hören mit Safari / iOS</br>
+						* Hören über den Fritz!box-Router<br>
+
+						<h1>Test</h1>
+
+						<a href="http://programm.coloradio.org/agenda/mp3/Sunbeams.mp3" title="" class="playfile">&#9654; Sunbeams</a><br><br>
+
+					</div>
+	        	</div>
+	    	</li>
+
+	      	<li>
+	        	<input type="radio" name="tabs" id="tab5" />
+	        	<label for="tab5" id="tab5_label">Mitmachen</label>
+	        	<div id="tab-content5" class="tab-content">
+					<div class="tab_text_content">
+
+						<h1>Mitmachen</h1>
+
+						<p>Wenn du auch bei coloRadio mitmachen möchtest, dann <script>document.write('<a class="gototab" href="#tab7">schreib uns</a>');</script> <noscript><b>schreib uns</b></noscript> oder komm uns besuchen. Unsere Studios findest du im Zentralwerk: <a href="http://www.openstreetmap.org/node/4709919325">Riesaer Straße 32, 01127 Dresden-Pieschen</a></p><br>
+
+						<h1>Redaktionssitzungen </h1>
+
+						<p>Wir treffen uns zu Gesamtredaktionssitzungen, welche offen für Interessenten sind, in unseren Räumen im Zentralwerk auf der Riesaer Straße 32.<br>
+						Das Orgaplenum findet jeden Dienstag 19:00 Uhr statt.</p>
+
+						<h1>Vollversammlung</h1>
+
+						<p>
+							Die Mitgliederversammlung nimmt neue Mitglieder und Sendungen auf.<br />
+							Do, 15.03.2018, 19:00 Uhr<br />
+							Mo, 16.04.2018, 19:00 Uhr<br />
+							Di, 15.05.2018, 19:00 Uhr
+						</p>
+	
+						<h1>8 Schritte</h1>
+	
+						Hier findest du die 8 Schritte, die zu deiner eigenen Sendung auf coloRadio führen.<br />
+
+						Wenn du nur einen kleinen Beitrag senden oder über eine Veranstaltung oder Ausstellung oder Demo oder &#8230; berichten möchtest, schick uns eine <script>document.write('<a class="gototab" href="#tab7">Mail</a>');</script> <noscript><b>Mail</b></noscript> oder komm uns <script>document.write('<a class="gototab" href="#tab7">besuchen</a>');</script> <noscript><b>besuchen</b></noscript>. In unseren tagesaktuellen Magazinen findet sich immer ein Platz dafür!</p>
+						<br>
+						<ol style="list-style: decimal !important;display:relative !important;">
+							<li>Am Anfang steht deine Sendeidee! Schreib ein grobes Konzept der Sendung.</li>
+							<li>Mach dich mit unseren Grundsätzen vertraut. Wirf dazu einen Blick auf die <a href="http://freie-radios.de/ueber-uns/charta.html" target="_blank">Charta der Freien Radios in Deutschland</a>.</li>
+							<li>Komm zu unserer Vollversammlung und stell uns deine Idee vor! Die Termine dazu findest du rechts neben diesem Text unter &#8222;Redaktionssitzungen &amp; Orga&#8220;. Hier bekommst du eine*n Sendungsmacher*in zur Seite gestellt, die*der dir bei den ersten Schritten hilft.</li>
+							<li>Nimm eine Probesendung auf. 60 Minuten sagen mehr als tausend Worte 😉</li>
+							<li>Verstößt deine Sendung nicht gegen unsere Grundsätze, wird dir bei der nächsten Vollversammlung ein regelmäßiger Sendeplatz gegeben.</li>
+							<li>Bring dich ein und werde Mitglied! Die Organisation von coloRadio geschieht ehrenamtlich und hat vielfältige Möglichkeiten: Sicherstellen des Sendealltages, Öffentlichkeitsarbeit &amp; Netzwerken, Technik &amp; Sound, Weiterbildung &amp; Feedback.</li>
+							<li>Du bekommst eine Einweisung in journalistische und technische Grundlagen, die du in den ersten sechs Monaten nach deinem Beginn bei coloRadio absolvieren musst. Dabei lernst du Freie Radios, Interviewführung, Mischpulte usw. genauer kennen. Die Termine findest du im Blog bei den <a target="_blank" href="http://coloradio.org/site/category/workshops/">Workshops</a>.</li>
+							<li>Hab Spaß bei der Sache! 🙂</li>
+						</ol>
+
+						<h1>Workshops</h1>
+
+						Siehe Blog, unter <a target="_blank" href="http://coloradio.org/site/category/workshops/">Workshops</a>.
+
+					</div>
+        		</div>
+    		</li>
+
+
+	      	<li>
+	        	<input type="radio" name="tabs" id="tab6" />
+	        	<label for="tab6" id="tab6_label">Spenden</label>
+	        	<div id="tab-content6" class="tab-content">
+					<div class="tab_text_content">
+	
+						<h1>Spenden</h1>
+
+						Spenden und alternative Rundfunkspende gerne an:<br>
+						Bank für Sozialwirtschaft Dresden,<br>
+						IBAN: DE72 8502 0500 0003 6159 00<br>
+						SWIFT/BIC: BFSWDE33DRE<br>
+
+						<h1>Flattr Social Payment</h1>
+
+						Du kannst coloRadio flattrn. <br>
+						https://de.wikipedia.org/wiki/Flattr<br>
+						http://flattr.com/thing/49331/Redaktion<br>							
+
+						<h1>Crowdfunding</h1>
+
+						* bis 31.8.2016: Umzug ins Zentralwerk (via Startnext)<br>
+
+						<h1>Patreon</h1>
+
+					</div>
+        		</div>
+    		</li>
+
+
+	      	<li>
+	        	<input type="radio" name="tabs" id="tab7" />
+	        	<label for="tab7" id="tab7_label">Kontakt</label>
+	        	<div id="tab-content7" class="tab-content">
+					<div class="tab_text_content">
+
+						<h1>Kontakt</h1>
+
+						Studio- und Vereinsadresse:<br>
+						Radio-Initiative Dresden e.V.<br>
+						Riesaer Straße 32<br>
+						01127 Dresden<br><br>
+
+						Tel: 0351 / 32 05 47 10<br>
+						Fax: 0351 / 32 05 47 19<br>
+						Studio: 0351 / 32 05 47 11<br>
+						E-Mail: <a href="&#109;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#98;&#x75;&#101;&#114;&#x6f;&#x40;&#99;&#111;&#108;&#111;&#114;&#97;&#100;&#x69;&#x6f;&#46;&#x6f;&#x72;&#x67;">&#98;&#x75;&#x65;&#x72;&#111;&#64;&#99;&#x6f;&#108;&#111;&#114;&#x61;&#100;&#x69;&#111;&#x2e;&#111;&#x72;&#103;</a><br><br>
+
+						Büroöffnungszeiten:<br>
+						Montag bis Freitag 14:00 bis 18:00 Uhr<br><br>
+
+						Sendezeiten:<br>
+						Mo-Fr 18:00 bis 23:00 Uhr, Sa+So 12:00 bis 24:00 Uhr<br><br>
+
+						coloRadio ist nicht für die Inhalte verlinkter Seiten verantwortlich.<br><br>
+
+						<h1>Presse</h1>
+
+						Pressemitteilungen bitte an:<br>
+						<a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#x72;&#101;&#100;&#x61;&#107;&#x74;&#105;&#111;&#110;&#x40;&#x63;&#x6f;&#108;&#x6f;&#114;&#x61;&#x64;&#105;&#x6f;&#46;&#x6f;&#114;&#x67;">&#x72;&#x65;&#x64;&#x61;&#107;&#116;&#105;&#111;&#x6e;&#64;&#x63;&#111;&#x6c;&#111;&#114;&#x61;&#x64;&#105;&#x6f;&#46;&#x6f;&#114;&#103;</a><br><br>
+
+						oder besser an die betreffende Redaktionsgruppe:<br>
+						<a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#x3a;&#x70;&#111;&#108;&#x69;&#116;&#x69;&#107;&#64;&#x63;&#111;&#x6c;&#111;&#114;&#x61;&#100;&#x69;&#111;&#x2e;&#x6f;&#x72;&#x67;">&#x70;&#111;&#108;&#105;&#116;&#105;&#107;&#64;&#x63;&#111;&#108;&#111;&#x72;&#x61;&#x64;&#x69;&#x6f;&#x2e;&#111;&#x72;&#103;</a><br>
+						<a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#x3a;&#x6d;&#x61;&#x67;&#97;&#122;&#x69;&#x6e;&#x40;&#99;&#111;&#108;&#x6f;&#114;&#97;&#100;&#105;&#111;&#x2e;&#111;&#x72;&#103;">&#109;&#97;&#x67;&#97;&#122;&#x69;&#110;&#64;&#99;&#x6f;&#108;&#x6f;&#114;&#x61;&#100;&#105;&#111;&#x2e;&#x6f;&#x72;&#103;</a><br>
+						<a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#107;&#x75;&#108;&#116;&#117;&#114;&#x40;&#99;&#x6f;&#x6c;&#x6f;&#114;&#97;&#100;&#x69;&#x6f;&#x2e;&#x6f;&#114;&#x67;">&#x6b;&#117;&#108;&#x74;&#117;&#114;&#x40;&#x63;&#111;&#108;&#x6f;&#x72;&#x61;&#x64;&#105;&#x6f;&#x2e;&#x6f;&#x72;&#103;</a><br>
+						<a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x6d;&#x75;&#115;&#x69;&#107;&#64;&#x63;&#x6f;&#108;&#111;&#114;&#97;&#100;&#x69;&#111;&#46;&#111;&#x72;&#103;">&#x6d;&#x75;&#115;&#x69;&#x6b;&#x40;&#x63;&#111;&#108;&#111;&#x72;&#97;&#100;&#x69;&#x6f;&#x2e;&#x6f;&#x72;&#103;</a><br><br>
+
+						<h1>Public Keys für verschlüsselte Kommunikation</h1>
+
+						<br><br>
+
+						<h1>Das Zentralwerk</h1>
+
+						Seit dem 10. Dezember 2016 ist das coloRadio-Studio im Zentralwerk in Dresden-Pieschen. Das Zentralwerk ist ein kreatives Genossenschaftsprojekt und neue Heimat von Künstler*innen, Musiker*innen, Ateliers und unserem Studio. 
+
+						<br><br>
+
+						<h1>Impressum</h1>
+
+						coloRadio ist nicht für die Inhalte verlinkter Seiten verantwortlich.
+
+						<h1>Website Credits</h1>
+
+						HTML5 Player: mediaelement.js<br>
+						Programmsoftware: powered by calcms 2010 - 2018. <a class="radiopilotenlink" href="https://radiopiloten.de" target="_blank">https://radiopiloten.de</a>. coloRadio sagt Dankeschön.<br>
+						Farbschema: Antje Meichsner<br>
+						Hosting & Setup: Datenkollektiv / Carsten Ungewitter<br>
+						Frontend-Programmierung: Sven Dämmig<br>
+						Website-Orga: Roman Kalex<br>
+						<br>
+
+					</div>
+        		</div>
+    		</li>
+
+	      	<li>
+	        	<input type="radio" name="tabs" id="tab8" />
+	        	<label for="tab8" id="tab8_label">Netzwerk</label>
+	        	<div id="tab-content8" class="tab-content">
+					<div class="tab_text_content">
+	
+							<h1>befreundete Radios</h1>
+
+							<ul>
+
+								<li><a href="http://www.amarc.org/" title="globale NGO der Community Radios" target="_blank">Amarc</a></li>
+								<li><a href="http://www.freie-radios.de/" title="Bundesverband Freier Radios in dem coloRadio Mitglied ist" target="_blank">BFR</a></li>
+								<li><a href="http://cba.fro.at/" title="Cultural Broadcasting Archive, Podcast vorwiegend österreichischer Freier Radios" target="_blank">CBA</a></li>
+								<li><a href="http://www.cmfe.eu/" title="Community Media Forum Europe" target="_blank">CMFE</a></li>
+								<li><a href="http://www.freie-radios.net" title="Beiträge verschiedener Freier Radios als Podcast" target="_blank">freie-radios.net</a></li>
+								<li><a href="http://www.piradio.de/" title="Freies Radio in Berlin" target="_blank">Pi Radio in Berlin</a></li>
+								<li><a href="http://www.radioblau.de/" title="Freies Radio in Leipzig" target="_blank">Radio Blau in Leipzig</a></li>
+								<li><a href="http://radio-frei.de" title="Freier Rundfunk Erfurt International" target="_blank">Radio F.R.E.I. in Erfurt</a></li>
+								<li><a href="http://www.cms.radiot-chemnitz.de/" title="Freies Radio in Chemnitz" target="_blank">Radio t in Chemnitz</a></li>
+							</ul>
+
+
+							<h1>Kooperationspartner</h1>
+
+							<ul>
+								<li><a href="https://weltoffenesdresden.wordpress.com/" title="Kulturfestival in Containern" target="_blank">#WOD Weltoffenes Dresden</a></li>
+								<li><a href="http://www.arche-nova.org" target="_blank">arche noVa e.V.</a></li>
+								<li><a href="http://www.azconni.de/start.htm" target="_blank">AZ Conni</a></li>
+								<li><a href="https://www.dave-festival.de/" title="Festival für Clubkultur in Dresden" target="_blank">DAVE Festival</a></li>
+								<li><a href="http://www.elbhangfest.de/index.php" target="_blank">Elbhangfest Dresden</a></li>
+								<li><a href="http://www.grueneliga-dresden.de/" target="_blank">Grüne Liga/Oberes Elbtal e.V.</a></li>
+								<li><a href="http://www.gaerten-ohne-grenzen.org/" target="_blank">Internationale Gärten e.V.</a></li>
+								<li><a href="http://www.staatsschauspiel-dresden.de/" target="_blank">Staatsschauspiel Dresden</a></li>
+								<li><a href="https://umundu.de/" title="Jährliches Event zum Thema Nachhaltigkeit im gesamten Dresdner Stadtgebiet" target="_blank">UMUNDU Festival</a></li>
+								<li><a href="http://zentralwerk-eg.de/projekt.html" title="Wohnen, Arbeiten, Kunst und Kultur auf einem ehemaligen Industriegelände in Dresden Pieschen" target="_blank">Zentralwerk</a></li>
+							</ul>
+
+							<h1>Homepages von coloRadio-Sendungen</h1>
+
+							<ul>
+								<li><a href="https://www.facebook.com/6saitenundeinverzerrer" target="_blank">6 Saiten und ein Verzerrer – Vom Punk-Rock, über Hardcore bis zum (Nu-)Metal</a></li>
+								<li><a href="http://www.alleweltonair.de" title="alleweltonair" target="_blank">alleweltonair</a></li>
+								<li><a href="http://www.mixcloud.com/AllSoundsElectric" title="The AllSoundsElectric &#8211; Radioshow" target="_blank">AllSoundsElectric</a></li>
+								<li><a href="http://campusradiodresden.de/" target="_blank">Campusradio</a></li>
+								<li><a href="https://www.mixcloud.com/disharmonic/" title="DISHARMONICxNOISExCONSPIRACY aka DISHARMONISCHE ZWANGSERFREUUNG, the ultimate &amp; most horrendous GRINDING DISASTER RADIOSHOW in your town and in your face!" target="_blank">DISHARMONICxNOISE xCONSPIRACY</a></li>
+								<li><a href="http://dresden-sellout.de/" title="Das Radio für Recht auf Stadt" target="_blank">Dresden Sellout</a></li>
+								<li><a href="http://www.fischbild.de" rel="contact co-worker" target="_blank">Frühstücksradio mit Spaß</a></li>
+								<li><a href="http://www.giri123.de/gossips" title="Der Schwarze Kanal" target="_blank">Gossips Radio</a></li>
+								<li><a href="https://www.facebook.com/HMWM.radio" title="Hit Me With Music &#8211; Musikmagazin" target="_blank">Hit Me With Music</a></li>
+								<li><a href="http://coloradio.org/jungesradio/" target="_blank">JUNGES RADIO</a></li>
+								<li><a href="http://kosmonautentanz.de" title="KOSMONAUTEN FM – Das offizielle Radio zum Kosmonautentanz! Jeden dritten Samstag im Monat: Club-Sets+Interviews+Klassiker des Monats+Partytipps+KosmonautenMix u.v.m.! Moderation: Digital Kaos" target="_blank">KOSMONAUTEN FM</a></li>
+								<li><a href="http://kreischa.fueralle.org/kreischa/wordpress/lesen/" title="Kreischa Live! bei coloRadio" target="_blank">Kreischa Live!</a></li>
+								<li><a href="http://megabits.falschgold.net" title="Die Computer Call-Out Show auf Coloradio" target="_blank">Megabits &#038; -Hits</a></li>
+								<li><a href="http://nachtkonzert.net" target="_blank">Nachtkonzert</a></li>
+								<li><a href="http://najradio.tumblr.com/" title="NeuesAltesJungesRadio" target="_blank">NeuesAltesJungesRadio</a></li>
+								<li><a href="http://www.c3d2.de/pentamusic.html" target="_blank">PentaMusic Radio Show</a></li>
+								<li><a href="http://www.c3d2.de/radio.html" target="_blank">Pentaradio</a></li>
+								<li><a href="http://previously.us" title="das Magazin der TV-Serienwelt" target="_blank">Previously</a></li>
+								<li><a href="http://www.rumpelkopf.de" title="homepage von rabazambabudenzauber" target="_blank">rumpelkopf &#8211; kassettendj</a></li>
+								<li><a href="http://rvmm.net/site/" title="Radiokollektiv Volume Mascara Murmansk" target="_blank">RVMM</a></li>
+								<li><a href="http://studiob.falschgold.net" title="Studio B &#8211; Magazin fuer Geschriebenes" target="_blank">Studio B</a></li>
+								<li><a href="https://django.blackblogs.org" target="_blank">Studio Django</a></li>
+								<li><a href="http://monkeyandseabass.blogspot.de/" title="The Musical Adventures Of Monkey And Seabass" target="_blank">The Musical Adventures Of Monkey And Seabass</a></li>
+								<li><a href="http://thesoldoutshow.com/" target="_blank">The Sold Out Show</a></li>
+								<li><a href="http://coloradio.org/site/zerrspiegel/" rel="contact met" title="kultur, musik, feminismus" target="_blank">zerrspiegel</a></li>
+							</ul>
+
+						</div>
+        		</div>
+    		</li>
+
+	      	<li style="display:none">
+	        	<input type="radio" name="tabs" id="tab9" />
+	        	<label for="tab9" id="tab9_label">Sendungen</label>
+	        	<div id="tab-content9" class="tab-content">
+					<div class="tab_text_content">
+	
+						
+					</div>
+        		</div>
+    		</li>
+
+	      	<li style="display:none">
+	        	<input type="radio" name="tabs" id="tab10" />
+	        	<label for="tab10" id="tab10_label">FEATURED</label>
+	        	<div id="tab-content10" class="tab-content">
+					<div class="tab_text_content">
+	
+						<h1>FEATURED SENDUNG</h1>
+
+					</div>
+        		</div>
+    		</li>
+
+			<li>
+			   	<label id="gotoblog_label">
+					<a title="Wechsel zum coloRadio Blog: Öffnet als neue Seite" target="_blank" href="https://coloradio.org/site/">Blog</a>
+				</label>
+	    	</li>
+
+
+	      	<li id="li_tab3" style="float:right;">
+	        	<input type="radio" name="tabs" id="tab3" />
+	        	<label for="tab3" id="tab3_label"><div id="menu_comment_label" title="Neueste Kommentare"></div></label>
+	        	<div id="tab-content3" class="tab-content">
+					<div class="tab_text_content">
+							<h1>Neueste Kommentare</h1>
+
+							<div id="neueste_kommentare"></div>
+					</div>
+        		</div>
+    		</li>
+
+		</ul>
+
+
+		<br style="clear: both;" />
+
+		<div id="okay_play_container">
+			<h1>Abspielen gestartet, yayy.</h1>
+		</div>
+
+		<div id="sittich">
+			<div id="sittich_info">
+				<span style="color:black;">Farbinspektor Gisela</span><br>
+				Gisela, by Glückstadt Fotografie <a href="https://creativecommons.org/licenses/by-nd/2.0/">CC</a>
+		</div>
+
+		<div id="timestamp" style="visibility:hidden;"></div>
+		<div id="current_event_id" style="visibility:hidden;"></div>
+
+		<!-- Fancybox Lightbox --> 
+		<!--<script src="script/fancybox-3.0/dist/jquery.fancybox.min.js"></script>-->
+
+		<!-- reduzierte UI-Version, nur für die Accordeon-Funktion -->
+		<!--<script src="/agenda/script/jquery-ui-1.12.1/jquery-ui.min.js"></script>-->
+
+
+	</body>
+</html>
