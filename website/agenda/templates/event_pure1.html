@@ -1,0 +1,165 @@
+<TMPL_IF use_client_cache>Cache-Control: max-age=600, must-revalidate
+</TMPL_IF>Content-type:text/html; charset=utf-8;
+
+<!DOCTYPE html>
+<html>
+<body>
+
+<TMPL_UNLESS no_result>
+<TMPL_UNLESS no_search_result>
+
+<div>
+    <TMPL_LOOP NAME=events>
+        <TMPL_IF event_id>
+
+                <span class="summary title" title="Mehr Infos zur Sendung" >
+
+                    <!-- Sendestart -->
+                    <!--<TMPL_VAR start_time_name>-->
+
+                    <!-- Titel der Sendung -->
+
+                    <!--<a href="<TMPL_VAR cache_base_url>/<TMPL_VAR .controllers.event>/<TMPL_VAR event_id>.html#<TMPL_VAR event_uri escape=url>" >-->
+
+                    <h1><TMPL_VAR full_title></h1>
+
+                    <!--</a>-->
+
+                    <!-- Location -->
+
+                    <!--<span style="float:right;font-weight:100"><TMPL_IF location_mapped><TMPL_VAR location_mapped></TMPL_IF></span>-->
+                </span>
+
+                <div class="excerpt">
+
+                <!--
+                    <TMPL_VAR excerpt> <TMPL_VAR user_excerpt>
+
+                    <TMPL_IF excerpt>
+                        <hr>
+                    <TMPL_ELSE>
+                        <TMPL_IF user_excerpt>
+                            <hr>
+                        </TMPL_IF>
+                    </TMPL_IF>
+                -->
+
+                <!--
+                    <TMPL_IF no_image_in_text>
+                        <p>
+                            <a href="<TMPL_VAR image>">
+                                <img alt="<TMPL_VAR series_name>" src="<TMPL_VAR thumb>">
+                            </a>
+                        </p>
+                    </TMPL_IF>
+                -->
+
+                    <!-- Sendezeit: Start & Ende -->
+
+                    <TMPL_IF name="is_first_of_day">
+                        <div class="date">
+                            <TMPL_VAR weekday_short_name>, <TMPL_VAR start_date_name>
+                            <!--<TMPL_IF project_title> - <TMPL_VAR project_title></TMPL_IF>-->
+
+                                <!-- ICAL EVENT -->
+
+                                <div class="ical_event">
+                                    <a href="<TMPL_VAR .controllers.domain><TMPL_VAR .controllers.ical>/<TMPL_VAR event_id>/<TMPL_IF series_name><TMPL_VAR series_name escape=url>-</TMPL_IF><TMPL_VAR title  escape=url>.ics" title="Termin merken"><!--<img width="16" height="16"  alt="ICalendar" src="<TMPL_VAR static_files_url>image/ical.png" />-->im Kalender speichern</a>
+                                </div>
+                        </div>
+                    </TMPL_IF>
+
+                    <div style="clear:both"></div>
+
+                    <div class="event_time">
+                        <TMPL_VAR start_time_name> <TMPL_IF name="__last__"> - <TMPL_VAR end_time_name></TMPL_IF>
+                    </div>
+
+                    <TMPL_IF is_running> (l&auml;uft gerade)</TMPL_IF>
+        
+
+                    <!-- ICAL ALLE SENDUNGEN DES MONATS -->
+
+                    <div id="icon_bar" style="display:none;">
+                        <a href="<TMPL_VAR .controllers.domain><TMPL_VAR .controllers.ical>/<TMPL_VAR month>/" title="alle Sendungen des Monats merken"><img width="16" height="16" alt="Icalendar" src="<TMPL_VAR static_files_url>image/icals.png" /></a>
+                    </div>
+
+
+
+                    <TMPL_IF recurrence_date><a href="<TMPL_VAR recurrence>.html">Wiederholung vom <TMPL_VAR recurrence_date></a></TMPL_IF>
+
+                    <div style="clear:both"></div>
+
+                    <!-- Sendungsbild -->
+
+                    <TMPL_IF thumb>
+                        <img alt="<TMPL_VAR series_name>" src="<TMPL_VAR thumb>">
+                    </TMPL_IF>
+
+                    <!-- Detailierte Beschreibung -->
+
+                    <div class="detailbeschreibung">
+                        <TMPL_VAR topic ESCAPE=0><TMPL_VAR content ESCAPE=0>
+                    <div>
+
+                    <!-- is the event live or preproduced : tinyint(1) unsigned -->
+
+                    <div class="live_or_preproduced" id="is_live_<TMPL_VAR live>">
+                        <TMPL_IF live>
+                            Eine LIVE-Sendung. Das Studiotelefon hat die Nummer 0351 / 32 05 47 11.
+                        <TMPL_ELSE>
+                            Vorproduzierte Sendung, findet nicht live im Studio statt
+                        </TMPL_IF>
+                    </div> 
+
+                    <!-- AUDIO URLS -->
+
+                    <TMPL_IF media_url>
+                        <a class="playfile" href="<TMPL_VAR media_url>"><img style="width:19px;height:19px;margin-bottom:-3px;margin-left:1px;" src="/agenda/img/player/play-button-64px-D13030.png" alt="playbutton">broadcast audio URL</a><br>
+                    </TMPL_IF>
+
+                    <!-- Podcast URL : hat die Sendung einen eigenen Podcast? Wenn ja, kann mit dieser URL abonniert werden. --> 
+
+                    <TMPL_IF podcast_url>
+                        <a href="<TMPL_VAR podcast_url>"><img style="width:19px;height:19px;margin-bottom:-3px;margin-left:1px;" src="/agenda/img/player/play-button-64px-D13030.png" alt="playbutton">Podcast der Sendung abonnieren</a><br>
+                    </TMPL_IF>
+
+                    <!-- Link zum Archiv der Sendung -->
+
+                    <TMPL_IF archive_url>
+                        <a class="archive_url" href="http:<TMPL_VAR archive_url>" target="_blank"><TMPL_VAR archive_url></a><br>
+                    </TMPL_IF>
+
+                    <div style="clear:both"></div>
+
+                    <!-- Permalink --> 
+
+                    <a class="permalink" href="<TMPL_VAR cache_base_url>/<TMPL_VAR .controllers.event>/<TMPL_VAR event_id>.html#<TMPL_VAR event_uri escape=url>">Permalink</a>
+
+                    <div style="clear:both"></div>
+
+
+
+
+                </div>
+
+                <div id="calcms_comments">
+
+                    <script>
+                        jQuery(document).ready(
+                            function() {
+                                calcms.showCommentsByEventIdOrEventStart('<TMPL_VAR event_id>','<TMPL_VAR start_datetime>');
+                                }
+                            );
+                    </script>
+                </div>         
+
+        </TMPL_IF>
+    </TMPL_LOOP>
+</div>
+
+</TMPL_UNLESS>
+</TMPL_UNLESS>
+
+</body>
+</html>
