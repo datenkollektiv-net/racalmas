@@ -6,6 +6,7 @@ var calcms = (function($) {
 	// event handlers are customized at herbstradio.org
 
 	my.updateContainer = function updateContainer(id, url, onLoading, callback) {
+		// alert(id+url);
 		if (id == null)
 			return;
 		if ($("#" + id).length == 0)
@@ -411,19 +412,19 @@ var calcms = (function($) {
 			else
 				url += 'all/';
 			if (value != '' && value != null)
-				url += escape(value) + '/';
+				url += escape(encodeURI(value)) + '/';
 			if (archive != null && archive == 0)
 				url += 'kommende/';
 			if (archive != null && archive == 1)
 				url += 'vergangene/';
-			my.updateContainer('calcms_list', url, 1);
+			my.updateContainer('sendungen', url, 1);
 		}
 	}
 
 	// show all events for a given category
 	my.showEventsByCategory = function showEventsByCategory(value) {
 		if (value != '' && value != null) {
-			my.updateContainer('calcms_list', my.get('search_category_url')
+			my.updateContainer('sendungen', my.get('search_category_url')
 					+ escape(value) + '/', 1);
 		}
 	}
@@ -441,7 +442,7 @@ var calcms = (function($) {
 				url += 'kommende/';
 			if (archive != null && archive == 1)
 				url += 'vergangene/';
-			my.updateContainer('calcms_list', url, 1);
+			my.updateContainer('sendungen', url, 1);
 		}
 	}
 
@@ -453,19 +454,20 @@ var calcms = (function($) {
 			if (project != '' && project != null)
 				url += escape(project) + '/';
 			if (seriesName != '' && seriesName != null)
-				url += escape(seriesName) + '/';
+				url += encodeURI(escape(seriesName)) + '/';
 			if (archive != null && archive == 0)
 				url += 'kommende/';
 			if (archive != null && archive == 1)
 				url += 'vergangene/';
-			my.updateContainer('calcms_list', url, 1);
+			/* alert (url); */
+			my.updateContainer('sendungen', url, 1);
 		}
 	}
 
 	// show all events for a given series
 	my.showEventsBySeriesName = function showEventsBySeriesName(value) {
 		if (value != '' && value != null) {
-			my.updateContainer('calcms_list', my.get('search_series_name_url')
+			my.updateContainer('sendungen', my.get('search_series_name_url')
 					+ escape(value) + '/', 1);
 		}
 	}
@@ -476,7 +478,7 @@ var calcms = (function($) {
 		var url = my.setAndGetUrlParameters('program', value);
 		if (value != '' && value != null) {
 			// my.updateContainer('calcms_list', events_url+url, 1);
-			my.updateContainer('calcms_list', url, 1);
+			my.updateContainer('sendungen', url, 1);
 		}
 	}
 
