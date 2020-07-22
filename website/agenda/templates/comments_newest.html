@@ -9,8 +9,10 @@
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 </head>
 <body>
+<div id="sendungen">
+</div>
 <TMPL_LOOP comments>
-	<a href="<TMPL_VAR cache_base_url>/<TMPL_VAR .controllers.event>/<TMPL_VAR event_id>.html#comments">
+	<a id="event_list_id_<TMPL_VAR event_id>" class="click_for_detail" href="<TMPL_VAR cache_base_url>/<TMPL_VAR .controllers.event>/<TMPL_VAR event_id>.html#comments">
 	<div class="comments level<TMPL_VAR level>">
 		<span class="author"><TMPL_VAR author escape=0></span>:
 		<span class="content"><TMPL_VAR short_content escape=0></span>

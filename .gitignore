@@ -2,8 +2,21 @@
 sync.data
 old
 config.cgi
-website/agenda_files/media/icons/*.jpg
-website/agenda_files/media/image/*.jpg
-website/agenda_files/media/thumbs/*.jpg
-website/agenda_files/media/upload/*.jpg
-recordings/*.mp3
+website/agenda_files/media/icons/*
+website/agenda_files/media/image/*
+website/agenda_files/media/images/*
+website/agenda_files/media/thumbs/*
+website/agenda_files/media/upload/*
+website/agenda_files/recordings/*
+*.php
+logs/*
+
+# nicht calcms - aber interface:
+website/agenda/player
+website/agenda/image
+website/agenda/img
+website/agenda/css
+website/agenda/script
+website/agenda/mp3
+
+website/agenda/timestamp.cgi

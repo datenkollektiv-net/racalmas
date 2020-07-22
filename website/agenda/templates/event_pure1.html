@@ -75,7 +75,7 @@
                         <TMPL_VAR start_time_name> <TMPL_IF name="__last__"> - <TMPL_VAR end_time_name></TMPL_IF>
                     </div>
 
-                    <TMPL_IF is_running> (l&auml;uft gerade)</TMPL_IF>
+                    <TMPL_IF is_running> <!-- (l&auml;uft gerade) --> </TMPL_IF>
         
 
                     <!-- ICAL ALLE SENDUNGEN DES MONATS -->
@@ -108,7 +108,7 @@
                         <TMPL_IF live>
                             Eine LIVE-Sendung. Das Studiotelefon hat die Nummer 0351 / 32 05 47 11.
                         <TMPL_ELSE>
-                            Vorproduzierte Sendung, findet nicht live im Studio statt
+                            <!-- (vorproduzierte Sendung) Sendung findet nicht live im Studio statt -->
                         </TMPL_IF>
                     </div> 
 
@@ -124,7 +124,7 @@
                         <a href="<TMPL_VAR podcast_url>"><img style="width:19px;height:19px;margin-bottom:-3px;margin-left:1px;" src="/agenda/img/player/play-button-64px-D13030.png" alt="playbutton">Podcast der Sendung abonnieren</a><br>
                     </TMPL_IF>
 
-                    <!-- Link zum Archiv der Sendung -->
+                    <!-- Link zum Archiv der Sendung --- wird evtl. Mitschnitt-URL -->
 
                     <TMPL_IF archive_url>
                         <a class="archive_url" href="http:<TMPL_VAR archive_url>" target="_blank"><TMPL_VAR archive_url></a><br>
@@ -134,9 +134,9 @@
 
                     <!-- Permalink --> 
 
-                    <a class="permalink" href="<TMPL_VAR cache_base_url>/<TMPL_VAR .controllers.event>/<TMPL_VAR event_id>.html#<TMPL_VAR event_uri escape=url>">Permalink</a>
+                    <!--<a class="permalink" href="<TMPL_VAR cache_base_url>/<TMPL_VAR .controllers.event>/<TMPL_VAR event_id>.html#<TMPL_VAR event_uri escape=url>">Permalink</a>-->
 
-                    <div style="clear:both"></div>
+                    <!--<div style="clear:both"></div>-->
 
 
 

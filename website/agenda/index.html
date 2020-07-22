@@ -98,7 +98,175 @@
 		<script type="text/javascript" src="/agenda/js/calcms.cust.js"></script> <!--calcms end-->
     	<!--calcms end-->
 
-		<script>			
+		<script>
+
+			/* 
+			/* 
+			/* JQUERY FUNKTIONEN 
+			/* 
+			/*						*/
+
+
+			/* getEventDetails */
+
+			jQuery.fn.extend({
+
+    			getEventDetails: function(eventID) 
+    				{
+    				if (typeof eventID != "undefined")
+						{
+						$.ajax(
+							{
+							type: 'get',
+					    	url: 'https://programm.coloradio.org/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
+					    	success: function (result)
+								{
+								// alert(result);
+								return result;
+						    	}
+							});
+						}
+					else
+						{
+						console.log('eventID in getEventDetails undefined');
+						}
+    				}
+			});
+
+
+
+
+			
+
+			$(document).ready(function(){
+
+				/* TIMESTAMP SERVER */
+
+				$('#servertimestamp').load('php/timestamp_server.php');
+
+				/* DAY OF THE WEEK */
+
+				$('#dayoftheweek').load('php/dayoftheweek.php', function(result) {
+    				var dayOfTheWeek = $('#dayoftheweek').html();
+
+					/* SENDEZEIT HEUTE */
+
+					var sendezeitToday = '';
+
+					if (typeof dayOfTheWeek != "undefined")
+						{
+						switch(dayOfTheWeek) 
+							{
+							case "0":
+							sendezeitToday = 'Sonntag: 12 bis 24 Uhr';
+							break;
+
+							case "1":
+							 sendezeitToday = 'Montag: 18 bis 23 Uhr';
+							break;
+
+							case "2":
+							sendezeitToday = 'Dienstag: 18 bis 23 Uhr';
+							break;
+
+							case "3":
+							sendezeitToday = 'Mittwoch: 18 bis 23 Uhr';
+							break;
+							
+							case "4":
+							sendezeitToday = 'Donnerstag: 18 bis 23 Uhr';
+							break;
+							
+							case "5":
+							sendezeitToday = 'Freitag: 18 bis 23 Uhr';
+							break;
+							
+							case "6":
+							sendezeitToday = 'Samstag: 12 bis 24 Uhr';
+							break;
+
+							default:
+							sendezeitToday = 'unbekannt';
+				  			break; 
+							}
+
+						$('#sendezeit_today').html(sendezeitToday);
+						}
+					else
+						{
+						sendezeitToday = 'unbekannt 2';
+						$('#sendezeit_today').html(sendezeitToday);
+						}
+				});
+
+				/* MÜSSTE AKTUELL GESENDET WERDEN ? */
+
+
+
+			});
+
+
+
+			/* FRAGMENT ANALYSR FOR BROWSER NAVIGATION */ 
+
+			var coloHashOld = window.location.hash;
+
+			$( window ).on('hashchange', function() {
+    			console.log('hash changed');
+
+    			var coloHash = window.location.hash;
+
+				if (typeof coloHash != "undefined")
+					{
+
+					var coloHash = window.location.hash;
+					var coloHashFragment1 = window.location.hash.slice(1);
+
+	    			if (coloHashFragment1.length==21 && coloHashFragment1.substr(0,4) > 2017 && coloHashFragment1.substr(4,1) == '-' )
+	    				{
+	    				var dateSpan1 = coloHashFragment1.substr(0,10);
+	    				var dateSpan2 = coloHashFragment1.substr(-10,10);
+	    				jQuery('#sendungen').load('/agenda/sendungen/'+dateSpan1+'/'+dateSpan2+'/');
+	    				}
+
+	    			else if (coloHashFragment1.length==10 && coloHashFragment1.substr(0,4) > 2017 && coloHashFragment1.substr(4,1) == '-' )
+	    				{
+	    				jQuery('#sendungen').load('/agenda/sendungen/'+coloHashFragment1+'/');
+	    				}
+
+					else if (typeof(coloHashFragment1) != "undefined" && coloHashFragment1 !== null && $.isNumeric(coloHashFragment1))
+						{
+						jQuery('#sendungen').load('/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+coloHashFragment1+'&amp;template=event_pure1.html');
+		  				}
+				  	else if (coloHashFragment1.substr(0,11) == 'seriesName+' && coloHashFragment1.substr(11) != '')
+				  		{
+				  		var seriesNameAusHash = coloHashFragment1.substr(11);
+				  		var seriesNameAusHashDecoded = decodeURIComponent(seriesNameAusHash);
+				  		calcms.selectSeries('coloradio', seriesNameAusHashDecoded);
+				  		}
+		  			else
+		  				{
+						switch(coloHash) 
+							{
+							case "#programm":
+							$("#li_tab2 label").trigger("click");
+							break;
+
+							case "#newestComments":
+							$("#tab2").trigger("click");
+							jQuery('#sendungen').load('/agenda/neueste_kommentare/');
+							break;
+
+							default:
+			  				break; 
+							}
+
+						}
+					}
+				});
+
+
+
 
 			$(document).ready(function() {
 
@@ -193,34 +361,105 @@
 		/* PROGRAMM VIA CALCMS ABFRAGEN */
 
 	    jQuery( document ).ready(function(){
+
+			var coloHash = window.location.hash;
+			var coloHashFragment1 = window.location.hash.slice(1);
+
+			var d = new Date();
+			var month = d.getMonth()+1;
+			var day = d.getDate();
+			var output = d.getFullYear() + '-' + (month<10 ? '0' : '') + month + '-' + (day<10 ? '0' : '') + day;
+
+			if(jQuery('#calcms_calendar').length!=0) jQuery('#calcms_calendar').load('/agenda/kalender/'+output+'/');
+
+
         	//load next shows into current playlist
-        	if (window.location.href == 'https://programm.coloradio.org/agenda/')
+        	
+        	if (window.location.href == 'https://programm.coloradio.org/agenda/#programm' || window.location.href == 'https://programm.coloradio.org/agenda/')
         		{
 	        	// if(jQuery('#coming_shows').length!=0) jQuery('#coming_shows').load('/agenda/playlistLong/');
-	        	if(jQuery('#sendungen').length!=0) jQuery('#sendungen').load('/agenda/sendungen/');
+	        	$("#li_tab2 label").trigger("click");
+
+	        	jQuery('#sendungen').load('/agenda/sendungen/');
 	        	$('#navi_show_programmliste').html('');
 	        	$('#calcms_list').html('');
-	        	if(jQuery('#calcms_calendar').length!=0) jQuery('#calcms_calendar').load('/agenda/kalender/');
+
+        		if(history.pushState) 
+        			{
+    				history.pushState(null, 'Programm', 'https://programm.coloradio.org/agenda/#programm');
+					}
+				else 
+					{
+    				location.hash = 'https://programm.coloradio.org/agenda/#programm';
+					}
         		}
+	    	else if (coloHashFragment1.length==21 && coloHashFragment1.substr(0,4) > 2017 && coloHashFragment1.substr(4,1) == '-' )
+	    		{
+	    		var dateSpan1 = coloHashFragment1.substr(0,10);
+	    		var dateSpan2 = coloHashFragment1.substr(-10,10);
+	    		jQuery('#sendungen').load('/agenda/sendungen/'+dateSpan1+'/'+dateSpan2+'/');
+	    		}
+	    	else if (coloHashFragment1.length==10 && coloHashFragment1.substr(0,4) > 2017 && coloHashFragment1.substr(4,1) == '-' )
+	    		{
+	    		// alert('surprise: is numeric too ;) ');
+	    		jQuery('#sendungen').load('/agenda/sendungen/'+coloHashFragment1+'/');
+	    		}
+
+        	else if (typeof(coloHashFragment1) != "undefined" && coloHashFragment1 !== null && $.isNumeric(coloHashFragment1))
+				{
+				$("#li_tab2 label").trigger("click");
+				jQuery('#sendungen').load('/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+coloHashFragment1+'&amp;template=event_pure1.html');
+		  		}
+        	else if (window.location.href == 'https://programm.coloradio.org/agenda/#newestComments')
+				{
+				$("#tab2").trigger("click");
+       			jQuery('#sendungen').load('/agenda/neueste_kommentare/');
+		  		}
+		  	else if (coloHashFragment1.substr(0,11) == 'seriesName+' && coloHashFragment1.substr(11) != '')
+		  		{
+	        	$("#li_tab2 label").trigger("click");
+
+		  		var seriesNameAusHash = coloHashFragment1.substr(11);
+		  		var seriesNameAusHashDecoded = decodeURIComponent(seriesNameAusHash);
+		  		calcms.selectSeries('coloradio', seriesNameAusHashDecoded);
+		  		// alert(seriesNameAusHashDecoded);
+		  		// $('#calcms_series_name_all').val(seriesNameAusHashDecoded).change();
+		  		// $('#calcmsSeriesNamesForm select option[value=AllSoundsElectric]').attr('selected','selected');
+		  		// $("#calcms_series_name_all > option[value=" + seriesNameAusHashDecoded + "]").prop("selected",'selected');
+		  		}
+
 
     		$( "#li_tab2 label" ).click(function (){
 
-				if (window.location.href == 'https://programm.coloradio.org/agenda/')
-        			{
-        			$('#calcms_search_field').val('');
-	        		jQuery('#sendungen').load('/agenda/sendungen/');
-	        		$('#calcms_list').html('');
-	        		$('.show_programmliste').css({"display": "none"});
-        			}
+       			$('#calcms_search_field').val('');
+        		jQuery('#sendungen').load('/agenda/sendungen/');
+        		$('#calcms_list').html('');
+        		$('.show_programmliste').css({"display": "none"});
 
-        		window.history.pushState('object or string', 'Title', 'https://programm.coloradio.org/agenda/');
+        		if(history.pushState) 
+        			{
+    				history.pushState(null, 'Programm', 'https://programm.coloradio.org/agenda/#programm');
+					}
+				else 
+					{
+    				location.hash = 'https://programm.coloradio.org/agenda/#programm';
+					}
 
 				});
+
+			
+
+
+
+
+
 
 
     		/* SUCHE STANDARDMÄßIG IM ADVANCED MODUS ANZEIGEN */
 
     		calcms.showAdvancedSearch('calcms_enhanced_search');
+
+
 
     		/* ABFRAGE CURRENT EVENT */
     		
@@ -230,10 +469,6 @@
     				{
     				// alert('kein event');
     				// DERZEIT SPIELT KEIN EVENT, ZUMINDEST KEINER LT PROGRAMM
-
-    				var currentEventID = '23314';
-					$('#event_list_id_23314').addClass('running');
-					$('#event_list_id_'+currentEventID).append(' is running');
     				}
     			else
     				{
@@ -247,9 +482,7 @@
     				$( "#error" ).html( msg + xhr.status + " " + xhr.statusText );
   					}
 				});
-
-    		
-    		
+  		
 
 		});
 
@@ -259,6 +492,8 @@
 				var eventID = $(this).prop('id').substr(14);
 				// alert(eventID);
 
+				// $("#tab2").trigger("click");
+
 				$.ajax({
 					type: 'get',
 				    url: 'https://programm.coloradio.org/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
@@ -268,22 +503,34 @@
 						{
 						// alert(result);
 						$('#sendungen').html(result);
-						$('#navi_show_programmliste').html('<a class="show_programmliste" href="" title="Zurück zur Übersicht"></a>');
+						$('#navi_show_programmliste').html('<a class="show_programmliste" href="javascript:history.back();" title="Zurück zur Übersicht"></a>');
+						$('#calcms_menu').html('');
+						$('#calcms_list').html('');
+
+						$(window).scrollTop(0);
 
 						// schreibe URL neu / ohne Reload
 						// document.title = response.pageTitle;
      					// window.history.pushState({"html":response.html,"pageTitle":response.pageTitle},"", urlPath);
 
+     					if(history.pushState) 
+        					{
+    						history.pushState(null, 'Sendungsdetail', 'https://programm.coloradio.org/agenda/#'+eventID);
+							}
+						else 
+							{
+    						location.hash = 'https://programm.coloradio.org/agenda/#'+eventID;
+							}
 					    }
 				});
-
         	 });
+
 
         	$(document).on('click', '.zeige_sendungsdetails', function(e) { 
 
+
         		e.preventDefault();
 				var eventID = $(this).prop('id').substr(14);
-				// alert(eventID);
 
 				$.ajax({
 					type: 'get',
@@ -294,6 +541,8 @@
 						{
 						// alert(result);
 						$('#sendungen').html(result);
+						$('#calcms_menu').html('');
+						$('#calcms_list').html('');
 
 						// schreibe URL neu / ohne Reload
 						// document.title = response.pageTitle;
@@ -301,10 +550,10 @@
 
 					    }
 				});
-
         	 });
 
-			$(document).on('click', '.show_programmliste', function(e) { 
+
+			$(document).on('click', 'show_programmliste', function(e) { 
 
         		e.preventDefault();
 				var eventID = $(this).prop('id').substr(14);
@@ -323,7 +572,15 @@
 					calcms.selectSearchEventListener();	
 					}
 
-				
+        		if(history.pushState) 
+        			{
+    				history.pushState(null, 'Programm', 'https://programm.coloradio.org/agenda/#programm');
+					}
+				else 
+					{
+    				location.hash = 'programm';
+					}
+			
         	 });
 
 
@@ -346,24 +603,67 @@
 
 
 
+        	/* KALENDERTAGE ABFRAGEN */	
+
+        	$(document).on('click', '.caldayclick', function(e) { 
+        		e.preventDefault();
+				var calURL = $(this).prop('href').substr(-15,10);
+
+				jQuery('#sendungen').load('/agenda/sendungen/'+calURL+'/');
+
+        		if (history.pushState) 
+        			{
+    				history.pushState(null, 'Tagesprogramm '+calURL, 'https://programm.coloradio.org/agenda/#'+calURL);
+					}
+
+				$('#navi_show_programmliste').html('');
+				$('#calcms_list').html('');
+        	 });
+
+
+        	$(document).on('click', '.calmonthclick', function(e) { 
+        		e.preventDefault();
+				var calDateStart = $(this).prop('href').substr(-26,10);
+				var calDateEnd = $(this).prop('href').substr(-15,10);
+
+				jQuery('#sendungen').load('/agenda/sendungen/'+calDateStart+'/'+calDateEnd+'/');
+
+        		if (history.pushState) 
+        			{
+    				history.pushState(null, 'Monatsprogramm '+calDateStart, 'https://programm.coloradio.org/agenda/#'+calDateStart+'-'+calDateEnd);
+					}
+
+				$('#navi_show_programmliste').html('');
+				$('#calcms_list').html('');
+        	 });
+
+
+
 
 			/* SEARCH FORM */
 
 			/* ARCHIVE SWITCH TEXT */		
 
-			$(document).on('click', '#calcms_archive', function(e) { 
+			$(document).on('click', '#archive_select_info', function(e) { 
 
-				if ($(this).is(':checked'))
+				// e.preventDefault();
 
+				// $('#calcms_archive').trigger("click");
+
+				if ($('#calcms_archive').is(':checked'))
 					{
-					$('#archive_select_info').html('Suche <b>Vergangenes</b> / Kommendes');
+					$('#suchevergangenes').css({"background-color": "#70c66b", "color": "white", "background-image":" linear-gradient(rgba(255, 255, 255, 0.2), transparent)"});
+					$('#suchekommendes').css({"background-color": "white", "color": "black"});
 					}
 				else
 					{
-					$('#archive_select_info').html('Suche Vergangenes / <b>Kommendes</b>');					
+					$('#suchevergangenes').css({"background-color": "white", "color": "black"});
+					$('#suchekommendes').css({"background-color": "#70c66b", "color": "white", "background-image":" linear-gradient(rgba(255, 255, 255, 0.2), transparent)"});
 					}
-        	 	});
 
+
+				$('#calcms_archive').trigger("click");
+        	 	});
 
 			/* LINK TO TAB NAVIGATION */
 
@@ -399,13 +699,20 @@
 
 			$(document).on('click', '#li_tab3 label', function(e) { 
 			
-					// alert('tab3');
+				// alert('tab3');
 
-       				jQuery('#neueste_kommentare').load('/agenda/neueste_kommentare/');
+				$("#tab2").trigger("click");
+
+       			jQuery('#sendungen').load('/agenda/neueste_kommentare/');
+       			if(history.pushState) 
+       				{
+    				history.pushState(null, "Neueste Kommentare", '#newestComments');
+					}
+				else 
+					{
+    				location.hash = '#newestComments';
+					}
 				});
-
-
-
 
 							
 		</script>
@@ -470,6 +777,8 @@
 
 						<img src="/agenda/img/logos/coloRadio_Logo.png" width="120" alt="coloRadio Logo" style="display:none;visibility:hidden;"><br><br>
 
+						<img src="image/coloradio-final-frei-CMYK_preview.png" width="100%" alt="coloRadio Logo 25 years by Olaf Röske"><br><br>
+
 						<h1>Über coloRadio</h1>
 						
 						<p>coloRadio ist ein nicht-kommerzielles Lokalradio, das man in Dresden und Umgebung auf den Frequenzen 98,4 &amp; 99,3 MHz empfangen und weltweit im Livestream <script>document.write('<a href="#tab4" class="gototab">hören</a>');</script><noscript>hören</noscript> kann.</p><br>
@@ -514,8 +823,14 @@
 								</form>
 								<input id="programm_search_button" class="programm_search_button" value="suchen" onclick="calcms.selectSearchEventListener();return false;" type="button" />
 
-									<span id="calcms_series_names"></span> 
-									<span id="archive_select_info">Schalter <b>Vergangenes</b> / Kommendes</span> <input type="checkbox" name="calcms_archive" id="calcms_archive" checked />
+								<span id="calcms_series_names"></span> 
+								<div id="archive_select_info">
+									&nbsp;Suche in:
+									<span id="suchevergangenes" style="background-color:#70c66b;color:white;background-image:linear-gradient(rgba(255, 255, 255, 0.2), transparent)">Vergangenes</span>
+									<span id="suchekommendes" style="margin-left:0px;">Kommendes</span> <input type="checkbox" name="calcms_archive" id="calcms_archive" checked />
+								</div>
+
+
 								<!--<span id="calcms_programs"></span>-->
 								<!--<span id="calcms_categories"></span>-->
 									<span id="calcms_enhanced_search" style="display:none;"></span> 
@@ -535,6 +850,9 @@
 
 						    <div id="navi_show_programmliste"></div>
 
+							<!--<h3>Kalender</h3>-->
+							<div id="calcms_calendar" style="/*display:none;*/"></div>
+
 						    <!--<h3>Sendungen</h3>-->
 						    <div id="sendungen"></div>						    
 
@@ -552,9 +870,6 @@
 							<div id="calcms_list" class="content"></div>
 
 							<!-- show calendar -->
-
-							<!--<h3>Kalender</h3>-->
-							<div id="calcms_calendar" style="display:none;"></div>
 
 							<!--<h3>Playlist</h3>
 
@@ -590,9 +905,9 @@
 
 						Abspielen:<br><br>
 
-						<a href="http://streaming.fueralle.org:8000/coloradio_160.mp3?_=1" title="coloRadio LIVE in guter Tonqualität" class="playfile">&#9654; als MP3-Stream in erhöhter Qualität (160kbps)</a><br><br>
+						<a href="http://streaming.fueralle.org:8000/coloradio_160.mp3?_=1" title="coloRadio LIVE in guter Tonqualität" class="playfile"><!--&#9654;--> als MP3-Stream in erhöhter Qualität (160kbps)</a><br><br>
 
-						<a href="http://streaming.fueralle.org:8000/coloradio_56.mp3?_=2" title="coloRadio LIVE in niedriger Tonqualität" class="playfile">&#9654; als MP3-Stream in niedriger Klangqualität (56kbps)</a><br><br>
+						<a href="http://streaming.fueralle.org:8000/coloradio_56.mp3?_=2" title="coloRadio LIVE in niedriger Tonqualität" class="playfile"><!--&#9654;--> als MP3-Stream in niedriger Klangqualität (56kbps)</a><br><br>
 						
 						Tipp: Vor dem Abspielen Seite neu laden (Refresh-Button oder F5), <br>sonst hört Ihr eventuell Altes!<br>
 
@@ -600,7 +915,7 @@
 
 						Leider können wir aufgrund der GEMA/GVL-Rechte die Streams nur zu unserer Sendezeit bespielen. Außerhalb dieser Zeiten legen wir euch Radio Corax (Halle a.d. Saale) ans Herz. <br><br>
 
-						<a href="http://streaming.fueralle.org:8000/corax.mp3?_=3" title="Freies Radio Corax aus Halle (a.d. Saale)" class="playfile">&#9654; Radio Corax abspielen</a>
+						<a href="http://streaming.fueralle.org:8000/corax.mp3?_=3" title="Freies Radio Corax aus Halle (a.d. Saale)" class="playfile"><!--&#9654;--> Radio Corax abspielen</a>
 
 						<h1>Links für den externen Player</h1>
 
@@ -615,6 +930,7 @@
 
 						<a href="https://www.freie-radios.net/radio/coloradio" target="_blank">https://www.freie-radios.net/radio/coloradio</a><br>
 
+
 						<h1>Anleitungen</h1>
 
 						* Radiogerätempfehlungen</br>
@@ -623,7 +939,9 @@
 
 						<h1>Test</h1>
 
-						<a href="http://programm.coloradio.org/agenda/mp3/Sunbeams.mp3" title="" class="playfile">&#9654; Sunbeams</a><br><br>
+						<!--<a href="http://programm.coloradio.org/agenda/mp3/Sunbeams.mp3" title="" class="playfile">&#9654; Sunbeams</a><br><br>-->
+						<a href="http://phonocake.org/mp3/katalog/%5Bphokes128%5D%20Teppana%20-%20Triple%20EP/phokes128-_-04-_-Teppana-_-Till_We_Meet_Again.mp3" 
+							title=" Till we meet again by Teppana" class="playfile"><!--&#9654;--> Till we meet again</a> (src: <a href="http://www.phonocake.org/triple">www.phonocake.org/triple</a> )<br><br>	
 
 					</div>
 	        	</div>
@@ -648,9 +966,18 @@
 
 						<p>
 							Die Mitgliederversammlung nimmt neue Mitglieder und Sendungen auf.<br />
-							Do, 15.03.2018, 19:00 Uhr<br />
-							Mo, 16.04.2018, 19:00 Uhr<br />
-							Di, 15.05.2018, 19:00 Uhr
+							 Mo, 20.01.2020, 19:00 Uhr <br>
+							 Di, 18.02.2020, 19:00 Uhr <br> 
+							 Mi, 18.03.2020, 19:00 Uhr <br>
+							 Do, 16.04.2020, 19:00 Uhr <br>
+							 Mo, 18.05.2020, 19.00 Uhr <br>
+							 Di, 16.06.2020, 19:00 Uhr <br>
+							 Mi, 15.07.2020, 19:00 Uhr <br>
+							 Do, 20.08.2020, 19:00 Uhr <br>
+							 Mo, 21.09.2020, 19:00 Uhr <br>
+							 Di, 20.10.2020, 19:00 Uhr <br>
+							 Mi, 18.11.2020, 19:00 Uhr <br>
+							 Do, 17.12.2020, 19:00 Uhr <br>
 						</p>
 	
 						<h1>8 Schritte</h1>
@@ -666,13 +993,13 @@
 							<li>Nimm eine Probesendung auf. 60 Minuten sagen mehr als tausend Worte 😉</li>
 							<li>Verstößt deine Sendung nicht gegen unsere Grundsätze, wird dir bei der nächsten Vollversammlung ein regelmäßiger Sendeplatz gegeben.</li>
 							<li>Bring dich ein und werde Mitglied! Die Organisation von coloRadio geschieht ehrenamtlich und hat vielfältige Möglichkeiten: Sicherstellen des Sendealltages, Öffentlichkeitsarbeit &amp; Netzwerken, Technik &amp; Sound, Weiterbildung &amp; Feedback.</li>
-							<li>Du bekommst eine Einweisung in journalistische und technische Grundlagen, die du in den ersten sechs Monaten nach deinem Beginn bei coloRadio absolvieren musst. Dabei lernst du Freie Radios, Interviewführung, Mischpulte usw. genauer kennen. Die Termine findest du im Blog bei den <a target="_blank" href="http://coloradio.org/site/category/workshops/">Workshops</a>.</li>
+							<li>Du bekommst eine Einweisung in journalistische und technische Grundlagen, die du in den ersten sechs Monaten nach deinem Beginn bei coloRadio absolvieren musst. Dabei lernst du Freie Radios, Interviewführung, Mischpulte usw. genauer kennen. Die Termine findest du im Blog bei den <a target="_blank" href="https://coloradio.org/?page_id=605">Workshops</a>.</li>
 							<li>Hab Spaß bei der Sache! 🙂</li>
 						</ol>
 
 						<h1>Workshops</h1>
 
-						Siehe Blog, unter <a target="_blank" href="http://coloradio.org/site/category/workshops/">Workshops</a>.
+						Siehe Blog, unter <a target="_blank" href="https://coloradio.org/?page_id=605">Workshops</a>.
 
 					</div>
         		</div>
@@ -868,15 +1195,20 @@
         		</div>
     		</li>
 
-			<li>
+			<li style="display:none;">
 			   	<label id="gotoblog_label">
 					<a title="Wechsel zum coloRadio Blog: Öffnet als neue Seite" target="_blank" href="https://coloradio.org/site/">Blog</a>
+				</label>
+	    	</li>
+			<li>
+			   	<label id="gotoblog_label2">
+					<a title="Wechsel zum coloRadio Blog: Öffnet als neue Seite" target="_blank" href="https://coloradio.org">Blog & News</a>
 				</label>
 	    	</li>
 
 
 	      	<li id="li_tab3" style="float:right;">
-	        	<input type="radio" name="tabs" id="tab3" />
+	        	<!--<input type="radio" name="tabs" id="tab3" />-->
 	        	<label for="tab3" id="tab3_label"><div id="menu_comment_label" title="Neueste Kommentare"></div></label>
 	        	<div id="tab-content3" class="tab-content">
 					<div class="tab_text_content">
@@ -898,18 +1230,109 @@
 
 		<div id="sittich">
 			<div id="sittich_info">
-				<span style="color:black;">Farbinspektor Gisela</span><br>
-				Gisela, by Glückstadt Fotografie <a href="https://creativecommons.org/licenses/by-nd/2.0/">CC</a>
+				<!--<span style="color:black;">Farbinspektor Gisela</span><br>
+				Gisela, by Glückstadt Fotografie <a href="https://creativecommons.org/licenses/by-nd/2.0/">CC</a>-->
+				<span style="">Farbgenießer*in Grey<!-- a superb fruit dove--></span><br>
+				by Neil <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC</a>
+				</div>
 		</div>
 
 		<div id="timestamp" style="visibility:hidden;"></div>
 		<div id="current_event_id" style="visibility:hidden;"></div>
+		<div id="dayoftheweek" style="visibility:hidden;"></div>
+		<div id="servertimestamp" style="visibility:hidden;"></div>
+		<div id="sendezeit_today" style="visibility:hidden;"></div>
 
 		<!-- Fancybox Lightbox --> 
 		<!--<script src="script/fancybox-3.0/dist/jquery.fancybox.min.js"></script>-->
 
 		<!-- reduzierte UI-Version, nur für die Accordeon-Funktion -->
 		<!--<script src="/agenda/script/jquery-ui-1.12.1/jquery-ui.min.js"></script>-->
+
+		<script src="js/mo.min.0.288.1.js"></script>
+
+		<script>
+
+		      var _extends = Object.assign || function (target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i];for (var key in source) {if (Object.prototype.hasOwnProperty.call(source, key)) {target[key] = source[key];}}}return target;};var _ref;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+
+		      var COLORS = { RED: '#FD5061', YELLOW: '#FFCEA5', BLACK: '#29363B', WHITE: 'white', VINOUS: '#A50710' };
+
+		var burst1 = new mojs.Burst({ left: 0, top: 0, count: 8, radius: { 50: 150 },
+		  children: { shape: 'line', stroke: ['white', '#FFE217', '#FC46AD', '#D0D202', '#B8E986', '#D0D202'], scale: 1,
+		    scaleX: { 1: 0 },
+		    // pathScale:    'rand(.5, 1.25)',
+		    degreeShift: 'rand(-90, 90)',
+		    radius: 'rand(20, 40)',
+		    // duration:     200,
+		    delay: 'rand(0, 150)',
+		    isForce3d: true } });
+
+
+
+		var largeBurst = new mojs.Burst((_ref = {
+		  left: 0, top: 0,
+		  count: 4,
+		  radius: 0,
+		  angle: 45 }, _defineProperty(_ref, 'radius',
+		{ 0: 450 }), _defineProperty(_ref, 'children',
+		{
+		  shape: 'line',
+		  stroke: '#4ACAD9',
+		  scale: 1,
+		  scaleX: { 1: 0 },
+		  radius: 60,
+		  duration: 350,
+		  isForce3d: true,
+		  easing: 'cubic.inout' }), _ref));
+
+
+
+		var CIRCLE_OPTS = {
+		  left: 0, top: 0,
+		  scale: { 0: 1 } };
+
+
+		var largeCircle = new mojs.Shape(_extends({},
+		CIRCLE_OPTS, {
+		  fill: 'none',
+		  stroke: 'white',
+		  strokeWidth: 4,
+		  opacity: { .25: 0 },
+		  radius: 25,
+		  duration: 300 }));
+
+
+		var smallCircle = new mojs.Shape(_extends({},
+		CIRCLE_OPTS, {
+		  fill: 'white',
+		  opacity: { .5: 0 },
+		  radius: 30 }));
+
+
+		document.addEventListener('click', function (e) {
+
+		  burst1.
+		  tune({ x: e.pageX, y: e.pageY }).
+		  generate().
+		  replay();
+
+		  largeBurst.
+		  tune({ x: e.pageX, y: e.pageY }).
+		  replay();
+
+		  largeCircle.
+		  tune({ x: e.pageX, y: e.pageY }).
+		  replay();
+
+		  smallCircle.
+		  tune({ x: e.pageX, y: e.pageY }).
+		  replay();
+
+		});
+
+
+
+		</script>
 
 
 	</body>

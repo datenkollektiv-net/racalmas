@@ -1,0 +1,3 @@
+
+redirectMatch 301 ^/$ 	/agenda/
+

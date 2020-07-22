@@ -32,7 +32,21 @@
         <span class="summary title" title="Mehr Infos zur Sendung">
             <TMPL_VAR start_time_name><TMPL_IF name="__last__"> - <TMPL_VAR end_time_name></TMPL_IF> | 
             <a id="event_list_id_<TMPL_VAR event_id>" class="click_for_detail" href="<TMPL_VAR cache_base_url>/<TMPL_VAR .controllers.event>/<TMPL_VAR event_id>.html#<TMPL_VAR event_uri escape=url>"
-            ><TMPL_VAR full_title></a> 
+            ><TMPL_VAR full_title></a> <br>
+            <span class="excerpt">
+                    <TMPL_VAR excerpt> <TMPL_VAR user_excerpt>
+            </span>
+            <br>
+            <!--
+                    <TMPL_IF excerpt>
+                        <hr>
+                    <TMPL_ELSE>
+                        <TMPL_IF user_excerpt>
+                            <hr>
+                        </TMPL_IF>
+                    </TMPL_IF>
+            -->
+
             <TMPL_UNLESS no_comment>
                 <!--<a href="<TMPL_VAR cache_base_url>/<TMPL_VAR .controllers.event>/<TMPL_VAR event_id>.html#<TMPL_VAR event_uri>#comments">-->
                     <span class="eventlist_kommentarzahl submitted<TMPL_IF comment_count> comments</TMPL_IF>">&#128172; <TMPL_VAR comment_count> <!--Kommentar<TMPL_UNLESS one_comment>e</TMPL_UNLESS>--></span>

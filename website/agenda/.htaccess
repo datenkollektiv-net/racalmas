@@ -1,24 +1,26 @@
+
 <IfModule mod_rewrite.c>
 RewriteBase /agenda
 
 RewriteEngine on
+
 RewriteCond  %{REQUEST_FILENAME} -f
 RewriteRule (.*) $1 [L]
 RewriteCond  %{REQUEST_FILENAME} -d
 RewriteRule (.*) $1 [L]
 
 RewriteRule ^kommentare/(\d+)/(\d{4}-\d{2}-\d{2}[T\+]\d{2}\:\d{2})(\:\d{2})?/(.*)$ comments.cgi?template=comments.html&event_id=$1&event_start=$2&sort_order=asc&$4 [L]
-RewriteRule ^neueste_kommentare/(.*)$ 				comments.cgi?template=comments_newest.html&limit=20&show_max=3&type=list&$1 [L]
+RewriteRule ^neueste_kommentare/(.*)$ 				comments.cgi?template=comments_newest.html&limit=400&show_max=40&type=list&$1 [L]
 RewriteRule ^feed_kommentare/(.*)$ 					comments.cgi?template=comments.xml&limit=20&$1 [L]
 RewriteRule ^kommentar_neu/(.*)$ 					add_comment.cgi?$1 [L]
 
 RewriteRule ^sendung/(\d+)/[^&]*(&.*)?$ 	events.cgi?template=event_details.html&event_id=$1&$2 [L]
 RewriteRule ^sendung/(.*)$ 			events.cgi?$1 [L]
 
-RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/(\d)/(.*)$ events.cgi?template=event_list.html&from_date=$1&till_date=$2&weekday=$3&$4 [L]
-RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/(.*)$ 	events.cgi?template=event_list.html&from_date=$1&till_date=$2&$3 [L]
-RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(.*)$ 			events.cgi?template=event_list.html&date=$1&$2 [L]
-RewriteRule ^sendungen/heute/(.*)$ 					events.cgi?template=event_list.html&date=today&$1 [L]
+RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/(\d)/(.*)$ events.cgi?template=event_list_2.html&from_date=$1&till_date=$2&weekday=$3&$4 [L]
+RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/(.*)$ 	events.cgi?template=event_list_2.html&from_date=$1&till_date=$2&$3 [L]
+RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(.*)$ 			events.cgi?template=event_list_2.html&date=$1&$2 [L]
+RewriteRule ^sendungen/heute/(.*)$ 					events.cgi?template=event_list_2.html&date=today&$1 [L]
 RewriteRule ^sendungen/(.*)$ 						events.cgi?$1 [L]
 
 RewriteRule ^menu/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/(\d)/(.*)$	events.cgi?template=event_menu.html&from_date=$1&till_date=$2&weekday=$3&$4 [L]
@@ -27,9 +29,9 @@ RewriteRule ^menu/(\d{4}-\d{2}-\d{2})/(.*)$ 				events.cgi?template=event_menu.h
 RewriteRule ^menu/heute/(.*)$ 						events.cgi?template=event_menu.html&date=today&$1 [L]
 RewriteRule ^menu/(.*)$ 						events.cgi?$1 [L]
 
-RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/$ 				cal.cgi?date=$1 [L]
-RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/$ 	cal.cgi?from_date=$1&till_date=$2 [L]
-RewriteRule ^kalender/(.*)$ 						cal.cgi?$1 [L]
+RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/$ 				cal.cgi?date=$1&template=calendar_colo.html [L]
+RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/$ 	cal.cgi?from_date=$1&till_date=$2&template=calendar_colo.html [L]
+RewriteRule ^kalender/(.*)$ 						cal.cgi?$1&template=calendar_colo.html [L]
 
 RewriteRule ^kategorien/(.*)$ 			category.cgi?$1 [L]
 RewriteRule ^sendereihen/(.*)$ 			series_names.cgi?$1 [L]
@@ -39,6 +41,7 @@ RewriteRule ^playlistLong/(.*)$ 		events.cgi?template=event_playlist_long.html&t
 RewriteRule ^playlistUtc/(.*)$          events.cgi?template=event_utc_time.json&limit=1
 
 RewriteRule ^running_event/(.*)$ 		events.cgi?template=event_running.html&time=now&limit=1&$1 [L]
+RewriteRule ^running_event_id/(.*)$ 		events.cgi?template=event_running_id.html&time=now&limit=1&$1 [L]
 RewriteRule ^feed/(.*)$ 			events.cgi?template=event.atom.xml&time=future&limit=100&$1 [L]
 RewriteRule ^feed.xml[\?]?(.*)$                 events.cgi?template=event.atom.xml&time=future&limit=100&$1 [L]
 RewriteRule ^atom/(.*)$ 			events.cgi?template=event.atom.xml&time=future&limit=100&$1 [L]
@@ -79,6 +82,8 @@ RewriteRule ^future$					events.cgi?template=event_list_image.html&limit=20
 RewriteRule ^dt64-festival.html$        events.cgi?location=dt64&template=event_dt64&archive=all
 RewriteRule ^frrapo-programm.html$      events.cgi?location=potsdam&template=event_frrapo
 RewriteRule ^upload_playout_piradio$    upload_playout.cgi?project_id=1&studio_id=1
+
+
 </IfModule>
 
 #  MOD_PERL

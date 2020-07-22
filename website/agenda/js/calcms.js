@@ -408,7 +408,7 @@ var calcms = (function($) {
 		if (value != null && value != '') {
 			var url = my.get('search_url');
 			if (project != '' && project != null)
-				url += escape(project) + '/';
+				url += escape(encodeURI(project)) + '/';
 			else
 				url += 'all/';
 			if (value != '' && value != null)
@@ -452,9 +452,26 @@ var calcms = (function($) {
 		if (seriesName != '' && seriesName != null) {
 			var url = my.get('search_series_name_url');
 			if (project != '' && project != null)
+				{
+				project = project.replace(/'/g, ' ');
 				url += escape(project) + '/';
+				}
+
 			if (seriesName != '' && seriesName != null)
+				{
+				// send series name to url fragment
+        		if(history.pushState) 
+        			{
+    				history.pushState(null, 'Serie: '+seriesName, 'https://programm.coloradio.org/agenda/#seriesName+'+seriesName);
+					}
+				else 
+					{
+    				location.hash = '#seriesName+'+seriesName;
+					}
+				// escape apostrophe in show titles
+				seriesName = seriesName.replace(/'/g, ' ');;
 				url += encodeURI(escape(seriesName)) + '/';
+				}
 			if (archive != null && archive == 0)
 				url += 'kommende/';
 			if (archive != null && archive == 1)

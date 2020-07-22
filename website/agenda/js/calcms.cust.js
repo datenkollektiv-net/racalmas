@@ -414,15 +414,15 @@ var calcms_settings = new Array();
 		initCalcms();
 		//initWordpress();
 		//addCommentsOnAgendaPages();
-		calcms.showPlaylist();
+		//calcms.showPlaylist();
 		calcms.showNewestComments();
 		// insertDeskDetails();
 		// fixBlogEntries();
 		calcms.removeCurrentPlayingHeader();
 		// setImageSize();
 		// setThumbs();
-		// scrollNextEvent();
-		//initSlider();
+		scrollNextEvent();
+		// initSlider();
 		// mobilise();
 		initSearch();
 		console.log("calcms inited")
