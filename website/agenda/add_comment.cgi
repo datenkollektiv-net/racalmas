@@ -101,16 +101,16 @@ EMAIL:    $comment->{email}
 CONTENT: '$comment->{content}'
 
 view event 
-https://piradio.de/programm/sendung/$comment->{event_id}.html#comments
+https://programm.coloradio.org/programm/sendung/$comment->{event_id}.html#comments
 ";
 
 if ($status eq 'new'){
     $content.="
 manage comments:
-https://piradio.de/agenda/planung/comment.cgi?project_id=1&studio_id=1
+https://programm.coloradio.org/agenda/planung/comment.cgi?project_id=1&studio_id=1
 
 lock this comment
-https://piradio.de/agenda/planung/comment.cgi?event_id=$comment->{event_id}&comment_id=$comment->{comment_id}&set_lock_status=blocked
+https://programm.coloradio.org/agenda/planung/comment.cgi?event_id=$comment->{event_id}&comment_id=$comment->{comment_id}&set_lock_status=blocked
 ";
 }
 
