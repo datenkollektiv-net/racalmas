@@ -29,9 +29,9 @@ RewriteRule ^menu/(\d{4}-\d{2}-\d{2})/(.*)$ 				events.cgi?template=event_menu.h
 RewriteRule ^menu/heute/(.*)$ 						events.cgi?template=event_menu.html&date=today&$1 [L]
 RewriteRule ^menu/(.*)$ 						events.cgi?$1 [L]
 
-RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/$ 				cal.cgi?date=$1&template=calendar_colo.html [L]
-RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/$ 	cal.cgi?from_date=$1&till_date=$2&template=calendar_colo.html [L]
-RewriteRule ^kalender/(.*)$ 						cal.cgi?$1&template=calendar_colo.html [L]
+RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/$ 				cal.cgi?date=$1&template=calendar_colo.html&open_end=1 [L]
+RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/$ 	cal.cgi?from_date=$1&till_date=$2&template=calendar_colo.html&open_end=1 [L]
+RewriteRule ^kalender/(.*)$ 						cal.cgi?$1&template=calendar_colo.html&open_end=1 [L]
 
 RewriteRule ^kategorien/(.*)$ 			category.cgi?$1 [L]
 RewriteRule ^sendereihen/(.*)$ 			series_names.cgi?$1 [L]
