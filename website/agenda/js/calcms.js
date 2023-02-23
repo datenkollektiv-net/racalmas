@@ -164,7 +164,6 @@ var calcms = (function($) {
 		var date = my.get('date');
 		var month = my.get('month');
 		var weekday = my.get('weekday');
-		var time_of_day = '';
 		var time = '';
 		var program = my.get('program');
 		var series_name = my.get('series_name');
@@ -267,12 +266,10 @@ var calcms = (function($) {
 
 			} else {
 				weekday = '';
-				time_of_day = '';
 			}
 		}
 
-		if (field == 'month' || field == 'week' || field == 'weekday'
-				|| field == 'time_of_day') {
+		if (field == 'month' || field == 'week' || field == 'weekday'){
 			time = '';
 		}
 
@@ -312,10 +309,6 @@ var calcms = (function($) {
 
 		if (url.substr(url.length - 1, url.length) != '/') {
 			url += '/';
-		}
-
-		if (time_of_day != '') {
-			url += "&time_of_day=" + time_of_day;
 		} else if (time != '' && time != 'null') {
 			url += "&" + time;
 		}
@@ -609,6 +602,8 @@ var calcms = (function($) {
 		var date = my.get('month');
 
 		var url = calendar_url;
+
+		console.log(calendar_url);
 
 		if (field == 'month') {
 			url += '/' + date + '/';

@@ -785,14 +785,6 @@ sub get_query {
 
 		}
 
-		if (   ( defined $params->{time_of_day} )
-			&& ( $params->{time_of_day} ne '' ) )
-		{
-			push @date_conds,   ' ( time_of_day = ? ) ';
-			push @$bind_values, $params->{time_of_day};
-
-		}
-
 		my $date_cond = join " and ", @date_conds;
 		push @$where_cond, $date_cond if ( $date_cond ne '' );
 	}
@@ -1010,7 +1002,6 @@ sub get_query {
             ,e.id                 event_id
             ,e.start
             ,e.end
-            ,e.time_of_day
             ,e.program
             ,e.series_name
             ,e.title
@@ -1551,16 +1542,6 @@ sub check_params {
 		}
 	}
 
-	my $time_of_day = $params->{time_of_day} || '';
-	my $found = 0;
-	if ( defined $time_of_day ) {
-		for my $key ( 'night', 'morning', 'noon', 'afternoon', 'evening' ) {
-			$found = 1 if ( $key eq $time_of_day );
-		}
-		log::error( $config, 'invalid time_of_day' )
-		  if ( ( $time_of_day ne '' ) && ( $found == 0 ) );
-	}
-
 	my $tag = $params->{tag} || '';
 	if ( ( defined $tag ) && ( $tag ne '' ) ) {
 		log::error( $config, "invalid tag" ) if ( $tag =~ /\s/ );
@@ -1729,7 +1710,6 @@ sub check_params {
 	my $checked = {
 		date               => $date,
 		time               => $time,
-		time_of_day        => $time_of_day,
 		from_date          => $from_date,
 		till_date          => $till_date,
 		date_range_include => $date_range_include,
