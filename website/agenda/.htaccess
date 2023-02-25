@@ -17,9 +17,9 @@ RewriteRule ^kommentar_neu/(.*)$ 					add_comment.cgi?$1 [L]
 RewriteRule ^sendung/(\d+)/[^&]*(&.*)?$ 	events.cgi?template=event_details.html&event_id=$1&$2 [L]
 RewriteRule ^sendung/(.*)$ 			        events.cgi?$1 [L]
 
-RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/(\d)/(.*)$ events.cgi?template=event_list_2.html&from_date=$1&till_date=$2&weekday=$3&$4 [L]
-RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/(.*)$ 	events.cgi?template=event_list_2.html&from_date=$1&till_date=$2&$3 [L]
-RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(.*)$ 			events.cgi?template=event_list_2.html&date=$1&$2 [L]
+RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/(\d)/(.*)$ events.cgi?template=event_list.html&from_date=$1&till_date=$2&weekday=$3&$4 [L]
+RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/(.*)$ 	events.cgi?template=event_list.html&from_date=$1&till_date=$2&$3 [L]
+RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})/(.*)$ 			events.cgi?template=event_list.html&date=$1&$2 [L]
 RewriteRule ^sendungen/heute/(.*)$ 					events.cgi?template=event_list_2.html&date=today&$1 [L]
 RewriteRule ^sendungen/(.*)$ 						events.cgi?$1 [L]
 
@@ -29,9 +29,9 @@ RewriteRule ^menu/(\d{4}-\d{2}-\d{2})/(.*)$         				events.cgi?template=even
 RewriteRule ^menu/heute/(.*)$ 				                		events.cgi?template=event_menu.html&date=today&$1 [L]
 RewriteRule ^menu/(.*)$ 					                    	events.cgi?$1 [L]
 
-RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/$ 				cal.cgi?date=$1&template=calendar_colo.html&open_end=1 [L]
-RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/$ 	cal.cgi?from_date=$1&till_date=$2&template=calendar_colo.html&open_end=1 [L]
-RewriteRule ^kalender/(.*)$ 						cal.cgi?$1&template=calendar_colo.html&open_end=1 [L]
+RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/$ 				cal.cgi?date=$1&template=calendar.html&open_end=1 [L]
+RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})/(\d{4}-\d{2}-\d{2})/$ 	cal.cgi?from_date=$1&till_date=$2&template=calendar.html&open_end=1 [L]
+RewriteRule ^kalender/(.*)$ 						cal.cgi?$1&template=calendar.html&open_end=1 [L]
 
 RewriteRule ^sendereihen/(.*)$ 			series_names.cgi?$1 [L]
 
