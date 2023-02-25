@@ -97,6 +97,10 @@
 		<script type="text/javascript" src="/agenda/js/calcms.js"></script>
 		<script type="text/javascript" src="/agenda/js/calcms.cust.js"></script> <!--calcms end-->
     	<!--calcms end-->
+        <script>
+        var base_url = "https://programm.coloradio.org";
+        //var base_url = "http://localhost";
+        </script>
 
 		<script>
 
@@ -118,7 +122,7 @@
 						$.ajax(
 							{
 							type: 'get',
-					    	url: 'https://programm.coloradio.org/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
+					    	url: base_url + '/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
 					    	success: function (result)
 								{
 								// alert(result);
@@ -375,7 +379,7 @@
 
         	//load next shows into current playlist
         	
-        	if (window.location.href == 'https://programm.coloradio.org/agenda/#programm' || window.location.href == 'https://programm.coloradio.org/agenda/')
+        	if (window.location.href == base_url + '/agenda/#programm' || window.location.href == base_url + '/agenda/')
         		{
 	        	// if(jQuery('#coming_shows').length!=0) jQuery('#coming_shows').load('/agenda/playlistLong/');
 	        	$("#li_tab2 label").trigger("click");
@@ -386,11 +390,11 @@
 
         		if(history.pushState) 
         			{
-    				history.pushState(null, 'Programm', 'https://programm.coloradio.org/agenda/#programm');
+    				history.pushState(null, 'Programm', base_url + '/agenda/#programm');
 					}
 				else 
 					{
-    				location.hash = 'https://programm.coloradio.org/agenda/#programm';
+    				location.hash = base_url + '/agenda/#programm';
 					}
         		}
 	    	else if (coloHashFragment1.length==21 && coloHashFragment1.substr(0,4) > 2017 && coloHashFragment1.substr(4,1) == '-' )
@@ -410,7 +414,7 @@
 				$("#li_tab2 label").trigger("click");
 				jQuery('#sendungen').load('/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+coloHashFragment1+'&amp;template=event_pure1.html');
 		  		}
-        	else if (window.location.href == 'https://programm.coloradio.org/agenda/#newestComments')
+        	else if (window.location.href == base_url + '/agenda/#newestComments')
 				{
 				$("#tab2").trigger("click");
        			jQuery('#sendungen').load('/agenda/neueste_kommentare/');
@@ -438,11 +442,11 @@
 
         		if(history.pushState) 
         			{
-    				history.pushState(null, 'Programm', 'https://programm.coloradio.org/agenda/#programm');
+    				history.pushState(null, 'Programm', base_url + '/agenda/#programm');
 					}
 				else 
 					{
-    				location.hash = 'https://programm.coloradio.org/agenda/#programm';
+    				location.hash = base_url + '/agenda/#programm';
 					}
 
 				});
@@ -496,7 +500,7 @@
 
 				$.ajax({
 					type: 'get',
-				    url: 'https://programm.coloradio.org/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
+				    url: base_url + '/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
 				    /* data: {werk_id : werkID, zustand : zustand},*/
 
 				    success: function (result)
@@ -515,11 +519,11 @@
 
      					if(history.pushState) 
         					{
-    						history.pushState(null, 'Sendungsdetail', 'https://programm.coloradio.org/agenda/#'+eventID);
+    						history.pushState(null, 'Sendungsdetail', base_url + '/agenda/#'+eventID);
 							}
 						else 
 							{
-    						location.hash = 'https://programm.coloradio.org/agenda/#'+eventID;
+    						location.hash = base_url + '/agenda/#'+eventID;
 							}
 					    }
 				});
@@ -534,7 +538,7 @@
 
 				$.ajax({
 					type: 'get',
-				    url: 'https://programm.coloradio.org/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
+				    url: base_url + '/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
 				    /* data: {werk_id : werkID, zustand : zustand},*/
 
 				    success: function (result)
@@ -574,7 +578,7 @@
 
         		if(history.pushState) 
         			{
-    				history.pushState(null, 'Programm', 'https://programm.coloradio.org/agenda/#programm');
+    				history.pushState(null, 'Programm', base_url + '/agenda/#programm');
 					}
 				else 
 					{
@@ -591,7 +595,7 @@
 
 				$.ajax({
 					type: 'get',
-				    url: 'https://programm.coloradio.org/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
+				    url: base_url + '/agenda/events.cgi?from=today&amp;time=now&amp;limit=3&amp;event_id='+eventID+'&amp;template=event_pure1.html',
 
 				    success: function (result)
 						{
@@ -613,7 +617,7 @@
 
         		if (history.pushState) 
         			{
-    				history.pushState(null, 'Tagesprogramm '+calURL, 'https://programm.coloradio.org/agenda/#'+calURL);
+    				history.pushState(null, 'Tagesprogramm '+calURL, base_url + '/agenda/#'+calURL);
 					}
 
 				$('#navi_show_programmliste').html('');
@@ -630,7 +634,7 @@
 
         		if (history.pushState) 
         			{
-    				history.pushState(null, 'Monatsprogramm '+calDateStart, 'https://programm.coloradio.org/agenda/#'+calDateStart+'-'+calDateEnd);
+    				history.pushState(null, 'Monatsprogramm '+calDateStart, base_url + '/agenda/#'+calDateStart+'-'+calDateEnd);
 					}
 
 				$('#navi_show_programmliste').html('');
@@ -678,7 +682,7 @@
 			/* GET TIMESTAMP FROM SERVER */
 
 			jQuery( document ).ready(function(){
-				jQuery('#timestamp').load('timestamp.cgi');
+				jQuery('#timestamp').load('/agenda/timestamp.cgi');
 			});
 
 
@@ -777,7 +781,7 @@
 
 						<img src="/agenda/img/logos/coloRadio_Logo.png" width="120" alt="coloRadio Logo" style="display:none;visibility:hidden;"><br><br>
 
-						<img src="image/coloradio-final-frei-CMYK_preview.png" width="100%" alt="coloRadio Logo 25 years by Olaf Röske"><br><br>
+						<img src="/agenda/image/coloradio-final-frei-CMYK_preview.png" width="100%" alt="coloRadio Logo 25 years by Olaf Röske"><br><br>
 
 						<h1>Über coloRadio</h1>
 						
