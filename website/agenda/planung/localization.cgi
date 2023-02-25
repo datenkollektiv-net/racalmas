@@ -1,15 +1,18 @@
-#! /usr/bin/perl -w 
+#! /usr/bin/perl 
 
-use warnings "all";
 use strict;
-use Data::Dumper;
+use warnings;
+no warnings 'redefine';
 
-use config;
-use params;
-use log;
-use JSON;
-use auth;
-use localization;
+use Data::Dumper;
+use JSON();
+
+use config();
+use params();
+use log();
+use entry();
+use auth();
+use localization();
 
 binmode STDOUT, ":utf8";
 
@@ -18,43 +21,41 @@ my $r = shift;
 
 my $config = config::get('../config/config.cgi');
 my $debug  = $config->{system}->{debug};
-my ( $user, $expires ) = auth::get_user( $cgi, $config );
+my ( $user, $expires ) = auth::get_user( $config, $params, $cgi );
 return if ( $user eq '' );
 
 my $request = {
-	url => $ENV{QUERY_STRING} || '',
-	params => {
-		original => $params,
-		checked  => check_params($params),
-	}
+    url => $ENV{QUERY_STRING} || '',
+    params => {
+        original => $params,
+        checked  => check_params( $config, $params ),
+    }
 };
 $params = $request->{params}->{checked};
 my $loc = localization::get( $config, { user => $user, file => $params->{usecase} } );
 my $header = "Content-type:application/json; charset=UTF-8;\n\n";
 $loc->{usecase} = $params->{usecase};
-my $json = to_json( $loc, { pretty => 1 } );
+my $json = JSON::to_json( $loc, { pretty => 1 } );
 my @json_lines = ();
 
 for my $line ( split /\n/, $json ) {
-	push @json_lines, "'" . $line . "'\n";
+    push @json_lines, "'" . $line . "'\n";
 }
 
 $json = $header . $json;
-
-#    .'var loc_text='.join('+',@json_lines).";\n"
-#    .'var loc = JQuery.parseJSON(loc_text)';
 print $json;
 
 sub check_params {
-	my $params = shift;
+    my $config = shift;
+    my $params = shift;
 
-	my $checked = { usecase => '' };
+    my $checked = { usecase => '' };
 
-	if ( defined $params->{usecase} ) {
-		if ( $params->{usecase} =~ /^([a-z\-\_\,]+)$/ ) {
-			$checked->{usecase} = $1;
-		}
-	}
-	return $checked;
+    if ( defined $params->{usecase} ) {
+        if ( $params->{usecase} =~ /^([a-z\-\_\,]+)$/ ) {
+            $checked->{usecase} = $1;
+        }
+    }
+    return $checked;
 }
 

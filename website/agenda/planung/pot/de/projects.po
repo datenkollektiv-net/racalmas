@@ -25,6 +25,9 @@ msgstr "Studio entfernen"
 msgid "button_edit"
 msgstr "Bearbeiten"
 
+msgid "button_change"
+msgstr "Studios zuordnen"
+
 msgid "button_create"
 msgstr "Anlegen"
 
@@ -44,7 +47,7 @@ msgid "label_assign_studio"
 msgstr "Studio hinzufügen"
 
 msgid "label_name"
-msgstr "Name"
+msgstr "ID"
 
 msgid "label_title"
 msgstr "Titel"
@@ -58,11 +61,14 @@ msgstr "Start"
 msgid "label_end_date"
 msgstr "Ende"
 
+msgid "label_activity"
+msgstr "aktiv"
+
 msgid "label_image"
 msgstr "Logo"
 
 msgid "label_email"
-msgstr "email"
+msgstr "E-Mail"
 
 msgid "label_studios"
 msgstr "Studios"

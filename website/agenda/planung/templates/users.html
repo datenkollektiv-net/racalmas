@@ -7,14 +7,6 @@
 	color:#555;
 }
 
-#content div.user{
-	border:1px solid gray;
-	border-radius:1em;
-	margin:1em;
-	width:30em;
-	float:left;
-}
-
 #content .disabled{
 	color:#999;
 }
@@ -82,7 +74,6 @@
 		}
 		return false;
 	}
-
 </script>
 
 <h2><TMPL_VAR .loc.title></h2>
@@ -90,8 +81,8 @@
 
 <TMPL_IF allow.create_user>
 <div style="clear:both" class="newuser">
-	<button onclick="add_user('<TMPL_VAR name>')"><TMPL_VAR .loc.button_add_user></button>
-	<div id="edit_new" class="user editor" style="display:none">
+	<button onclick="add_user('<TMPL_VAR name escape=js>')"><TMPL_VAR .loc.button_add_user></button>
+	<div id="edit_new" class="user editor panel" style="display:none">
 		<form method="post">
 		<table>
 		<tr>	<td><TMPL_VAR .loc.label_name></td>		    <td><input name="user_name" 	 value="<TMPL_VAR user_name>"></td>	</tr>
@@ -100,7 +91,7 @@
 		<tr>	<td><TMPL_VAR .loc.label_password></td>	    <td><input name="user_password"  value="<TMPL_VAR password>"></td>	</tr>
 		<tr>	<td><TMPL_VAR .loc.label_password2></td>	<td><input name="user_password2" value="<TMPL_VAR password2>"></td>	</tr>
 		<tr>	<td class="buttons" colspan="3">
-				<button onclick="cancel_edit_user('new');return false;"><TMPL_VAR .loc.button_cancel></button>
+				<button onclick="cancel_edit_user('new');return false;" class="text"><TMPL_VAR .loc.button_cancel></button>
 				<button type=submit name="action" value="save"><TMPL_VAR .loc.button_create_user></button>
 			</td>
 		</tr>
@@ -110,6 +101,7 @@
 </div>
 </TMPL_IF>
 
+<div class="panel">
 <table class="table">
 <TMPL_LOOP users>
 	
@@ -159,11 +151,11 @@
 
 	<td>
 		<TMPL_IF allow.update_user>
-			<button onclick="edit_user('<TMPL_VAR id>')"><TMPL_VAR .loc.button_edit_user></button>
+			<button class="text" onclick="edit_user('<TMPL_VAR id escape=js>')"><TMPL_VAR .loc.button_edit_user></button>
 		</TMPL_IF>
 
 		<TMPL_IF allow.update_user_role>
-			<button onclick="edit_roles('<TMPL_VAR id>')"><TMPL_VAR .loc.button_edit_roles></button>
+			<button class="text" onclick="edit_roles('<TMPL_VAR id escape=js>')"><TMPL_VAR .loc.button_edit_roles></button>
 		</TMPL_IF>
 		<!--	</div> -->
 	</td>
@@ -201,7 +193,7 @@
 					<TMPL_IF allow.delete_user>
 					<div class="right">
 					    <button type=submit name="action" value="delete"
-                        onclick="commitForm('user_<TMPL_VAR id>','delete','<TMPL_VAR .loc.button_delete_user>');return false;"
+                        onclick="commitForm('user_<TMPL_VAR id escape=js>','delete','<TMPL_VAR .loc.button_delete_user escape=js>');return false;"
                     ><TMPL_VAR .loc.button_delete_user></div>
 					</TMPL_IF>
 				</td>
@@ -216,6 +208,7 @@
 
 </TMPL_LOOP>
 </table>
+</div>
 
 </body>
 </html>

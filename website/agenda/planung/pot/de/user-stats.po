@@ -1,0 +1,60 @@
+msgid "region"
+msgstr "de"
+
+msgid "title"
+msgstr "Aktivitäten"
+
+msgid "label_user"
+msgstr "Nutzer"
+
+msgid "label_create_events"
+msgstr "angelegte Sendungen"
+
+msgid "label_update_events"
+msgstr "bearbeitete Sendungen"
+
+msgid "label_delete_events"
+msgstr "gelöschte Sendungen"
+
+msgid "label_create_series"
+msgstr "angelegte Sendereihe"
+
+msgid "label_update_series"
+msgstr "bearbeitete Sendereihe"
+
+msgid "label_delete_series"
+msgstr "gelöschte Sendereihe"
+
+msgid "label_modified_at"
+msgstr "letzte Änderung"
+
+msgid "label_score"
+msgstr "Punkte"
+
+msgid "label_login"
+msgstr "Login"
+
+msgid "label_full_name"
+msgstr "Name"
+
+msgid "label_last_login"
+msgstr "letztes Login"
+
+msgid "label_login_count"
+msgstr "Anzahl Logins"
+
+msgid "label_disabled"
+msgstr "gesperrt"
+
+msgid "label_created_at"
+msgstr "erstellt am"
+
+msgid "label_created_by"
+msgstr "erstellt von"
+
+msgid "button_show_active_users"
+msgstr "aktive Nutzer"
+
+msgid "button_show_user_stats"
+msgstr "Nutzerstatistik"
+

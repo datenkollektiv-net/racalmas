@@ -8,9 +8,6 @@ function openNewTab(url){
     window.open(url, '_blank');
 }
 
-var effect=null;
-var effect_duration=null;
-
 function selectCheckbox(selector){
     $(selector).each(function(){
         $(this).prop('checked', 'checked');
@@ -28,89 +25,68 @@ function isChecked(selector){
 }
 
 function cancel_edit_event(){
-	$('#calendar').show(effect,null,effect_duration);
-	$('#calendar_weekdays').show(effect,null,effect_duration);
-	$('#event_editor').hide(effect,null,effect_duration);
-	resizeCalendarMenu();
-	return false;
+    $('#calendar').show();
+    $('#calendar_weekdays').show();
+    $('#event_editor').hide();
+    resizeCalendarMenu();
+    return false;
 }
 
 function setupMenuHeight(){
     if ($('#calendar').length>0){
-        // calendar table
-        console.log('setupMenuHeight')
-        var top=$('#calcms_admin_menu').height();
+        var top=$('#calcms_nav').height();
 
         $('#toolbar').css("top", top);
         $('#toolbar').css("position", "absolute");
         top+=$('#toolbar').height()+2;
 
+        var weekdays = document.querySelector("#calendar_weekdays");
         $('#calendar_weekdays').css("top", top);
+
         var weekday_height=30;
-        $('#calendar_weekdays table td div').each(
-            function(){
-                var height=$(this).height()+14;
+        weekdays.querySelectorAll("table td div").forEach( 
+            function(div) {
+                var height = div.offsetHeight + 14;
                 if (height>weekday_height) weekday_height=height;
-                //console.log(weekday_height+" "+height);
-            }
+            } 
         );
-        //console.log(weekday_height)
-        top+=weekday_height+1;
-
+        
+        top+=weekday_height+1-10;
         $('#calendar').css("top", top);
-
         return top;
-
     } else {
-        // calendar list
-        //console.log('found calendar list')
-
-        var top = $('#calcms_admin_menu').height();
+        var top = $('#calcms_nav').height();
         $('#content').css("top", top);
-
-        top = $('#calcms_admin_menu').height();
-        $('#content').css("top", top);
-
         return top;
     }
 }
 
-function hideCalendar(){
-    $('#calendar').css("display","none");
-    $('#calendar_weekdays').css("visibility","hidden");
-}
-
-function showCalendar(){
-    $('#calendar').show();
-    $('#calendar_weekdays').css("visibility","visible");
-}
-    
 function resizeCalendarMenu(){
-    hideCalendar();
+    $('#calendar').hide();
+    $('#calendar_weekdays').css("visibility","hidden");
 
     //after getting menu heigth, hide calendar again
-    var menuHeight=setupMenuHeight();
+    var menuHeight = setupMenuHeight();
 
-	var width=	$(window).width()-0;
-	var height=	$(window).height()-menuHeight;
+    var width  = $(window).width()-0;
+    var height = $(window).height()-menuHeight;
 
-	if($('#calendar').css('display')=='none'){
-		$('body #content').css('max-width', '960');
-	}else{
-		$('body #content').css('max-width', width);
-	}
-	$('div#calendar').css('width', width);
-	$('div#calendar_weekdays').css('width', width);
-	$('div#calendar').css('height', height);
+    if($('#calendar').css('display')=='none'){
+        $('body #content').css('max-width', '960');
+    }else{
+        $('body #content').css('max-width', width);
+    }
+    $('div#calendar').css('width', width);
+    $('div#calendar_weekdays').css('width', width);
+    $('div#calendar').css('height', height);
 
     // remove border for scroll
-	$('#calendar table').css('width', width-20);
-	$('#calendar_weekdays table').css('width', width-20);
-	$('#calendar table').css('height', height);
-	
+    $('#calendar table').css('width', width-20);
+    $('#calendar_weekdays table').css('width', width-20);
+    $('#calendar table').css('height', height);
+    
     //set spacing between table columns
     var columnSpacing=Math.round($(window).width()/72);
-    //if(columnSpacing>16)columnSpacing=16;
     if(columnSpacing<0) columnSpacing=0;
     columnSpacing=Math.ceil(columnSpacing);
     
@@ -118,45 +94,24 @@ function resizeCalendarMenu(){
     $('div.week').css('margin-left',-columnSpacing);
 
     //calculate cell-width
-	var cell_width=(width-100)/(days-1);
+    var cell_width=(width-100)/(days-1);
     if($(window).width()<720){
         $('#calendar td.week').hide();
-    	cell_width=(width-100)/(days)-4;
-    	//$('#calendar div.text').css('padding-right','0');
+        cell_width=(width-100)/(days)-4;
     }else{
         $('#calendar td.week').show();
-    	cell_width=(width-100)/(days)-columnSpacing;
-    	//$('#calendar div.text').css('padding-right','16px');
+        cell_width=(width-100)/(days)-columnSpacing;
     }
 
     var with_param='width';
     var cw=cell_width.toFixed();
-
-    /*
-	$('#calendar div.work').css(with_param, cw);
-	$('#calendar div.play').css(with_param, cw);	
-	$('#calendar div.grid').css(with_param, cw);
-	$('#calendar div.event').css(with_param, cw);
-	$('#calendar div.schedule').css(with_param, cw);
-	$('#calendar div.date').css(with_param, cw);
-	$('#calendar_weekdays div.date').css(with_param, cw);
-	$('#calendar div.time').css(with_param, cw);
-	$('#calendar_weekdays div.time').css(with_param, cw);
-    */
+    menuHeight = setupMenuHeight();
     
-    //now
-    //$('#calendar div.time.now').css(with_param, '100%');
+    //var theight=$('#calendar table tr').last().find('td').first().find('div').last().css("top")
+    //$('td.week').css("height",theight)
 
-    //collisions
-    /*
-	$('#calendar div.event.error').css(   with_param, cw/2.2);
-	$('#calendar div.schedule.error').css(with_param, cw/2.2);
-
-    //shift right
-	$('#calendar div.event.error.x2').css(   'margin-left', cw/2+6);
-	$('#calendar div.schedule.error.x2').css('margin-left', cw/2+6);
-    */
-    showCalendar();
+    $('#calendar').show();
+    $('#calendar_weekdays').css("visibility","visible");
 }
 
 
@@ -174,10 +129,6 @@ function setFilter(){
             }
         });
     }
-    
-    //var url=updateUrlParameters(window.location.href);
-    //url=setUrlParameter(url,'filter',filter);
-    //updateUrls(url);
 }
 
 // preselect options in select boxes
@@ -242,6 +193,12 @@ function updateUrlParameters(url){
         url=setUrlParameter(url, 'p', 0);
     }
 
+    if(isChecked('#show_descriptions')){
+        url=setUrlParameter(url, 'd', 1);
+    }else{
+        url=setUrlParameter(url, 'd', 0);
+    }
+
     var filter=$('#filter').val();
     if(filter!='no markup')
         url=setUrlParameter(url, 'filter',     $filter);
@@ -288,6 +245,14 @@ function show_playout(){
     }
 }
 
+function show_descriptions(){
+    if(isChecked('#show_descriptions')){
+        $('#calendar .excerpt').css("display",'');
+    }else{
+        $('#calendar .excerpt').css("display",'none');
+    }
+}
+
 //get date and time from column and row to select a timeslot
 function getNearestDatetime(){
     var date="test";
@@ -320,7 +285,7 @@ function getNearestDatetime(){
             var distance=Math.abs(delta);
             if (distance<yMin){
                 yMin=delta;
-                hour= $(this).attr('date');
+                hour= $(this).attr('time');
                 minute='30';
                 if(delta<0) minute='00';
             }
@@ -328,12 +293,9 @@ function getNearestDatetime(){
     );
 
     //add a day, if time < startOfDay
-    //console.log(date+" "+hour+" "+minute+" "+startOfDay)
     if(hour<startOfDay){
         date=addDays(date,1);
-        //console.log("+1: "+date)
         date=formatDate(date);
-        //alert(date)
     }
 
     var minute=0;
@@ -346,18 +308,16 @@ function getNearestDatetime(){
             var distance=Math.abs(delta);
             if (distance<yMin){
                 yMin=delta;
-                hour= $(this).attr('date');
+                hour= $(this).attr('time');
                 var height=$(this).height()+14;
                 var m=((delta+height*1.5)-8) % height;
                 m=m*60/height;
                 minute=Math.floor(m/5)*5;
                 if (minute<10)minute='0'+minute;
-                //minute='30';
-                //if(delta<0) minute='00';
             }
         }
     );
-    return date+" "+hour+":"+minute+ " ";
+    return date+" "+hour+":"+minute+ ":00";
 }
 
 var mouseX=0;
@@ -395,95 +355,52 @@ function showMouse(){
 
 function checkStudio(){
     if($('#studio_id').val()=='-1'){
-        $("#no_studio_selected").dialog({
-            modal: true,
-            title: "please select a studio",
-        });
+        showDialog({ title: "please select a studio" });
         return 0;
     }
     return 1;
 }
 
-function setIcons(){
-    var img='';
-    
-    img='<img class="img_live" src="image/live.png" title="live">'
-    $('#calendar div.event.live.no_rerun div.icons').append(img);
-
-    img='<img class="img_preproduced" src="image/preproduced.png" title="preproduced">'
-    $('#calendar div.event.preproduced.no_rerun div.icons').append(img);
-
-    img='<img class="img_rerun" src="image/rerun.png" title="rerun">'
-    $('#calendar div.event.rerun div.icons').append(img);
-
-    img='<img class="img_playout" src="image/playout.png" title="playout">'
-    $('#calendar div.event.playout div.icons').append(img);
-
-    img='<img class="img_archived" src="image/archived.png" title="archived">'
-    $('#calendar div.event.archived div.icons').append(img);
-}
-
 function show_not_assigned_to_series_dialog(){
-    $("#event_no_series").dialog({
-        resizable: false,
-        width:800,
-        height:340,
-        modal: true,
-        title: loc['label_event_not_assigned_to_series'],
-        buttons: {
-            Cancel: function() {
-                $( this ).dialog( "close" );
-            }
+    showDialog({
+        title   : loc['label_event_not_assigned_to_series'],
+        buttons : {
+            Cancel : function() { $(this).parent().remove(); }
         }
     });
 }
 
 function show_schedule_series_dialog(project_id, studio_id, series_id, start_date){
-    $("#series").dialog({
-        resizable: false,
-        width:800,
-        height:340,
-        modal: true,
-        title: loc['label_schedule_series'],
-        buttons: {
+    showDialog({
+        title   : loc['label_schedule_series'],
+        content : $('#series').html(),
+        width   : "50rem",
+        height  : "15rem",
+        buttons : {
             "Schedule": function() {
-                //add schedule
-                var series_id=$('#series_select').val();
-                var duration=$('#series_duration').val();
-                var start_date=$('#series_date').val();
-                //var url='event.cgi?action=show_new_event_from_schedule&studio_id='+studio_id+'&series_id='+series_id+'&start_date='+start_date;
+                var series_id  = $('#dialog #series_select').val();
+                var duration   = $('#dialog #series_duration').val();
+                var start_date = $('#dialog #series_date').val();
                 var url='series.cgi?project_id='+project_id+'&studio_id='+studio_id+'&series_id='+series_id+'&start='+escape(start_date)+'&duration='+duration+'&show_hint_to_add_schedule=1#tabs-schedule';
-                //alert(url);
                 load(url);
             },
-            "Cancel" : function() {
-                $( this ).dialog( "close" );
-            }
+            Cancel : function() { $(this).parent().remove(); }
         }
     });
+    showDateTimePicker('#dialog #series_date');
 }
 
 function setDatePicker(){
-
-    initRegions(region);
-    
-    registerDatePicker(
-        '#start_date', {
-            //showOn: "button",
-            //buttonImageOnly: true,
-            //buttonImage: "image/calendar.png",
-            //buttonText: "cal",
-            showWeek: true,
-            onSelect : function(dateText, inst) {
-                var url=setUrlParameter(window.location.href,'date',dateText);
-                loadCalendar(url);    
-            }
+    var datePicker=showDatePicker('#selectDate', {
+        wrap:true,
+        onSelect : function(dates, inst) {
+            var date = dates[0];
+            var url  = setUrlParameter(window.location.href, 'date', formatDate(date));
+            loadCalendar(url);    
         }
-    );
-    
-    var date=getUrlParameter("date");
-    //console.log("set date: "+date);
-    $('#start_date').datepicker("setDate", date);
+    });
+    datePicker.setDate(parseDateTime(getUrlParameter("date")));
+    $('#selectDate').on('click', () => datePicker.toggle() );
 }
 
 // add name=value to current url
@@ -496,11 +413,20 @@ function getUrl(name,value){
     return url;
 }
 
+function updateDayStart(){
+    var url = "set-user-day-start.cgi?";
+    url += "&project_id=" + getProjectId();
+    url += "&studio_id="  + getStudioId();
+    url += "&day_start="  + $('#day_start').val();
+    console.log(url);
+    $.get(url);
+}
+
 // to be called from elements directly
 function reloadCalendar(){
     var url=window.location.href;
     url=updateUrlParameters(url);
-	loadCalendar(url);
+    loadCalendar(url);
 }
 
 function initTodayButton(){
@@ -518,50 +444,42 @@ function initTodayButton(){
     return true;
 }
 
-function initSelectDate(){
-    $('#selectDate').on('click', function(){
-        if($('#ui-datepicker-div').css("display")=="block"){
-            $('#start_date').datepicker("hide");
-        }else{
-            $('#start_date').datepicker("show");
-        }
-    });
+function getSwitch(id, text, active, klass){
+    if (active) active = 'checked="checked"';
+    var html='';
+    html += '<div class="switch '+klass+'">'
+    html += '<label>'
+    html += text
+    html += '<input id="'+id+'" type="checkbox" '+active+'>'
+    html += '<span class="lever"></span>'
+    html += '</label>'
+    html += '</div>'
+    return html;
 }
 
 function initCalendarMenu(){
     //add filters to header
-    //var html='<div style="white-space: nowrap;">';
     var html='';
-    html += '<div><input id="show_events"   type="checkbox" checked="checked">'+label_events+'</div>';
-    html += '<div><input id="show_schedule" type="checkbox" checked="checked">'+label_schedule+'</div>';
-    html += '<div><input id="show_playout"  type="checkbox" checked="checked">'+label_playout+'</div>';
-    html += '<div><input id="show_worktime" type="checkbox" >'+label_worktime+'</div>';
-    //html += '</div>';
+    html += getSwitch('show_events', label_events || "label", true);
+    html += getSwitch('show_schedule', label_schedule || "schedule", true);
+    html += getSwitch('show_playout', label_playout || "playout", true);
+    html += getSwitch('show_descriptions', label_descriptions || "descriptions", false);
+    html += getSwitch('show_worktime', label_worktime || "worktime", false);
+    html += getSwitch('pin', label_pin || "label", false, 'right');
     $('#toolbar').append(html);
 
     if(getUrlParameter('s')=='0') unselectCheckbox('#show_schedule');
     if(getUrlParameter('e')=='0') unselectCheckbox('#show_events'  );
     if(getUrlParameter('p')=='0') unselectCheckbox('#show_playout' );
     if(getUrlParameter('w')=='0') unselectCheckbox('#show_worktime');
+    if(getUrlParameter('d')=='0') unselectCheckbox('#show_descriptions');
 
     setSelectedOptions();
     setFilter();
     setDatePicker();
     initTodayButton();
-    initSelectDate();
     resizeCalendarMenu();
 }
-
-$(document).ready(function(){
-    //    $('#calendar').hide();
-    initCalendarMenu();
-
-    if(calendarTable==1){
-        loadCalendar();
-    }else{
-        loadCalendarList();
-    }
-});
 
 function createId(prefix) {
   function s4() {
@@ -572,13 +490,15 @@ function createId(prefix) {
   return prefix+'_'+s4() + s4();
 }
 
-function showRmsPlot(id){
-    $('#'+id).dialog({
+function showRmsPlot(id, project_id, studio_id, start, elem){
+    showDialog({
         width:940, 
-        height:400,
-        open: function () {
-            $(this).scrollTop(0);
-        }        
+        height:560,
+        content: elem.html(),
+        buttons: {
+            Close : function() { $(this).parent().remove(); }
+        },
+        onOpen: function () { $(this).scrollTop(0); }
     });
     return false;
 }
@@ -589,15 +509,7 @@ function deleteFromPlayout(id, projectId, studioId, start){
     url+='&project_id='+escape(projectId);
     url+='&studio_id='+escape(studioId);
     url+='&start_date='+escape(start);
-    //console.log(url);
-    $('#'+id).dialog({
-        width:940, 
-        height:440,
-        open: function () {
-            $(this).scrollTop(0);
-            $(this).load(url);
-        }        
-    });
+    $('#'+id).load(url);
     return false;
 }
 
@@ -608,44 +520,43 @@ function quoteAttr(attr){
 function initRmsPlot(){
     $( "#calendar div.play" ).hover(
         function() {
-            var plot=$(this).attr("rms");
-
-            var id=$(this).attr("id");
-            var field=id.split('_');
-            var classname   =field.shift();
-            var project_id	=field.shift();
-            var studio_id	=field.shift();
-            var start=$(this).attr("start")
-            var html='';
+            var plot        = $(this).attr("rms");
+            var id          = $(this).attr("id");
+            var field       = id.split('_');
+            var classname   = field.shift();
+            var project_id  = field.shift();
+            var studio_id   = field.shift();
+            var start       = $(this).attr("start")
             
             if (project_id==null) return;
             if (studio_id==null) return;
             if (start==null) return;
 
+            if ( !$(this).hasClass("clickHandler") ){
+                $(this).addClass("clickHandler");
+                $(this).click( function(event){
+                     event.stopImmediatePropagation();
+                     showRmsPlot( id , project_id , studio_id , start, $(this) );
+                });
+            }
+
             if ( (!$(this).hasClass("rms_image")) && (plot!=null)){
                 $(this).addClass("rms_image");
 
-                var id=createId("rms_img");
-                var url     = '/agenda_files/playout/'+plot;
-                var handler = 'onclick="showRmsPlot('+quoteAttr(id)+')"';
-                var img     = '<img src="'+url+'" '+handler+'></img>';
-
-                html += '<button '+handler+'>details</button>';
-                html += img;
-                html += '<div id="'+id+'" class="rms_detail" style="display:none">';
-                html += '<div class="image">'+img+'</div>';
-                html += '<div class="text">'+$(this).html()+'</div>';
-                html += "</div>";
-            }
-
-            if (!$(this).hasClass("deleteHandler")){
-                $(this).addClass("deleteHandler");
+                var content = $(this).html();
+                var id      = createId("rms_img");
+                var url     = '/media/playout/'+plot;
+                var img     = '<img src="'+url+'" ></img>';
                 var deleteHandler = 'onclick="deleteFromPlayout(' + quoteAttr(id) + ", " + quoteAttr(project_id) + ", " + quoteAttr(studio_id) + ", "+ quoteAttr(start) + ')"';
-                if (start!=null) html += '<button '+deleteHandler+'>delete</button>';
-            }
 
-            $(this).append(html);
-            
+                var details='';
+                details += '<div id="'+id+'" class="rms_detail" style="display:none">';
+                details += '<div class="image">'+img+'</div>';
+                details += '<div class="text">'+content+'</div>';
+                if (start!=null) details += '<button '+deleteHandler+'>delete</button>';
+                details += "</div>";
+                $(this).append(img + details);
+            }
 
             $(this).find('img').each(function(){
                 $(this).show();
@@ -683,13 +594,28 @@ function loadCalendar(url, mouseButton){
         url=updateUrlParameters(url);
     }
     url=setUrlParameter(url, 'part', '1');
-	updateContainer('calendarTable', url, function(){ 
-	    updateTable(); 
-	    $('#calendarTable').css('opacity','1.0');
-	    $('#current_date').html(current_date);
-	    updateUrls(url);
-	    initRmsPlot();
-	});
+    updateContainer('calendarTable', url, function(){ 
+        updateTable(); 
+        $('#calendarTable').css('opacity','1.0');
+        $('#current_date').html(current_date);
+        updateUrls(url);
+        initRmsPlot();
+        adjustColors();
+    });
+}
+
+function getMouseOverText(elem){
+    if (elem.attr('title')!=null) return elem.attr('title');
+    if (elem.hasClass('event') || elem.parent().hasClass('event'))
+        return 'click to edit show'
+    if (elem.hasClass('schedule') || elem.parent().hasClass('schedule'))
+        return 'click to create show'
+    if (elem.hasClass('no_series') || elem.parent().hasClass('no_series'))
+        return 'please create a series for this show'
+    if (elem.hasClass('work') || elem.parent().hasClass('work'))
+        return 'edit work schedule'
+    if (elem.hasClass('grid') || elem.parent().hasClass('grid'))
+        return 'click to create schedule'
 }
 
 function updateTable(){
@@ -721,17 +647,17 @@ function updateTable(){
         baseElement='#calendar';
         resizeCalendarMenu();
 
-        //$('body').css('background','#eee');
-
-	    $(window).resize(function() {
-		    resizeCalendarMenu();
-	    });
+        $(window).resize(function() {
+            resizeCalendarMenu();
+            setupMenu()
+        });
     }
 
     show_schedule();
     show_events();
     show_playout();
     show_worktime();
+    show_descriptions();
     
     $('#show_events').off();
     $('#show_events').on("click",   
@@ -751,6 +677,13 @@ function updateTable(){
     $('#show_playout').on("click",
         function(){
             show_playout();
+            updateUrls();
+        }
+    );
+    $('#show_descriptions').off();
+    $('#show_descriptions').on("click",
+        function(){
+            show_descriptions();
             updateUrls();
         }
     );
@@ -777,8 +710,8 @@ function updateTable(){
     //disable context menu
     document.oncontextmenu = function() {return false;};
 
-	//edit existing event
-	$(baseElement).off();
+    //edit existing event
+    $(baseElement).off();
     $(baseElement).on("mousedown", ".event", function(event){
         handleEvent($(this).attr("id"), event);
     });
@@ -789,8 +722,7 @@ function updateTable(){
     });
 
     $(baseElement).on("mousedown", ".schedule", function(event){
-        if ( $('.ui-draggable-dragging').length>0 ) return;
-        handleSchedule($(this).attr("id"), $(this).attr("date"), event);
+        handleSchedule($(this).attr("id"), $(this).attr("start"), event);
     });
 
     //create schedule within studio timeslots
@@ -805,33 +737,10 @@ function updateTable(){
     
 
     //add tooltips
-    $('#calendarTable').tooltip({
-        items:'td div,img',
-        show: {
-            effect: "none",
-            delay: 500
-        },
-        hide: {
-            effect: "none",
-            delay: 500
-        },
-        close: function(){
-            $('.ui-helper-hidden-accessible').children().first().remove();
-        },
-        content: function(){
-            var elem=$(this);
-            if (elem.attr('title')!=null) return elem.attr('title');
-            if (elem.hasClass('event') || elem.parent().hasClass('event'))
-                return 'click to edit show'
-            if (elem.hasClass('schedule') || elem.parent().hasClass('schedule'))
-                return 'click to create show'
-            if (elem.hasClass('no_series') || elem.parent().hasClass('no_series'))
-                return 'please create a series for this show'
-            if (elem.hasClass('work') || elem.parent().hasClass('work'))
-                return 'edit work schedule'
-            if (elem.hasClass('grid') || elem.parent().hasClass('grid'))
-                return 'click to create schedule'
-        }
+    $('#calendar > table > tbody > tr > td > div').mouseover( function(){
+        var text = getMouseOverText($(this));
+        if ($(this).attr("title") == text) return;
+        $(this).attr("title",text);
     });
     
     if($('#event_list table').length!=0){
@@ -845,114 +754,55 @@ function updateTable(){
         function(){
             // get first event_list item
             var id = $('#event_list tbody tr').first().attr('id');
-            //console.log(id);
-	        var field=id.split('_');
-	        var classname   =field.shift();
-	        var project_id	=field.shift();
-	        var studio_id	=field.shift();
-	        var series_id	=field.shift();
-	        var url='series.cgi';
-	        url+='?project_id='+project_id;
-	        url+='&studio_id='+studio_id;
-	        url+='&series_id='+series_id;
-	        url+='&action=show';
+            var field=id.split('_');
+            var classname   =field.shift();
+            var project_id  =field.shift();
+            var studio_id   =field.shift();
+            var series_id   =field.shift();
+            var url='series.cgi';
+            url+='?project_id='+project_id;
+            url+='&studio_id='+studio_id;
+            url+='&series_id='+series_id;
+            url+='&action=show';
             load(url);
         }
     );
 
+    $('input#pin').off();
+    $('input#pin').on( "click", function(){
+        var button = $(this);
+        var elem = $('#content #calendar').first();
+        if ( button.hasClass("pressed") ){
+            button.removeClass("pressed");
+            elem.removeClass("pin");
+        } else {
+            button.addClass("pressed");
+            elem.addClass("pin");
+        }
+    });
+    
     //set checkboxes from url parameters and update all urls
-    setIcons();
     $('#calendar').show();
 
     showMouse();
-    
-    //move schedules
-    //addDraggable();
-
-}
-
-function addDraggable(){
-    var height=$('#calendar div.time').first().outerHeight()/12;
-
-    $("#calendar div.schedule").draggable({ 
-        containment: "parent",
-        axis: "y",
-        grid: [height, height],
-        cursorAt: { top: 0 },
-        drag: function(){
-            //$(this).attr("title", $("#position").text());
-            $(this).parent().children(".schedule").each(
-                function(key, value){
-                    if ( isColliding($(this)) == true ){ 
-                        $(this).addClass("error");
-                        $(this).addClass("x2");
-                    }else{ 
-                        $(this).removeClass("error");
-                        $(this).addClass("x2");
-                    }
-                }
-            );
-        },
-        stop: function() {
-            console.log("move to "+$("#position").text());
-        }
-    });
-
-}
-
-var dragged=null;
-function isColliding(div){
-    dragged=div;
-    var intersect=false;
-    div.parent().children(".schedule").each(
-        function(key, value){
-            //console.log("isColliding");
-            //console.log(dragged);
-            //console.log($(this));
-            if (dragged.is($(this))) {
-                return;
-            }
-            if (collision(dragged, $(this))==true){
-                intersect=true;
-            }
-            //console.log(intersect);
-        }
-    );
-    return intersect;
-}
-
-function collision(div1, div2) {
-    var y1 = div1.offset().top;
-    var h1 = div1.outerHeight(true);
-    var b1 = y1 + h1;
-
-    var y2 = div2.offset().top;
-    var h2 = div2.outerHeight(true);
-    var b2 = y2 + h2;
-
-    var tolerate=6;
-    if (b1 - tolerate < y2) return false;
-    if (b2 - tolerate < y1) return false;
-    return true;
 }
 
 function handleEvent(id, event){
-	var field=id.split('_');
-	var classname   =field.shift();
-	var project_id	=field.shift();
-	var studio_id	=field.shift();
-	var series_id	=field.shift();
-	var event_id	=field.shift();
+    var field=id.split('_');
+    var classname   =field.shift();
+    var project_id  =field.shift();
+    var studio_id   =field.shift();
+    var series_id   =field.shift();
+    var event_id    =field.shift();
 
-    //if(checkStudio()==0)return;
     if (project_id<0) {alert("please select a project");return;}
     if (studio_id <0) {alert("please select a studio");return;}
-	if (series_id <0) return;
-	if (event_id  <0) return;
+    if (series_id <0) return;
+    if (event_id  <0) return;
 
-	var url="event.cgi?action=edit&project_id="+project_id+"&studio_id="+studio_id+"&series_id="+series_id+"&event_id="+event_id;
+    var url="event.cgi?action=edit&project_id="+project_id+"&studio_id="+studio_id+"&series_id="+series_id+"&event_id="+event_id;
     if(event.which==1){
-	    load(url);
+        load(url);
     }
     if(event.which==2){
         openNewTab(url);
@@ -960,18 +810,17 @@ function handleEvent(id, event){
 }
 
 function handleUnassignedEvent(id){
-	var field=id.split('_');
-	var classname   =field.shift();
-	var project_id	=field.shift();
-	var studio_id	=field.shift();
-	var series_id	=field.shift();
-	var event_id	=field.shift();
+    var field=id.split('_');
+    var classname   =field.shift();
+    var project_id  =field.shift();
+    var studio_id   =field.shift();
+    var series_id   =field.shift();
+    var event_id    =field.shift();
 
     if(checkStudio()==0)return;
     if (project_id<0)   return;
     if (studio_id<0)    return;
-	if (event_id<0)     return;
-    //console.log("assign series")
+    if (event_id<0)     return;
     $('#assign_series_events input[name="event_id"]').attr('value',event_id);
 
     show_not_assigned_to_series_dialog();
@@ -980,9 +829,9 @@ function handleUnassignedEvent(id){
 function handleSchedule(id, start_date, event){
     var field=id.split('_');
     var classname   =field.shift();
-	var project_id	=field.shift();
-    var studio_id	=field.shift();
-    var series_id	=field.shift();
+    var project_id  =field.shift();
+    var studio_id   =field.shift();
+    var series_id   =field.shift();
 
     if(checkStudio()==0)return;
     if (project_id<0)   return;
@@ -990,7 +839,7 @@ function handleSchedule(id, start_date, event){
     if (series_id<0)    return;
 
     if(event.which==1){
-		//left click: create event from schedule
+        //left click: create event from schedule
         var url="event.cgi?action=show_new_event_from_schedule&project_id="+project_id+"&studio_id="+studio_id+"&series_id="+series_id+"&start_date="+start_date;
         load(url);
     }
@@ -1002,20 +851,23 @@ function handleSchedule(id, start_date, event){
 }
 
 function handleGrid(id){
-	var field=id.split('_');
-	var classname   =field.shift();
-	var project_id	=field.shift();
-	var studio_id	=field.shift();
-	var series_id	=field.shift();//to be selected
+    var field=id.split('_');
+    var classname   =field.shift();
+    var project_id  =field.shift();
+    var studio_id   =field.shift();
+    var series_id   =field.shift();//to be selected
 
     if(checkStudio()==0)return;
     if (project_id<0)   return;
     if (studio_id<0)    return;
 
-	var start_date=getNearestDatetime();
+    var start_date = getNearestDatetime();
     $('#series_date').attr('value',start_date);
-    showDateTimePicker('#series_date');
-    //alert("studio "+studio_id+" "+start_date);
+    var date=parseDateTime(start_date);
+    showDateTimePicker('#series_date', {
+        date: start_date
+    });
+    
 
     show_schedule_series_dialog(project_id, studio_id, series_id, start_date);
 }
@@ -1023,17 +875,17 @@ function handleGrid(id){
 function handleWorktime(id, event){
     var field=id.split('_');
     var classname   =field.shift();
-	var project_id	=field.shift();
-    var studio_id	=field.shift();
-    var schedule_id	=field.shift();
+    var project_id  =field.shift();
+    var studio_id   =field.shift();
+    var schedule_id =field.shift();
 
     if(checkStudio()==0)return;
     if (project_id<0)   return;
     if (studio_id<0)    return;
     if (schedule_id<0)  return;
-    var start_date=$(this).attr("date");
+    var start_date=$(this).attr("start");
 
-    var url="work_time.cgi?action=show_new_event_from_schedule&project_id="+project_id+"&studio_id="+studio_id+"&schedule_id="+schedule_id+"&start_date="+start_date;
+    var url="work-time.cgi?action=show_new_event_from_schedule&project_id="+project_id+"&studio_id="+studio_id+"&schedule_id="+schedule_id+"&start_date="+start_date;
     if(event.which==1){
         load(url);
     }
@@ -1041,4 +893,37 @@ function handleWorktime(id, event){
         openNewTab(url)
     }
 }
+
+
+function hexToRgbA(hex){
+    var c;
+    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+        c= hex.substring(1).split('');
+        if(c.length== 3){
+            c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+        }
+        c= '0x'+c.join('');
+        return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',1)';
+    }
+    throw new Error('Bad Hex');
+}
+
+function adjustColors(){
+    var elem = $('.schedule').get(0);
+    if (elem == null ) return;
+    var color1=window.getComputedStyle(elem).backgroundColor;
+    var color2=color1.replace('rgb','rgba').replace(')',', 0.4)')
+    $('.schedule').css('background', 'repeating-linear-gradient(to right, '+color1+', '+color1+' 1px, '+color2+' 1px, '+color2+' 2px) ');
+}
+
+$(document).ready(function(){
+    initCalendarMenu();
+
+    if(calendarTable==1){
+        loadCalendar();
+    }else{
+        loadCalendarList();
+    }
+
+});
 

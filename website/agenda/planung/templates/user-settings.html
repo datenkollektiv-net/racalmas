@@ -1,0 +1,155 @@
+<script type="text/javascript">
+    var selectedId;
+
+    $(document).ready(function() {
+        $('input.color').click(function() {
+            selectedId = ($(this).attr('id'));
+            showColors();
+        });
+    });
+
+    function showColors() {
+        var colors = [ '#ef9a9a', '#f48fb1', '#ce93d8', '#b39ddb', '#9fa8da',
+                '#90caf9', '#81d4fa', '#80deea', '#80cbc4', '#a5d6a7',
+                '#c5e1a5', '#e6ee9c', '#fff59d', '#ffe082', '#ffcc80',
+                '#ffab91', '#bcaaa4', '#b0bec5', '#bdc3c7', '#dde4e6',
+                '#eeeeee', ];
+
+        var content = '';
+        for ( var c in colors) {
+            var value = colors[c];
+            content += '<div class="col" value="'+value+'" style="background:'+value+';"> </div>';
+        }
+        content += '<br style="clear:both">'
+
+        $("#colors").html(content);
+        $("#colors div.col").click(function() {
+            var color = $(this).attr("value");
+            $('#' + selectedId).css('background', color);
+            $('#' + selectedId).attr('value', color);
+        });
+    }
+</script>
+
+<style>
+div.col {
+    float: left;
+    width: 2rem;
+    height: 2rem;
+}
+</style>
+
+<h2>
+    <TMPL_VAR loc.title>
+</h2>
+<TMPL_INCLUDE status.html>
+
+<div class="panel">
+<form method="post">
+    <input class="primary" type="hidden" name="action" value="save">
+    <button onclick="$(this).submit()">
+        <TMPL_VAR loc.button_colors_save>
+    </button>
+
+    <input type="hidden" name="project_id" value="<TMPL_VAR project_id>">
+    <input type="hidden" name="studio_id" value="<TMPL_VAR studio_id>">
+
+    <table>
+        <tr>
+            <td style="max-width: 10em;"><TMPL_VAR
+                    loc.label_language></td>
+            <td><select name="language">
+                    <option value="de"<TMPL_IF language_de>selected="selected"</TMPL_IF>
+                        >Deutsch
+                    </option>
+                    <option value="en"<TMPL_IF language_en>selected="selected"</TMPL_IF>
+                        >English
+                    </option>
+            </select></td>
+        </tr>
+        <tr>
+            <td style="max-width: 10em;"><TMPL_VAR loc.label_period></td>
+            <td><select name="period">
+                    <option value="7"<TMPL_IF period_7>selected="selected"</TMPL_IF>
+                        >
+                        <TMPL_VAR .loc.label_period_7></option>
+                    <option value="14"<TMPL_IF period_14>selected="selected"</TMPL_IF>
+                        >
+                        <TMPL_VAR .loc.label_period_14></option>
+                    <option value="month"<TMPL_IF period_month>selected="selected"</TMPL_IF>
+                        >
+                        <TMPL_VAR .loc.label_period_month></option>
+                    <option value="28"<TMPL_IF period_28>selected="selected"</TMPL_IF>
+                        >
+                        <TMPL_VAR .loc.label_period_28></option>
+            </select></td>
+        </tr>
+
+        <TMPL_LOOP colors>
+        <tr>
+            <td><TMPL_VAR .loc.label_color>: <TMPL_VAR
+                    title></td>
+            <td><input id="<TMPL_VAR name>"
+                style="padding:0;background: &lt;TMPL_VAR value&gt;"
+                name="<TMPL_VAR name>" 
+                class="color"
+                value="<TMPL_VAR value>"
+                type="color"
+                ></td>
+        </tr>
+        </TMPL_LOOP>
+    </table>
+
+    <div id="colors"></div>
+
+</form>
+
+<form method="post" style="margin-top: 2px; float: left">
+    <input type="hidden" name="project_id" value="<TMPL_VAR project_id>">
+    <input type="hidden" name="studio_id" value="<TMPL_VAR studio_id>">
+    <input type="hidden" name="action"
+        value="updateDefaultProjectStudio">
+    <button onclick="$(this).submit()">
+        <TMPL_VAR loc.setDefaultProjectStudio>
+    </button>
+</form>
+
+<form method="post" style="margin-top: 2px">
+    <input type="hidden" name="project_id" value="<TMPL_VAR project_id>">
+    <input type="hidden" name="studio_id" value="<TMPL_VAR studio_id>">
+    <input type="hidden" name="action" value="save">
+    <button onclick="$(this).submit()">
+        <TMPL_VAR loc.button_colors_reset>
+    </button>
+</form>
+</div>
+
+<div class="panel">
+<h3 style="clear: both">
+    <TMPL_VAR .loc.label_change_password>
+</h3>
+<TMPL_VAR .loc.password_hint>
+<form action="users.cgi" method="post">
+    <input type="hidden" name="project_id" value="<TMPL_VAR project_id>">
+    <input type="hidden" name="studio_id" value="<TMPL_VAR studio_id>">
+    <input type="hidden" name="action" value="change_password">
+    <table>
+        <tr>
+            <td><TMPL_VAR .loc.label_password></td>
+            <td><input name="user_password"
+                value="<TMPL_VAR password>"></td>
+        </tr>
+        <tr>
+            <td><TMPL_VAR .loc.label_password2></td>
+            <td><input name="user_password2"
+                value="<TMPL_VAR password2>"></td>
+        </tr>
+    </table>
+    <button onclick="$(this).submit()">
+        <TMPL_VAR loc.button_change_password>
+    </button>
+</form>
+</div>
+
+</body>
+</html>

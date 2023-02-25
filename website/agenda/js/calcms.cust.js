@@ -2,406 +2,170 @@ var calcms_settings = new Array();
 
 (function($, calcms) {
 
-	// show current project
-	calcms.selectProject = function selectProject() {
-		var project = calcms.getProject();
-		console.log("project=" + project)
+    // show current project
+    calcms.selectProject = function selectProject() {
+        var project = calcms.getProject();
+        console.log("project=" + project)
 
-		calcms.clearOnChangeArchive();
-		calcms.showProjectCategories(project);
-		calcms.showProjectSeriesNames(project);
-		calcms.selectFirstOption('#calcms_series_name_'
-				+ calcms.getJsName(project));
-		calcms.selectFirstOption('#calcms_category_'
-				+ calcms.getJsName(project));
-	}
+        calcms.clearOnChangeArchive();
+        calcms.showProjectSeriesNames(project);
+        calcms.selectFirstOption('#calcms_series_name_'
+                + calcms.getJsName(project));
+    }
 
-	// search events
-	calcms.selectSearchEventListener = function selectSearchEventListener() {
-		var project = calcms.getProject();
+    // search events
+    calcms.selectSearchEventListener = function selectSearchEventListener() {
+        var project = calcms.getProject();
 
-		calcms.showSearchResultsByProject(project, calcms.getSearchElement()
-				.val(), calcms.isArchive());
-		calcms.selectFirstOption('#calcms_series_name_'
-				+ calcms.getJsName(project));
-		calcms.selectFirstOption('#calcms_category_'
-				+ calcms.getJsName(project));
+        calcms.showSearchResultsByProject(project, calcms.getSearchElement()
+                .val(), calcms.isArchive());
+        calcms.selectFirstOption('#calcms_series_name_'
+                + calcms.getJsName(project));
 
-		calcms.registerOnChangeArchive(function() {
-			calcms.showSearchResultsByProject(project, calcms
-					.getSearchElement().val(), calcms.isArchive());
-		});
-	}
+        calcms.registerOnChangeArchive(function() {
+            calcms.showSearchResultsByProject(project, calcms
+                    .getSearchElement().val(), calcms.isArchive());
+        });
+    }
 
-	// show events for selected category of project
-	calcms.selectCategory = function selectCategory(project, category) {
-		calcms.showEventsByProjectAndCategory(project, category, calcms
-				.isArchive());
-		calcms.selectFirstOption('#calcms_series_name_'
-				+ calcms.getJsName(project));
-		calcms.resetSearch();
+    // show events for selected series of project
+    calcms.selectSeries = function selectSeries(project, seriesName) {
+        calcms.showEventsByProjectAndSeriesName(project, seriesName, calcms
+                .isArchive());
+        calcms.resetSearch();
 
-		calcms.registerOnChangeArchive(function() {
-			calcms.showEventsByProjectAndCategory(project, category, calcms
-					.isArchive());
-		});
-	}
+        calcms.registerOnChangeArchive(function() {
+            calcms.showEventsByProjectAndSeriesName(project, seriesName, calcms
+                    .isArchive());
+        });
+    }
 
-	// show events for selected series of project
-	calcms.selectSeries = function selectSeries(project, seriesName) {
-		calcms.showEventsByProjectAndSeriesName(project, seriesName, calcms
-				.isArchive());
-		calcms.selectFirstOption('#calcms_category_'
-				+ calcms.getJsName(project));
-		calcms.resetSearch();
+    // calendar events
+    calcms.selectMonthEventListener = function selectMonthEventListener(month) {
+        calcms.showCalendarAndEventsByMonth(month);
+    }
 
-		calcms.registerOnChangeArchive(function() {
-			calcms.showEventsByProjectAndSeriesName(project, seriesName, calcms
-					.isArchive());
-		});
-	}
+    calcms.selectWeekdayEventListener = function selectWeekdayEventListener(
+            start_date, end_date, weekday) {
+        calcms.showEventsByWeekday(start_date, end_date, weekday);
+    }
 
-	// calendar events
-	calcms.selectMonthEventListener = function selectMonthEventListener(month) {
-		calcms.showCalendarAndEventsByMonth(month);
-	}
+    calcms.selectDateRangeEventListener = function selectDateRangeEventListener(
+            from, till) {
+        calcms.showEventsByDateRange(from, till);
+    }
 
-	calcms.selectWeekdayEventListener = function selectWeekdayEventListener(
-			start_date, end_date, weekday) {
-		calcms.showEventsByWeekday(start_date, end_date, weekday);
-	}
+    calcms.selectDateEventListener = function selectDateEventListener(date) {
+        calcms.showEventsByDate(date);
+    }
 
-	calcms.selectDateRangeEventListener = function selectDateRangeEventListener(
-			from, till) {
-		calcms.showEventsByDateRange(from, till);
-	}
+    // initial initialize
+    function initCalcms() {
+        calcms.set('base_url', '');
 
-	calcms.selectDateEventListener = function selectDateEventListener(date) {
-		calcms.showEventsByDate(date);
-	}
+        calcms.set('calendar_url', '/agenda/kalender');
+        calcms.set('menu_url', '/agenda/menu');
 
-	// initial initialize
-	function initCalcms() {
-		calcms.set('base_url', '');
+        calcms.set('events_url', '/agenda/sendungen');
+        calcms.set('list_url', '/agenda/sendung');
+        calcms.set('next_series_url', '/programm/sendung/serie_plus');
+        calcms.set('prev_series_url', '/programm/sendung/serie_minus');
 
-		calcms.set('calendar_url', '/agenda/kalender');
-		calcms.set('menu_url', '/agenda/menu');
+        calcms.set('ical_url', '/agenda/ical');
+        calcms.set('feed_url', '/agenda/feed/');
+        calcms.set('playlist_url', '/agenda/playlist/');
 
-		calcms.set('events_url', '/agenda/sendungen');
-		calcms.set('list_url', '/agenda/sendung');
-		calcms.set('next_series_url', '/programm/sendung/serie_plus');
-		calcms.set('prev_series_url', '/programm/sendung/serie_minus');
+        calcms.set('search_url', '/agenda/suche/');
+        calcms.set('search_series_name_url', '/agenda/sendereihe/');
 
-		calcms.set('ical_url', '/agenda/ical');
-		calcms.set('feed_url', '/agenda/feed/');
-		calcms.set('playlist_url', '/agenda/playlist/');
+        calcms.set('series_name_url', '/agenda/sendereihen/');
 
-		calcms.set('search_url', '/agenda/suche/');
-		calcms.set('search_category_url', '/agenda/kategorie/');
-		calcms.set('search_series_name_url', '/agenda/sendereihe/');
+        calcms.set('comments_url', '/agenda/kommentare/');
+        calcms.set('add_comment_url', '/agenda/kommentar_neu/');
+        calcms.set('newest_comments_url', '/agenda/neueste_kommentare/');
+        return true;
+    }
 
-		calcms.set('category_url', '/agenda/kategorien/');
-		calcms.set('series_name_url', '/agenda/sendereihen/');
+    var loadedSearchComponents = 0;
+    // load projects, series and show search fields
+    // remove empty projects if series have been loaded
+    calcms.showAdvancedSearch = function showAdvancedSearch(id) {
+        searchReady = 0;
+        var element = $('#calcms_enhanced_search');
+        if (element.length == 0) return;
 
-		calcms.set('comments_url', '/agenda/kommentare/');
-		calcms.set('add_comment_url', '/agenda/kommentar_neu/');
-		calcms.set('newest_comments_url', '/agenda/neueste_kommentare/');
+        if (element.css('display') == 'none') {
+            url = calcms.get('series_name_url');
+            calcms.updateContainer('calcms_series_names', url, function() {
+                calcms.selectProject();
+                loadedSearchComponents++;
+                if (loadedSearchComponents == 2) {
+                    calcms.removeEmptyProjects();
+                }
+            });
+        } else {
+            calcms.showProjectSeriesNames(calcms.getProject());
+        }
+        calcms.toggle(document.querySelector('#' + id));
+    }
 
-		return true;
-	}
+    calcms.insertDeskNextShows = function insertDeskNextShows(desk) {
+        var url = '/agenda/suche/all/' + desk + '/kommende/';
+        calcms.updateContainer('showDesk', url);
+        return false;
+    }
 
-	var loadedSearchComponents = 0;
-	// load projects, series and categories and show search fields
-	// remove empty projects if both series and categories have been loaded
-	calcms.showAdvancedSearch = function showAdvancedSearch(id) {
-		searchReady = 0;
-		var element = $('#calcms_enhanced_search');
-		if (element.length == 0)
-			return;
+    calcms.insertDeskPrevShows = function insertDeskPrevShows(desk) {
+        var url = '/agenda/suche/all/' + desk + '/vergangene/';
+        calcms.updateContainer('showDesk', url);
+        return false;
+    }
 
-		if (element.css('display') == 'none') {
-			var url = calcms.get('category_url');
-			calcms.updateContainer('calcms_categories', url, 1, function() {
-				calcms.selectProject();
-				loadedSearchComponents++;
-				if (loadedSearchComponents == 2) {
-					calcms.removeEmptyProjects();
-				}
-			});
+    calcms.insertEditors = function insertEditors() {
+        var url = document.location.href;
 
-			url = calcms.get('series_name_url');
-			calcms.updateContainer('calcms_series_names', url, 1, function() {
-				calcms.selectProject();
-				loadedSearchComponents++;
-				if (loadedSearchComponents == 2) {
-					calcms.removeEmptyProjects();
-				}
-			});
-		} else {
-			calcms.showProjectCategories(calcms.getProject());
-			calcms.showProjectSeriesNames(calcms.getProject());
-		}
+        var mapping = {
+            "studio\-ansage" : "/agenda/redaktionen-studio-ansage",
+            "studio\-pi\-radio" : "/agenda/redaktionen-piradio",
+            "studio\-frb" : "/agenda/redaktionen-frb",
+            "studio\-colabo" : "/agenda/redaktionen-colabo-radio",
+            "studio\-frrapo" : "/agenda/redaktionen-frrapo"
+        };
 
-		$("#" + id).slideToggle();
-	}
+        for ( var key in mapping) {
+            var editorsUrl = mapping[key];
+            var pattern = new RegExp(key);
+            var matchs = pattern.exec(url);
+            if ((matchs != null) && (matchs.length > 0)) {
+                console.log("matchs " + url)
+                $('div.entry-content').append('<div id="result"> </div>')
+                calcms.updateContainer("#result", editorsUrl);
+            }
+        }
+    }
 
-	calcms.insertDeskNextShows = function insertDeskNextShows(desk) {
-		var url = '/agenda/suche/all/' + desk + '/kommende/';
-		calcms.updateContainer('showDesk', url, 1);
-		return false;
-	}
+    function initSearch() {
+        var base = $('#calcms_search_show_details');
+        var elem = $('#calcms_search_show_details #plus');
+        if (elem.length == 0) {
+            base.append('<span id="plus"> ▼ </span>');
+            base.prepend('<span id="plus"></span>');
+        }
+    }
 
-	calcms.insertDeskPrevShows = function insertDeskPrevShows(desk) {
-		var url = '/agenda/suche/all/' + desk + '/vergangene/';
-		calcms.updateContainer('showDesk', url, 1);
-		return false;
-	}
-
-    /*
-	function insertDeskDetails() {
-		var pattern = new RegExp(/redaktion\/(.*)$/);
-		var matchs = pattern.exec(document.location.href);
-		if ((matchs != null) && (matchs.length > 0) && (matchs[1] != '')) {
-			var desk = $('#center h2:first').text();
-			desk = desk.replace('Redaktion: ', '');
-			desk = escape(desk);
-			$('#center .content').append(
-					'<div>' + '<a onclick="insertDeskPrevShows(\'' + desk
-							+ '\');return false;" href="#">«letzte«</a>'
-							+ ' Sendungen '
-							+ '<a onclick="insertDeskNextShows(\'' + desk
-							+ '\');return false;" href="#">»nächste»</a>'
-							+ '<div id="showDesk" />' + '</div>');
-		}
-	}
-	*/
-
-    /*
-	function fixBlogEntries() {
-		if (document.location.href.match('/redaktionen/')
-				|| document.location.href.match('/redaktionen?')
-				|| document.location.href.match('/redaktionen$')) {
-			$('img.image-thumbnail').css('width', '3em');
-			$('img.image-thumbnail').css('height', '3em');
-			$('div.image-attach-teaser').css('width', '3em');
-			$('div.node').css('padding', '0');
-			$('div.node').css('margin', '0');
-			$('#center .submitted').remove();
-			$('#center .clear-block h2 a')
-					.each(
-							function(index) {
-								$(this)
-										.html(
-												$(this)
-														.text()
-														.replace('Redaktion: ',
-																'<font color="gray">Redaktion:</font> '));
-								if ($(this).text().match(/Information:/))
-									$(this).remove();
-							})
-
-		}
-	}
-    */
-
-    /*
-	function setImageSize() {
-		var image = '#calcms_list div.content img';
-		var size = $(window).width();
-		size = Math.floor(size * 0.16);
-		$(image).css('width', size + 'px');
-		$(image).css('height', size + 'px');
-		if (size > 200) {
-			$(image).each(function(index) {
-				var url = $(this).attr('src');
-				if (url != null) {
-					url = url.replace('/thumbs/', '/images/');
-					console.log(url);
-					$(this).attr('src', url);
-				}
-			});
-		} else {
-			$(image).each(function(index) {
-				var url = $(this).attr('src');
-				if (url != null) {
-					url = url.replace('/images/', '/thumbs/');
-					$(this).attr('src', url);
-				}
-			});
-		}
-	}
-    */	
-
-	function setThumbs() {
-		$('#calcms_playlist img').each(function(index) {
-			var url = $(this).attr('src');
-			if (url != null) {
-				url = url.replace('/images/', '/thumbs/');
-				$(this).attr('src', url);
-			}
-		});
-	}
-
-    /*
-	function addCommentsOnAgendaPages() {
-		if (calcms.contains(window.location.href, '/programm/')
-				|| calcms.contains(window.location.href, '/agenda/')) {
-			$('#sidebar-right')
-					.append(
-							'<div id="block-block-2" class="clear-block block block-block"><h2>Kommentare</h2><div class="content">'
-									+ '<div id="calcms_newest_comments">Bitte warten…</div>'
-									+ '</div></div>');
-		}
-	}
-	*/
-
-	function scrollNextEvent() {
-		if ($('#calcms_running_event').length == 0)
-			return;
-		$('#playlist_container').scrollLeft(0);
-		setInterval(nextSlideEvent, 10000);
-	}
-
-	var numberOfComingShows = 100;
-	var slideCount = 0;
-	var slideOffset = 1;
-	var slideEvents = 1;
-
-	// slideEvents will be updated at onmouseenter/leave handler at
-	// playlist_long
-	function nextSlideEvent() {
-		if (slideEvents == 0)
-			return;
-		if ($('#coming_shows a').length == 0)
-			return;
-		if (slideCount == 0) {
-			numberOfComingShows = $('#coming_shows a').length;
-			$('#playlist_container').scrollLeft(0)
-			$('#playlist_container').css('overflow', 'auto');
-			$('#playlist_container').css('-webkit-overflow-scrolling', 'touch');
-			$('#playlist_container').css('height', '150');
-			$('#coming_shows').css('white-space', 'nowrap');
-			$('#coming_shows').css('overflow-x', 'hidden');
-			$('#coming_shows').css('height', '150');
-		}
-
-		// console.log(slideCount+" "+slideOffset)
-		$('#playlist_container').animate({
-			scrollLeft : slideCount * 115 + "px"
-		}, 5000);
-
-		if (slideCount < 0)
-			slideOffset = 1
-		if (slideCount > numberOfComingShows + 1 - $('#coming_shows').width()
-				/ 100)
-			slideOffset = -1
-		slideCount += slideOffset;
-	}
-
-	function mobilise() {
-		if (!navigator.userAgent.match(/Mobi/))
-			return;
-
-		$('#wrapper #container #sidebar-left').before(
-				$('#wrapper #container #center'));
-		$('#wrapper #container #sidebar-left').before(
-				$('#wrapper #container #sidebar-right'));
-
-		$('body.sidebars').css('min-width', '100%');
-		$('body.sidebar-left').css('min-width', '100%');
-		$('body.sidebar-right').css('min-width', '100%');
-
-		$('#wrapper #container .sidebar').css('width', '100%');
-		$('#wrapper #container').css('width', '100%');
-		$('#wrapper #container').css('max-width', '100%');
-		$('#wrapper #container').css('margin', '0');
-		$('#wrapper #container').css('padding', '0');
-
-		$('#center').css('margin', '0');
-		$('#center #squeeze').css('margin', '0');
-		$('#center *').css('margin-left', '0');
-		$('#center *').css('margin-right', '0');
-		$('#center .right-corner').css('position', 'static');
-		$('#center .right-corner').css('left', '0');
-		$('#center .right-corner').css('padding-left', '0');
-		$('#center .right-corner').css('padding-right', '0');
-		$('#center .right-corner').css('background-image', 'url()');
-		$('#center .left-corner').css('position', 'static');
-		$('#center .left-corner').css('padding-left', '0');
-		$('#center .left-corner').css('padding-right', '0');
-		$('#center .left-corner').css('background-image', 'url()');
-		$('#center *').css('background-image', 'url()');
-
-		$('#wrapper #container #header').css('height', '100px');
-
-		var padding = '0.5em'
-		$('#center .left-corner').css('padding-left', padding);
-		$('#center .left-corner').css('padding-right', padding);
-		$('#wrapper #container #sidebar-left').css('padding-left', padding);
-		$('#wrapper #container #sidebar-left').css('padding-right', padding);
-
-		// $('*').css('background','none');
-		// $('#sidebar-left div.content').css('text-align','center');
-		// $('#sidebar-left *').css('margin-left','0');
-		// $('#sidebar-left *').css('margin-right','0');
-		// $('#sidebar-right *').css('margin-left','0');
-		// $('#sidebar-right *').css('margin-right','0');
-		// $('#sidebar-left').css('width','90%');
-		$('.node').css('padding-left', '0');
-		$('.node').css('padding-right', '0');
-
-		$('#calcms_search input').css("padding", "1em");
-		$('#calcms_search select').css("padding", "1em");
-
-		var menu = "ul.links.primary-links";
-		$(menu).addClass('mobileMenu');
-		$(menu).before('<div id="mobileMenuButton"></div>');
-		$(menu).hide();
-
-		var menu2 = "ul.links.secondary-links";
-		$(menu2).each(function() {
-			$(menu).append($(this).html());
-		})
-		$(menu2).remove();
-
-		$('#calcms_calendar table').css('width', '90%');
-
-		// move footer down
-		var footer = $('#wrapper #footer').html();
-		$('body').append(footer);
-		$('#wrapper #footer').remove();
-
-		$("#mobileMenuButton").click(function() {
-			$(menu).slideToggle();
-			return false;
-		});
-	}
-
-	function initSearch() {
-		var base = $('#calcms_search_show_details');
-		var elem = $('#calcms_search_show_details #plus');
-		if (elem.length == 0) {
-			base.append('<span id="plus"> ▼ </span>');
-			base.prepend('<span id="plus"></span>');
-
-		}
-	}
-
-    var isCalcms=false;
-    function initWordpress(){
-        $('header.entry-header').each( function(){
-            var elem=$(this);
-            $(this).find("h1").each( function(){
-                if ( $(this).text() == "calcms" ){
-                    isCalcms=true;
+    var isCalcms = false;
+    function initWordpress() {
+        $('header.entry-header').each(function() {
+            $(this).find("h1").each(function() {
+                if ($(this).text() == "Programm") {
+                    isCalcms = true;
                     $(this).text("Programm");
                 }
             });
         });
-
         $('div.site-info').remove();
-        
-        if (isCalcms==false){
+
+        if (isCalcms == false) {
             $('#calcms_calendar').parent().parent().remove();
             $('#calcms_menu').parent().parent().remove();
             $('#calcms_search').parent().parent().remove();
@@ -410,27 +174,106 @@ var calcms_settings = new Array();
         }
     }
 
-	function initAll() {
-		initCalcms();
-		//initWordpress();
-		//addCommentsOnAgendaPages();
-		//calcms.showPlaylist();
-		calcms.showNewestComments();
-		// insertDeskDetails();
-		// fixBlogEntries();
-		calcms.removeCurrentPlayingHeader();
-		// setImageSize();
-		// setThumbs();
-		scrollNextEvent();
-		// initSlider();
-		// mobilise();
-		initSearch();
-		console.log("calcms inited")
-	}
+    function formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day   = '' + d.getDate(),
+            year  = d.getFullYear();
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2)   day = '0' + day;
+        return [year, month, day].join('-');
+    }
 
-	$(document).ready(function() {
-		initAll();
-	});
+    function scrollTo(elem, offset, duration){
+        if (elem==null)     return;
+        if (offset==null)   offset=0;
+        if (duration==null) duration=500;
+        try { $([document.documentElement, document.body]).scrollTop( elem.offset().top+offset ) } catch(e){};
+    }
+
+    function addPrevEvent(id){
+        $('a.load-prev').remove();
+        $('div.event-base').first().prepend('<a class="load-prev">davor</a>');
+        $('a.load-prev').on( "click", function(){
+            var url = "/programm/sendung/"+id+'.html';
+            window.location.href=url;
+        })
+    }
+
+    function addPrevSection(till){
+        $('a.load-prev').remove();
+        $('div.events-base').first().prepend('<a class="load-prev">davor…</a>');
+        $('a.load-prev').on( "click", function(){
+            till.setDate(till.getDate())
+            var from = new Date(till.getTime());
+            from.setDate(from.getDate()-7);
+            var url = "/programm/events/"+formatDate(from)+'_'+formatDate(till)+'.html';
+            fetch( url )
+            .then( response => response.text())
+            .then( text => {
+                var offset = $('a.load-prev').offset().top
+                $('div.events-base').first().before(text);
+                $('div.events-base').first().css("display","none").fadeIn("1s");
+                scrollTo( $('a.load-prev'), -offset, 0 );
+                addPrevSection(from);
+            })
+        });
+    }
+
+    function addNextEvent(id){
+        $('a.load-next').remove();
+        $('div.event-base').last().append('<a class="load-next">danach</a>');
+        $('a.load-next').on( "click", function(){
+            var url = "/programm/sendung/"+id+'.html';
+            window.location.href=url;
+        });
+    }
+
+    function addNextSection(from){
+        $('a.load-next').remove();
+        $('div.events-base').last().append('<a class="load-next">danach…</a>');
+        $('a.load-next').on( "click", function(){
+            from.setDate(from.getDate()+1)
+            var till = new Date(from.getTime());
+            till.setDate(till.getDate()+7);
+            var url = "/programm/events/"+formatDate(from)+'_'+formatDate(till)+'.html';
+            fetch( url )
+            .then( response => response.text())
+            .then( text => {
+                $('div.events-base').last().after(text);
+                $('div.events-base').last().css("display","none").fadeIn("1s");
+                addNextSection(till);
+            })
+        });
+    }
+
+    function initEventScroll(){
+        var values = window.location.href.match(/programm/);
+        if (!values) return;
+
+        var first_date = $('div.events-base').data('first-date');
+        if (first_date) addPrevSection(new Date( first_date.split("-") ) );
+
+        var last_date  = $('div.events-base').data('last-date');
+        if (last_date)  addNextSection(new Date( last_date.split("-") ) );
+
+        var prev = $('div.event-base').data('prev-event');
+        if (prev) addPrevEvent(prev);
+
+        var next = $('div.event-base').data('next-event');
+        if (next) addNextEvent(next);
+    }
+
+    $(document).ready(function() {
+        if (window.location.href.match(/\/programm\//)) scrollTo( $("h1"), -16,0 );
+        initCalcms();
+        initWordpress();
+        calcms.showPlaylist();
+        calcms.showNewestComments();
+        calcms.insertEditors();
+        initSearch();
+        initEventScroll();
+        console.log("calcms inited")
+    });
 
 }(jQuery, calcms));
-

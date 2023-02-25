@@ -1,109 +1,102 @@
 #!/usr/bin/perl
-use CGI qw(header param Vars);
-$CGI::POST_MAX = 0;$CGI::DISABLE_UPLOADS = 1;$cgi=new CGI();print $cgi->header();return;exit;
+print "Content-type:text/plain\n\nAccess denies.";
+exit;
 __END__
 
 <config>
 
-# TODO: replace with projects from database
-project                 Corax
+Define DOMAIN               localhost
+Define BASE_DIR             /home/calcms/racalmas/website
 
-# widget support
+# default project from database
+project                     my-project
+domain                      ${DOMAIN}
+
+<filter>
+#    projects_to_exclude     project1
+#    locations_to_exclude    location1,location2
+</filter>
+
 <controllers>
     # controller base directory
-    domain              /agenda/
+    domain                  /agenda/
 
     # customize controller URLs
-    calendar            kalender
-    event               sendung
-    events              sendungen
-    comments            kommentare
-    ical                ical
-    atom                atom
-    rss                 rss
+    calendar                kalender
+    event                   sendung
+    events                  sendungen
+    comments                kommentare
+    ical                    ical
+    atom                    atom
+    rss                     rss
 </controllers>
 
-# widget support
-<templates>
-    events      event_menu.html
-    events      event_list.html
-    events      event_details.html
-    events      event_playlist.html
-    events      event_playlist.txt
-    events      event.ics
-    events      event.atom.xml
-    events      event.rss.xml
-    events      event.json
-
-    comments    comments.html
-    comments    comments_newest.html
-    comments    comments.xml
-    aggregator    
-</templates>
-
-
 <system>
-    config_file             /home/calcms/website/agenda/config/config.cgi
+    config_file             ${BASE_DIR}/agenda/config/config.cgi
 
-    log_file                /var/www/vhosts/system/yourdomain.org/logs/error_log
-    log_debug_file          /home/calcms/log/calcms.log
-    log_debug_memory_file   /home/calcms/log/calcms-mem.log
-    job_log                 /home/calcms/log/jobs.log
+    log_file                /var/www/vhosts/${DOMAIN}/logs/error_log
+    log_debug_file          ${LOG_DIR}/${DOMAIN}/calcms.log
+    log_debug_memory_file   ${LOG_DIR}/${DOMAIN}/calcms-mem.log
 
     debug_memory            0
     debug                   0
 </system>
-    
+
 <cache>
-    use_cache               0
-    use_client_cache        0
-    compress                0
-    cache_dir               cache/
     base_url                /programm
 </cache>
 
 <locations>
-    # URLs of the program page the agenda should be injected into (done by preload_agenda.pl)
-    # this is the page containing calcms_menu, and other ids 
-    source_url_http         http://www.yourdomain.org/programm.html
-    source_url_https        https://www.yourdomain.org/programm.html
+    temp_dir                ${BASE_DIR}/temp/
+
+    # source website to inject calcms widgets into
+    source_url_http         http://${DOMAIN}/programm.html
+    source_url_https        https://${DOMAIN}/programm.html
 
     # feed base url
-    source_base_url         http://yourdomain.org/
+    source_base_url         https://${DOMAIN}/
     local_base_url          /agenda/
+    editor_base_url         /agenda/planung/
 
     # ajax
-    base_domain             http://yourdomain.org/
+    base_domain             https://${DOMAIN}/
     base_url                /agenda/?
-    base_dir                /home/calcms/website/agenda/
+    base_dir                ${BASE_DIR}/agenda/
 
     static_files_url        /agenda/
 
     # images
-    local_media_dir         /home/calcms/website/agenda_files/media/
-    local_media_url         /agenda_files/media/
+    local_media_dir         ${BASE_DIR}/media/
+    local_media_url         /media/
+    thumbs_url              /thumbs/
+    icons_url               /icons/
 
     # archives
     local_archive_dir       /home/calcms/archive/
     local_archive_url       /archive/
 
-    local_audio_recordings_dir /home/calcms/recordings/
+    # listen
+    listen_dir              /home/calcms/${DOMAIN}/
+    listen_url              https://${DOMAIN}/listen/
+
+    # upload
+    local_audio_recordings_dir ${BASE_DIR}/recordings/recordings/
     local_audio_recordings_url /recordings/
 
-    # synchronization
-    sync_cms_dir            /home/calcms/sync_cms/
-
     # multi language support
-    admin_pot_dir           /home/calcms/website/agenda/planung/pot/
+    admin_pot_dir           ${BASE_DIR}/agenda/planung/pot/
+    email                   info@${DOMAIN}
+    theme                   default
 </locations>
-
 
 <permissions>
     result_limit            500
 
     # limit creating comments in days before and after start of event
-    no_new_comments_before  10 
+    no_new_comments_before  10
     no_new_comments_after   60
+
+    hide_event_images       0
 </permissions>
 
 <access>
@@ -112,10 +105,10 @@ project                 Corax
     database                calcms
 
     username                calcms_read
-    password                xxx
+    password                calread000
 
     username_write          calcms_write
-    password_write          xxx
+    password_write          calwrite000
 </access>
 
 <date>
@@ -124,5 +117,8 @@ project                 Corax
     day_starting_hour       6
 </date>
 
-</config>
+no_result_message           Radio ${DOMAIN}
+events_title                Radio ${DOMAIN}
+events_description          Hört mehr Radio
 
+</config>

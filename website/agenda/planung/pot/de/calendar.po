@@ -10,6 +10,9 @@ msgstr "Heute"
 msgid "button_search"
 msgstr "Suche"
 
+msgid "label_pin"
+msgstr "Anpinnen"
+
 msgid "label_month"
 msgstr "Monat"
 
@@ -33,6 +36,9 @@ msgstr "Planung"
 
 msgid "label_worktime"
 msgstr "Studiodienst"
+
+msgid "label_descriptions"
+msgstr "Beschreibungen"
 
 msgid "label_playout"
 msgstr "Playout"

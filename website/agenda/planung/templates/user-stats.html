@@ -1,0 +1,71 @@
+<script src="js/jquery.tablesorter.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(
+    function(){
+        $('table#user_stats_table').tablesorter({
+            widgets: ["filter"],
+  	        usNumberFormat : false
+        });
+    }
+);
+</script>
+
+<style>
+div.col {
+    float:left;
+    width:10px;
+    height:10px;
+}
+table#user_stats_table input{
+    max-width:6em;
+}
+</style>
+
+<h2><TMPL_VAR loc.title></h2>
+<TMPL_INCLUDE status.html>
+
+    <button class="text"
+        onclick="load('user-stats.cgi?project_id=<TMPL_VAR .project_id>&studio_id=<TMPL_VAR .studio_id>&action=show-active-users');">
+        <TMPL_VAR .loc.button_show_active_users>
+    </button>
+
+    <form method="post">
+        <input type="hidden" name="project_id" value="<TMPL_VAR project_id>">
+        <input type="hidden" name="studio_id" value="<TMPL_VAR studio_id>">
+    </form>
+
+<div class="panel">
+    <table id="user_stats_table">
+        <thead>
+            <tr>
+                <th><TMPL_VAR loc.label_user></th>
+                <th><TMPL_VAR loc.label_score></th>
+                <th><TMPL_VAR loc.label_modified_at></th>
+                <th><TMPL_VAR loc.label_create_events></th>
+                <th><TMPL_VAR loc.label_update_events></th>
+                <th><TMPL_VAR loc.label_delete_events></th>
+                <th><TMPL_VAR loc.label_create_series></th>
+                <th><TMPL_VAR loc.label_update_series></th>
+                <th><TMPL_VAR loc.label_delete_series></th>
+            </tr>
+        </thead>
+        <tbody>
+            <TMPL_LOOP user_stats>
+            <tr>
+                <td><TMPL_VAR user></td>
+                <td><TMPL_VAR score></td>
+                <td><TMPL_VAR modified_at></td>
+                <td><TMPL_VAR create_events></td>
+                <td><TMPL_VAR update_events></td>
+                <td><TMPL_VAR delete_events></td>
+                <td><TMPL_VAR create_series></td>
+                <td><TMPL_VAR update_series></td>
+                <td><TMPL_VAR delete_series></td>
+            </tr>
+            </TMPL_LOOP>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

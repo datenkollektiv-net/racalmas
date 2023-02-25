@@ -1,3 +1,4 @@
+
 msgid "region"
 msgstr "de"
 
@@ -22,11 +23,14 @@ msgstr "Speichern"
 msgid "button_delete"
 msgstr "Löschen"
 
+msgid "button_apply"
+msgstr "Übernehmen"
+
 msgid "button_unassign_event"
 msgstr "aus Sendereihe entfernen"
 
 msgid "button_show_event"
-msgstr "Progammansicht"
+msgstr "Programmansicht"
 
 msgid "button_show_changes"
 msgstr "Änderungen"
@@ -95,7 +99,7 @@ msgid "label_episode"
 msgstr "Folge"
 
 msgid "label_live"
-msgstr "Live-Sendung"
+msgstr "live"
 
 msgid "label_draft"
 msgstr "Entwurf"
@@ -121,6 +125,15 @@ msgstr "bearbeitet am"
 msgid "label_modified_by"
 msgstr "von"
 
+msgid "label_content_format"
+msgstr "Wiki-Sprache"
+
+msgid "label_content_format_markdown"
+msgstr "Markdown"
+
+msgid "label_content_format_creole"
+msgstr "Creole"
+
 msgid "button_event_list"
 msgstr "Sendungen zeigen"
 
@@ -143,7 +156,7 @@ msgid "label_select_event"
 msgstr "aktuelle Sendung mit"
 
 msgid "label_overwrite_event"
-msgstr "Sendung überschreiben mit folgender Sendung"
+msgstr "Sendung überschreiben mit "
 
 msgid "button_copy_event"
 msgstr "überschreiben"
@@ -172,3 +185,5 @@ msgstr "Auszug ist zu lang. Für längeren Text bitte das Feld «aktuelle Themen
 msgid "label_excerpt_extension_too_long"
 msgstr "Auszug ist zu lang. Für längeren Text bitte das Feld «aktuelle Themen» verwenden."
 
+msgid "button_copy_to_clipboard"
+msgstr "in Zwischenablage kopieren"

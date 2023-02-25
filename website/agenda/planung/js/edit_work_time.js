@@ -1,11 +1,11 @@
 /*
-	show a series, its template, users and events
+    show a series, its template, users and events
 */
 
 
 // set checkbox values checked depending on value
 function initCheckBoxes(){
-	$('div.editor input[type="checkbox"]').each(
+    $('div.editor input[type="checkbox"]').each(
         function () {
             if ($(this).attr('value')=='1'){
                 $(this).attr('value','1');
@@ -14,20 +14,20 @@ function initCheckBoxes(){
                 $(this).attr('value','0');
                 $(this).attr('checked',null);
             }
-    	}
+        }
     );
 }
 
 // add checkbox handler to change value on click
 function addCheckBoxHandler(){
-	$('div.editor input[type="checkbox"]').click(
+    $('div.editor input[type="checkbox"]').click(
         function () {
             if ($(this).attr('value')=='1'){
                 $(this).attr('value','0');
             }else{
                 $(this).attr('value','1');
             }
-	    }
+        }
     );
 }
 
@@ -183,15 +183,13 @@ function setInputWidth(){
 
 
 $(document).ready(
-	function(){
+    function(){
         setupLocalization(
             function(){
                 addBackButton();
                 updateWeekdays();
             }
         );    
-		
-        initRegions(region);
 
         showDateTimePicker('.datetimepicker.start', {
             onSelect: function(){updateWeekdays();}
@@ -204,8 +202,7 @@ $(document).ready(
         initCheckBoxes();
         addCheckBoxHandler();
 
-		$("#tabs").tabs();
-		$('#tabs').removeClass('ui-widget ui-widget-content ui-corner-all');
+        setTabs('#tabs');
 
         updateScheduleButtonName();
         initScheduleFields();
@@ -224,7 +221,7 @@ $(document).ready(
         
         $('table#schedule_table').tablesorter({
             widgets: ["filter"],
-  	        usNumberFormat : false
+              usNumberFormat : false
         });
 
     }

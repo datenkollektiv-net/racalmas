@@ -1,18 +1,14 @@
-#!/bin/perl
-    
-package audio_recordings; 
+package audio_recordings;
 
-use warnings "all";
 use strict;
+use warnings;
+no warnings 'redefine';
 
 use Data::Dumper;
-use db;
+use db();
 
-require Exporter;
-
-our @ISA = qw(Exporter);
+#use base 'Exporter';
 our @EXPORT_OK = qw(get_columns get);
-our %EXPORT_TAGS = ( 'all'  => [ @EXPORT_OK ] );
 
 # columns:
 # id, project_id, studio_id, event_id
@@ -20,74 +16,66 @@ our %EXPORT_TAGS = ( 'all'  => [ @EXPORT_OK ] );
 # mastered, processed
 # audioDuration, eventDuration, rmsLeft, rmsRight
 
-sub debug;
+sub get_columns($) {
+    my $config = shift;
 
-sub get_columns{
-	my $config=shift;
-
-	my $dbh=db::connect($config);
-	my $cols=db::get_columns($dbh, 'calcms_audio_recordings');
-	my $columns={};
-	for my $col (@$cols){
-		$columns->{$col}=1;
-	}
-	return $columns;
+    my $dbh  = db::connect($config);
+    return db::get_columns_hash( $dbh, 'calcms_audio_recordings' );
 }
 
-# get playout entries 
-sub get{
-	my $config    = shift;
-	my $condition = shift;
+# get playout entries
+sub get($$) {
+    my $config    = shift;
+    my $condition = shift;
 
-    return undef unless defined $condition->{project_id};
-    return undef unless defined $condition->{studio_id};
+    my $date_range_include = 0;
+    $date_range_include = 1
+      if ( defined $condition->{date_range_include} ) && ( $condition->{date_range_include} == 1 );
 
-    my $date_range_include=0;
-    $date_range_include=1 if (defined $condition->{date_range_include}) && ($condition->{date_range_include}==1);
+    my $dbh = db::connect($config);
 
-	my $dbh=db::connect($config);
+    my $conditions  = [];
+    my $bind_values = [];
 
-	my $conditions=[];
-	my $bind_values=[];
-
-	if ((defined $condition->{id}) && ($condition->{id} ne '')){
-		push @$conditions, 'id=?';
-		push @$bind_values, $condition->{id};
-	}
-
-	if ((defined $condition->{project_id}) && ($condition->{project_id} ne '')){
-		push @$conditions, 'project_id=?';
-		push @$bind_values, $condition->{project_id};
-	}
-
-	if ((defined $condition->{studio_id}) && ($condition->{studio_id} ne '')){
-		push @$conditions, 'studio_id=?';
-		push @$bind_values, $condition->{studio_id};
-	}
-
-	if ((defined $condition->{event_id}) && ($condition->{event_id} ne '')){
-		push @$conditions, 'event_id=?';
-		push @$bind_values, $condition->{event_id};
-	}
-
-	if ((defined $condition->{path}) && ($condition->{path} ne '')){
-		push @$conditions, 'path=?';
-		push @$bind_values, $condition->{path};
-	}
-
-    my $limit='';
-	if ((defined $condition->{limit}) && ($condition->{limit} ne '')){
-        $limit= 'limit '.$condition->{limit};
+    if ( ( defined $condition->{id} ) && ( $condition->{id} ne '' ) ) {
+        push @$conditions,  'id=?';
+        push @$bind_values, $condition->{id};
     }
 
-	my $whereClause='';
-	$whereClause=" where ".join(" and ",@$conditions) if (scalar @$conditions>0);
+    if ( ( defined $condition->{project_id} ) && ( $condition->{project_id} ne '' ) ) {
+        push @$conditions,  'project_id=?';
+        push @$bind_values, $condition->{project_id};
+    }
 
-	my $query=qq{
+    if ( ( defined $condition->{studio_id} ) && ( $condition->{studio_id} ne '' ) ) {
+        push @$conditions,  'studio_id=?';
+        push @$bind_values, $condition->{studio_id};
+    }
+
+    if ( ( defined $condition->{event_id} ) && ( $condition->{event_id} ne '' ) ) {
+        push @$conditions,  'event_id=?';
+        push @$bind_values, $condition->{event_id};
+    }
+
+    if ( ( defined $condition->{path} ) && ( $condition->{path} ne '' ) ) {
+        push @$conditions,  'path=?';
+        push @$bind_values, $condition->{path};
+    }
+
+    my $limit = '';
+    if ( ( defined $condition->{limit} ) && ( $condition->{limit} ne '' ) ) {
+        $limit = 'limit ' . $condition->{limit};
+    }
+
+    my $whereClause = '';
+    $whereClause = " where " . join( " and ", @$conditions ) if ( scalar @$conditions > 0 );
+
+    my $query = qq{
 		select	id 
 		        ,project_id
 				,studio_id
 				,event_id
+				,active
 				,path
 				,size
 				,created_by
@@ -103,34 +91,29 @@ sub get{
 		$whereClause
 		order by created_at desc
 	};
-
-    #print STDERR Dumper($query).Dumper($bind_values);
-	my $entries=db::get($dbh, $query, $bind_values);
-	return $entries;
+    my $entries = db::get( $dbh, $query, $bind_values );
+    return $entries;
 }
 
-
 # update playout entry if differs to old values
-sub update{
-    my $config   = shift;
-    my $dbh      = shift;
-    my $entry    = shift;
-    
-    #print STDERR "update:".Dumper($entry);
+sub update($$$) {
+    my $config = shift;
+    my $dbh    = shift;
+    my $entry  = shift;
 
-	my $day_start=$config->{date}->{day_starting_hour};    
+    my $day_start = $config->{date}->{day_starting_hour};
 
-    my $bind_values=[
-        $entry->{path}, $entry->{size}, 
-        $entry->{created_by}, $entry->{created_at}, 
-        $entry->{modified_at} || time::time_to_datetime(time()),
-        $entry->{processed}, $entry->{mastered},
-        $entry->{eventDuration}, $entry->{audioDuration}, 
-        $entry->{rmsLeft}, $entry->{rmsRight},
-        $entry->{project_id}, $entry->{studio_id}, $entry->{event_id}
+    my $bind_values = [
+        $entry->{path},       $entry->{size},
+        $entry->{created_by}, $entry->{created_at},
+        $entry->{modified_at} || time::time_to_datetime( time() ), $entry->{processed},
+        $entry->{mastered},      $entry->{eventDuration},
+        $entry->{audioDuration}, $entry->{rmsLeft},
+        $entry->{rmsRight},      $entry->{project_id},
+        $entry->{studio_id},     $entry->{event_id}
     ];
-    
-    my $query=qq{
+
+    my $query = qq{
         update calcms_audio_recordings
         set    path=?, size=?, 
                created_by=?, created_at=?, 
@@ -140,66 +123,105 @@ sub update{
                rmsLeft=?, rmsRight=?
         where  project_id=? and studio_id=? and event_id=?
     };
-    if (defined $entry->{id}){
-        $query.=' and id=?';
+    if ( defined $entry->{id} ) {
+        $query .= ' and id=?';
         push @$bind_values, $entry->{id};
     }
-    #print STDERR Dumper($query).Dumper($bind_values);
-    return db::put($dbh, $query, $bind_values);
+    my $result = db::put( $dbh, $query, $bind_values );
+    update_active($config, $dbh, $entry);
+    return $result;
 }
 
 # insert playout entry
-sub insert{
+sub insert ($$$) {
     my $config = shift;
     my $dbh    = shift;
     my $entry  = shift;
 
-	return undef unless defined $entry->{project_id};
-	return undef unless defined $entry->{studio_id};
-	return undef unless defined $entry->{event_id};
-	return undef unless defined $entry->{path};
+    return undef unless defined $entry->{project_id};
+    return undef unless defined $entry->{studio_id};
+    return undef unless defined $entry->{event_id};
+    return undef unless defined $entry->{path};
 
-    #print STDERR "insert into audio_recordings:".Dumper($entry);
-    return db::insert($dbh, 'calcms_audio_recordings', {
-        project_id       => $entry->{project_id},
-        studio_id        => $entry->{studio_id},
-        event_id         => $entry->{event_id},
-        path             => $entry->{path},
-        size             => $entry->{size},
-        created_by       => $entry->{created_by},
-        eventDuration    => $entry->{eventDuration},
-        audioDuration    => $entry->{audioDuration},
-        rmsLeft          => $entry->{rmsLeft},
-        rmsRight         => $entry->{rmsRight},
-        processed        => $entry->{processed},
-        mastered         => $entry->{mastered} || '0',
-    });
+    $entry = {
+        project_id    => $entry->{project_id},
+        studio_id     => $entry->{studio_id},
+        event_id      => $entry->{event_id},
+        path          => $entry->{path},
+        size          => $entry->{size},
+        created_by    => $entry->{created_by},
+        eventDuration => $entry->{eventDuration},
+        audioDuration => $entry->{audioDuration},
+        rmsLeft       => $entry->{rmsLeft},
+        rmsRight      => $entry->{rmsRight},
+        processed     => $entry->{processed},
+        mastered      => $entry->{mastered} || '0',
+    };
 
+    my $result = db::insert( $dbh, 'calcms_audio_recordings', $entry );
+    update_active($config, $dbh, $entry);
+    return $result;
 }
 
 # delete playout entry
-sub delete{
+sub delete ($$$) {
     my $config = shift;
-	my $dbh    = shift;
-	my $entry  = shift;
-	
-	return undef unless defined $entry->{project_id};
-	return undef unless defined $entry->{studio_id};
-	return undef unless defined $entry->{event_id};
-	return undef unless defined $entry->{path};
+    my $dbh    = shift;
+    my $entry  = shift;
 
-	my $query=qq{
-		delete 
+    return undef unless defined $entry->{project_id};
+    return undef unless defined $entry->{studio_id};
+    return undef unless defined $entry->{event_id};
+    return undef unless defined $entry->{path};
+
+    my $query = qq{
+		delete
 		from calcms_audio_recordings
 		where project_id=? and studio_id=? and event_id=? and path=?
 	};
-	my $bind_values = [ $entry->{project_id}, $entry->{studio_id}, $entry->{event_id}, $entry->{path} ];
-	return db::put($dbh, $query, $bind_values);
+    my $bind_values = [ $entry->{project_id}, $entry->{studio_id}, $entry->{event_id}, $entry->{path} ];
+    my $result =  db::put( $dbh, $query, $bind_values );
+
+    update_active($config, $dbh, $entry);
+    return $result;
 }
 
-sub error{
-	my $msg = shift;
-	print "ERROR: $msg<br/>\n";
+sub update_active($$$) {
+    my $config = shift;
+    my $dbh    = shift;
+    my $entry  = shift;
+
+    return undef unless defined $entry->{project_id};
+    return undef unless defined $entry->{studio_id};
+    return undef unless defined $entry->{event_id};
+
+    my $bind_values = [ $entry->{project_id}, $entry->{studio_id}, $entry->{event_id} ];
+    my $query = qq{
+        update calcms_audio_recordings
+        set    active=0
+        where  project_id=? and studio_id=? and event_id=? and active=1
+    };
+    db::put( $dbh, $query, $bind_values );
+
+    $query = qq{
+        select max(id) id from calcms_audio_recordings
+        where  project_id=? and studio_id=? and event_id=?
+    };
+    my $entries = db::get( $dbh, $query, $bind_values );
+    my $max = $entries->[0];
+    return undef unless defined $max->{id};
+
+    $query = qq{
+        update calcms_audio_recordings
+        set    active=1
+        where  id=?
+    };
+    return db::put( $dbh, $query, [$max->{id}] );
+}
+
+sub error($) {
+    my $msg = shift;
+    print "ERROR: $msg<br/>\n";
 }
 
 #do not delete last line!

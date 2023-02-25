@@ -1,0 +1,77 @@
+input.field{
+	width:30em;
+}
+
+#content div.image{
+	display:inline-block;
+	vertical-alignment:top;
+	border:1px solid gray;
+	margin:6px;
+	padding:0;
+	text-align:left;
+	background-repeat:no-repeat;
+	width:150px;
+	height:150px;
+	vertical-align:bottom;
+}
+
+#content .close{
+	text-align:right;
+	padding:0;
+	margin:0;
+	color:white;
+	float:right;
+}
+
+#content div.image:hover{
+    cursor:pointer;
+	background-color:#39a1f4;
+    font-weight:bold;
+    opacity:0.9;
+    filter:contrast(120%);
+    box-shadow: 0 5px 11px 0 rgba(0,0,0,.18),0 4px 15px 0 rgba(0,0,0,.15);
+}
+
+#content div.image .label{
+	text-align:center;
+	background-color:#333;
+	color:#fff;
+	vertical-align:bottom;
+	opacity:0.9;
+	padding:6px;
+	width:138px;
+	margin:0;
+}
+
+#content div.image.active .label{
+	background-color:#39a1f4;
+    font-weight:bold;
+}
+
+#content div.image.active{
+    border:1px solid #39a1f4;
+    box-shadow: 0 5px 11px 0 rgba(0,0,0,.18),0 4px 15px 0 rgba(0,0,0,.15);
+}
+
+#content div.image.inactive{
+    opacity:0.5;
+}
+
+#imageEditor{
+    min-height:800px;
+    height:100%;
+}
+
+#content #imageEditor input, 
+#content #imageEditor select, 
+#content #imageEditor textarea{
+    margin-left:0;
+    margin-bottom:1rem;
+    padding:1rem;
+}
+
+#content label{
+    margin-top: 1rem;
+    text-transform: uppercase;
+    color:#999;
+}

@@ -22,6 +22,9 @@ msgstr "old series"
 msgid "button_show_changes"
 msgstr "changes"
 
+msgid "button_rebuild_episodes"
+msgstr "recount episodes"
+
 msgid "label_name"
 msgstr "name"
 
@@ -76,6 +79,18 @@ msgstr "Podcast URL"
 
 msgid "template_archive_url"
 msgstr "Archive URL"
+
+msgid "template_predecessor_id"
+msgstr "Series Predecessor ID"
+
+msgid "template_content_format"
+msgstr "wiki Language"
+
+msgid "template_content_format_markdown"
+msgstr "Markdown"
+
+msgid "template_content_format_creole"
+msgstr "Creole"
 
 msgid "tab_schedule"
 msgstr "Schedule"

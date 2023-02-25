@@ -7,6 +7,9 @@ msgstr "today"
 msgid "button_search"
 msgstr "search"
 
+msgid "label_pin"
+msgstr "pin"
+
 msgid "label_month"
 msgstr "month"
 
@@ -30,6 +33,9 @@ msgstr "schedule"
 
 msgid "label_worktime"
 msgstr "worktime"
+
+msgid "label_descriptions"
+msgstr "descriptions"
 
 msgid "label_playout"
 msgstr "playout"

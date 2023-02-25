@@ -8,7 +8,7 @@ msgid "tab_edit"
 msgstr "Bearbeiten"
 
 msgid "tab_upload"
-msgstr "Hochladen"
+msgstr "Neues Bild"
 
 msgid "button_upload"
 msgstr "Hochladen"
@@ -16,17 +16,23 @@ msgstr "Hochladen"
 msgid "button_search"
 msgstr "Suchen"
 
-msgid "button_zoom_in"
-msgstr "Vergrößern"
-
-msgid "button_zoom_out"
-msgstr "Verkleinern"
-
 msgid "button_save"
 msgstr "Speichern"
 
 msgid "button_delete"
 msgstr "Löschen"
+
+msgid "button_properties"
+msgstr "Eigenschaften"
+
+msgid "button_publish"
+msgstr "Veröffentlichen"
+
+msgid "button_depublish"
+msgstr "Depublizieren"
+
+msgid "label_warn_unknown_licence"
+msgstr "Angabe der Lizenz ermöglicht Veröffentlichung des Bildes."
 
 msgid "label_name"
 msgstr "Name"
@@ -51,5 +57,56 @@ msgstr "Editor-Link"
 
 msgid "label_search_hits"
 msgstr "Treffer"
+
+msgid "label_author"
+msgstr "Author"
+
+msgid "label_licence"
+msgstr "Lizenz"
+
+msgid "label_public"
+msgstr "veröffentlicht"
+
+msgid "label_file"
+msgstr "Datei"
+
+msgid "label_name_required"
+msgstr "Bitte Feld eintragen"
+
+msgid "label_licence_required"
+msgstr "Bild kann ohne Author/Lizenz nicht veröffentlicht werden"
+
+msgid "label_mandatory_field"
+msgstr "bitte füllen Sie dieses Feld aus"
+
+msgid "label_mandatory_field_licence"
+msgstr "Angabe der Lizenz ermöglicht Veröffentlichung des Bildes"
+
+msgid "label_assign_to_event"
+msgstr "Dieses Bild für Sendung nutzen"
+
+msgid "label_assign_to_series"
+msgstr "Dieses Bild für Sendereihe nutzen"
+
+msgid "label_assign_to_studio"
+msgstr "Dieses Bild für Studio nutzen"
+
+msgid "label_assign_to_project"
+msgstr "Dieses Bild für Projekt nutzen"
+
+msgid "label_assign_to_projects"
+msgstr "Dieses Bild für Projekt nutzen"
+
+msgid "label_warn_not_public_event"
+msgstr "Bild muss veröffentlicht werden, um es in Sendebeschreibung zu nutzen."
+
+msgid "label_warn_not_public_series"
+msgstr "Bild muss veröffentlicht werden, um es in Sendebeschreibung zu nutzen."
+
+msgid "label_warn_not_public_studio"
+msgstr "Bild muss veröffentlicht werden, um es für Studio zu nutzen."
+
+msgid "label_warn_not_public_project"
+msgstr "Bild muss veröffentlicht werden, um es in Projekt zu nutzen."
 
 

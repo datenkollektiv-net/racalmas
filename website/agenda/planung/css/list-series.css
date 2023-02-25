@@ -1,0 +1,45 @@
+h2{
+    display:inline;
+}
+
+#content{
+    height:1000px;
+}
+
+div#oldSeries{
+    clear:both;
+}
+
+div#newSeries, 
+div#oldSeries{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+div#newSeries a,
+div#oldSeries a{
+    color:#fff;
+    background:#1abc9c;
+    padding:0.5rem;
+    margin:0.5rem;
+    cursor:pointer;
+    text-align:center;
+    display:table-cell;
+    vertical-align:middle;
+    width:10rem;
+    height:4rem;
+    line-height:1.4rem;
+}
+
+div#newSeries a:hover,
+div#oldSeries a:hover{
+    background:#1dd2af;
+    text-decoration:none;
+}
+
+div#search{
+    float:right;
+}
+

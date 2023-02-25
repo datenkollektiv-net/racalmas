@@ -22,6 +22,9 @@ msgstr "save"
 msgid "button_delete"
 msgstr "delete"
 
+msgid "button_apply"
+msgstr "apply"
+
 msgid "button_unassign_event"
 msgstr "unassign from series"
 
@@ -121,6 +124,15 @@ msgstr "modified at"
 msgid "label_modified_by"
 msgstr "by"
 
+msgid "label_content_format"
+msgstr "wiki Language"
+
+msgid "label_content_format_markdown"
+msgstr "Markdown"
+
+msgid "label_content_format_creole"
+msgstr "Creole"
+
 msgid "button_event_list"
 msgstr "show events"
 
@@ -165,3 +177,7 @@ msgstr "excerpt is too long. for longer text please use the field «Current Topi
 
 msgid "label_excerpt_extension_too_long"
 msgstr "excerpt is too long. for longer text please use the field «Current Topics»"
+
+msgid "button_copy_to_clipboard"
+msgstr "copy to clipboard"
+
