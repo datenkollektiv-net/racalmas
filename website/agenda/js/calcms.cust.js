@@ -265,14 +265,14 @@ var calcms_settings = new Array();
     }
 
     $(document).ready(function() {
-        if (window.location.href.match(/\/programm\//)) scrollTo( $("h1"), -16,0 );
+        //if (window.location.href.match(/\/programm\//)) scrollTo( $("h1"), -16,0 );
         initCalcms();
-        initWordpress();
-        calcms.showPlaylist();
+        //initWordpress();
+        //calcms.showPlaylist();
         calcms.showNewestComments();
-        calcms.insertEditors();
+        //calcms.insertEditors();
         initSearch();
-        initEventScroll();
+        //initEventScroll();
         console.log("calcms inited")
     });
 
