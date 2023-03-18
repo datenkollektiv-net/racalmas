@@ -31,21 +31,6 @@ domain                      ${DOMAIN}
     rss                     rss
 </controllers>
 
-<system>
-    config_file             ${BASE_DIR}/agenda/config/config.cgi
-
-    log_file                /var/www/vhosts/${DOMAIN}/logs/error_log
-    log_debug_file          ${LOG_DIR}/${DOMAIN}/calcms.log
-    log_debug_memory_file   ${LOG_DIR}/${DOMAIN}/calcms-mem.log
-
-    debug_memory            0
-    debug                   0
-</system>
-
-<cache>
-    base_url                /programm
-</cache>
-
 <locations>
     temp_dir                ${BASE_DIR}/temp/
 
@@ -57,6 +42,7 @@ domain                      ${DOMAIN}
     source_base_url         https://${DOMAIN}/
     local_base_url          /agenda/
     editor_base_url         /agenda/planung/
+    widget_render_url       /programm
 
     # ajax
     base_domain             https://${DOMAIN}/

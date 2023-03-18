@@ -264,7 +264,7 @@ sub modify_results ($$$$) {
         $result->{static_files_url} = $config->{locations}->{static_files_url};
         $result->{source_base_url}  = $config->{locations}->{source_base_url};
         $result->{local_base_url}   = $config->{locations}->{local_base_url};
-        $result->{cache_base_url}   = $config->{cache}->{base_url};
+        $result->{widget_render_url}= $config->{locations}->{widget_render_url};
 
         $result->{is_running} = 1 if $running_event_id
             && $result->{event_id}
@@ -1204,10 +1204,6 @@ sub render($$$$;$) {
     my %tparams = %$params;
     my $tparams = \%tparams;
     $tparams->{events}       = $results;
-    $tparams->{server_cache} = $config->{cache}->{server_cache}
-      if ( $config->{cache}->{server_cache} );
-    $tparams->{use_client_cache} = $config->{cache}->{use_client_cache}
-      if ( $config->{cache}->{use_client_cache} );
 
     if ( scalar @$results > 0 ) {
         my $result = $results->[0];
@@ -1221,7 +1217,7 @@ sub render($$$$;$) {
     $tparams->{base_url}       = $config->{locations}->{base_url};
     $tparams->{base_domain}    = $config->{locations}->{base_domain};
     $tparams->{local_base_url} = $config->{locations}->{local_base_url};
-    $tparams->{cache_base_url} = $config->{cache}->{base_url};
+    $tparams->{widget_render_url} = $config->{locations}->{widget_render_url};
     $tparams->{modified_at}    = time::time_to_datetime( time() );
     if (   ( defined $params->{template} )
         && ( $params->{template} =~ /(\.xml)/ ) )

@@ -32,7 +32,6 @@ my $r = shift;
 ( my $cgi, my $params, my $error ) = params::get($r);
 
 my $config = config::get('../config/config.cgi');
-my $debug  = $config->{system}->{debug};
 my ( $user, $expires ) = auth::get_user( $config, $params, $cgi );
 return if ( !defined $user ) || ( $user eq '' );
 
@@ -139,7 +138,7 @@ sub showComments {
         for my $event (@$events) {
             $event->{start} = time::date_time_format( $config, $event->{start}, $language );
             $comment_count += $event->{comment_count} if defined $event->{comment_count};
-            $event->{cache_base_url} = $config->{cache}->{base_url};
+            $event->{widget_render_url} = $config->{locations}->{widget_render_url};
         }
     }
     for my $param (%$comment) {
@@ -148,7 +147,6 @@ sub showComments {
 
     $template_parameters->{search}        = markup::fix_utf8( $request->{params}->{original}->{search} );
     $template_parameters->{events}        = $events;
-    $template_parameters->{debug}         = $config->{system}->{debug};
     $template_parameters->{event_count}   = scalar(@$events);
     $template_parameters->{comment_count} = $comment_count;
     $template_parameters->{is_empty}      = 1 if scalar @$events == 0;

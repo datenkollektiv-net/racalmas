@@ -28,7 +28,6 @@ my $r = shift;
 ( my $cgi, my $params, my $error ) = params::get($r);
 
 my $config = config::get('../config/config.cgi');
-my $debug  = $config->{system}->{debug};
 my ( $user, $expires ) = auth::get_user( $config, $params, $cgi );
 return if ( ( !defined $user ) || ( $user eq '' ) );
 
@@ -216,7 +215,7 @@ sub getMail {
     $mail->{Data} .= "nur zur Erinnerung...\n\n";
     $mail->{Data} .= "am $event->{weekday_name} ist die naechste '$event->{series_name}'-Sendung.\n\n";
     $mail->{Data} .=
-      "$event->{source_base_url}$event->{cache_base_url}/$config->{controllers}->{event}/$event->{event_id}.html\n\n";
+      "$event->{source_base_url}$event->{widget_render_url}/$config->{controllers}->{event}/$event->{event_id}.html\n\n";
     $mail->{Data} .= "Gruss, $request->{user}\n";
     return $mail;
 }
@@ -242,12 +241,6 @@ sub check_params {
     my $checked  = {};
     my $template = '';
     $checked->{template} = template::check( $config, $params->{template}, 'notify-events' );
-
-    my $debug = $params->{debug} || '';
-    if ( $debug =~ /([a-z\_\,]+)/ ) {
-        $debug = $1;
-    }
-    $checked->{debug} = $debug;
 
     entry::set_numbers( $checked, $params, [
         'event_id', 'project_id', 'studio_id', 'default_studio_id', 'user_id', 'series_id', 'duration'
