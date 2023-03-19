@@ -4,13 +4,13 @@
     <script>
     jQuery( document ).ready(function() {
         //load next shows into current playlist
-        if(jQuery('#sendungen').length!=0) jQuery('#sendungen').load('/agenda/playlistLong/');
+        if(jQuery('#coming_shows').length!=0) jQuery('#coming_shows').load('/agenda/playlistLong/');
 
         //hide next shows
-        // if(jQuery('#calcms_playlist').length!=0) jQuery('#calcms_playlist').parent().parent().hide();
+        if(jQuery('#calcms_playlist').length!=0) jQuery('#calcms_playlist').parent().parent().hide();
 
         //hide programm menu
-        // if(jQuery('#calcms_menu').length!=0) jQuery('#calcms_menu').parent().parent().hide();
+        if(jQuery('#calcms_menu').length!=0) jQuery('#calcms_menu').parent().parent().hide();
     });
     </script>
 
