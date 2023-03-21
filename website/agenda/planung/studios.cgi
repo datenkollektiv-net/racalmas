@@ -12,7 +12,6 @@ use params();
 use log();
 use template();
 use auth();
-use roles();
 use uac();
 use studios();
 use series();
@@ -26,7 +25,6 @@ my $config = config::get('../config/config.cgi');
 my ( $user, $expires ) = auth::get_user( $config, $params, $cgi );
 return if ( $user eq '' );
 
-my $permissions  = roles::get_user_permissions($config);
 my $user_presets = uac::get_user_presets(
     $config,
     {
@@ -220,7 +218,7 @@ sub check_params {
     $checked->{action} = entry::element_of( $params->{action}, ['save', 'delete']);
 
     entry::set_strings( $checked, $params, [
-        'name', 'description', 'location', 'stream', 'google_calendar', 'image', 'setImage' ]);
+        'name', 'description', 'location', 'stream', 'image', 'setImage' ]);
 
     entry::set_numbers( $checked, $params, [
         'project_id', 'studio_id', 'default_studio_id', 'id'

@@ -274,23 +274,22 @@ ADD COLUMN `listen_key` VARCHAR(100) NULL;
 ALTER TABLE `calcms_audio_recordings`
 ADD COLUMN `active` TINYINT(1) NOT NULL DEFAULT 0 AFTER `event_id`;
 
-ALTER TABLE `calcms`.`calcms_audio_recordings`
+ALTER TABLE `calcms_audio_recordings`
 ADD INDEX `active_index` (`active`);
 
-ALTER TABLE `calcms`.`calcms_events` 
+ALTER TABLE `calcms_events`
 DROP COLUMN `category_count`,
 DROP COLUMN `category`,
 DROP INDEX `category` ;
-;
-ALTER TABLE `calcms`.`calcms_event_history` 
+
+ALTER TABLE `calcms_event_history`
 DROP COLUMN `category_count`,
 DROP COLUMN `category`,
 DROP INDEX `category` ;
-;
 
 ALTER TABLE calcms_user_series DROP COLUMN active;
 
-CREATE TABLE `coloradio`.`calcms_help_texts` (
+CREATE TABLE `calcms_help_texts` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `project_id` INT UNSIGNED NOT NULL,
   `studio_id` INT UNSIGNED NOT NULL,
@@ -301,3 +300,9 @@ CREATE TABLE `coloradio`.`calcms_help_texts` (
   PRIMARY KEY (`id`));
 
 ALTER TABLE `calcms_roles` ADD COLUMN `edit_help_texts` INT(1) UNSIGNED NOT NULL;
+
+-- admin roles
+ALTER TABLE `calcms_roles` ADD COLUMN `admin` INT(1) UNSIGNED NOT NULL DEFAULT 0 AFTER `level`;
+update calcms_roles set admin=1 where role = 'Admin';
+
+ALTER TABLE calcms_studios DROP COLUMN google_calendar;
