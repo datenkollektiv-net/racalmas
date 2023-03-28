@@ -34,7 +34,7 @@ Content-type:text/html; charset=UTF-8;
                 title="<TMPL_IF program><TMPL_VAR program> - </TMPL_IF><TMPL_IF series_name><TMPL_VAR series_name> - </TMPL_IF><TMPL_VAR title>"
             >
                 <div class="icon">
-                    <TMPL_IF icon><img src="<TMPL_VAR icon>" alt="<TMPL_VAR series_name>" /> 
+                    <TMPL_IF icon><img src="<TMPL_VAR icon_url>" alt="<TMPL_VAR series_name>" /> 
                     <TMPL_ELSE><img src="<TMPL_VAR static_files_url>image/event.icon.png" />
                     </TMPL_IF>
                 </div>
@@ -58,7 +58,7 @@ Content-type:text/html; charset=UTF-8;
                 title="<TMPL_IF program><TMPL_VAR program> - </TMPL_IF><TMPL_IF series_name><TMPL_VAR series_name> - </TMPL_IF><TMPL_VAR title>"
             >
                 <div class="icon">
-                    <TMPL_IF icon><img src="<TMPL_VAR icon>" alt="<TMPL_VAR series_name>" /> 
+                    <TMPL_IF icon><img src="<TMPL_VAR icon_url>" alt="<TMPL_VAR series_name>" /> 
                     <TMPL_ELSE><img src="<TMPL_VAR static_files_url>image/event.icon.png" />
                     </TMPL_IF>
                 </div>

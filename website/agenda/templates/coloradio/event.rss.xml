@@ -27,7 +27,7 @@ Content-type:application/rss+xml; charset=UTF-8
 		<guid>http:<TMPL_VAR base_domain><TMPL_VAR widget_render_url>/<TMPL_VAR .controllers.event>/<TMPL_VAR event_id>.html</guid>
 		<pubDate><TMPL_VAR modified_at></pubDate>
 		<comments>http:<TMPL_VAR base_domain><TMPL_VAR cache_base_domain>/<TMPL_VAR .controllers.event>/<TMPL_VAR event_id>.html#comments</comments>
-		<media:content url="http:<TMPL_VAR base_domain><TMPL_VAR image>" medium="image">
+		<media:content url="http:<TMPL_VAR base_domain><TMPL_VAR image_url>" medium="image">
 			<media:title type="html"><TMPL_VAR full_title></media:title>
 		</media:content>
 
