@@ -718,7 +718,21 @@
 					}
 				});
 
-							
+		    jQuery( document ).ready(function(){
+                $('body').on("change", '#calcms_series_name_all', function(){
+                    $('#sendungen').html('');
+                });
+                $('body').on("click", '#programm_search_button', function(){
+		            $('#sendungen').html('');
+		        });
+                $('body').on("click", '#suchekommendes', function(){
+                    $('#sendungen').html('');
+		        });
+                $('body').on("click", '#suchevergangenes', function(){
+                    $('#sendungen').html('');
+		        })
+		    });
+
 		</script>
 
 		<!-- HTML5 shiv : HTML5 in older IE browsers -->
