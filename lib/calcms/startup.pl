@@ -1,6 +1,7 @@
 use lib qw(/home/calcms/racalmas/lib/calcms/);
 use lib qw(/home/radio/calcms/calcms/);
 use lib qw(/home/calcms/lib/calcms/);
+use lib qw(/srv/www/sites/testing-calcms.datenkollektiv.net/lib/calcms/);
 
 use Data::Dumper;
 #use Apache::DBI();
