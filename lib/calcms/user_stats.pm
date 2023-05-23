@@ -9,15 +9,13 @@ use Data::Dumper;
 our @EXPORT_OK = qw(get_columns get update insert get_stats increase);
 
 sub get_columns($) {
-    my $config = shift;
-
+    my ($config) = @_;
     my $dbh = db::connect($config);
     return db::get_columns_hash( $dbh, 'calcms_user_stats' );
 }
 
 sub get ($$) {
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my $dbh = db::connect($config);
 
@@ -65,8 +63,7 @@ sub get ($$) {
 }
 
 sub get_stats($$) {
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my $dbh = db::connect($config);
 
@@ -130,8 +127,7 @@ sub get_stats($$) {
 }
 
 sub insert($$) {
-    my $config = shift;
-    my $stats  = shift;
+    my ($config, $stats) = @_;
 
     return undef unless defined $stats->{project_id};
     return undef unless defined $stats->{studio_id};
@@ -153,8 +149,7 @@ sub insert($$) {
 
 # update project
 sub update ($$) {
-    my $config = shift;
-    my $stats  = shift;
+    my ($config, $stats) = @_;
 
     return undef unless defined $stats->{project_id};
     return undef unless defined $stats->{studio_id};
@@ -187,9 +182,7 @@ sub update ($$) {
 }
 
 sub increase ($$$) {
-    my $config  = shift;
-    my $usecase = shift;
-    my $options = shift;
+    my ($config, $usecase, $options) = @_;
 
     return undef unless defined $usecase;
     return undef unless defined $options->{project_id};
@@ -222,7 +215,7 @@ sub increase ($$$) {
 }
 
 sub get_active_users{
-    my $config    = shift;
+    my ($config) = @_;
 
     my $dbh = db::connect($config);
 

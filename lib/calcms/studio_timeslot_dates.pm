@@ -16,7 +16,7 @@ use time();
 our @EXPORT_OK   = qw(get_columns get insert update delete get_dates);
 
 sub get_columns ($){
-    my $config = shift;
+    my ($config) = @_;
 
     my $dbh = db::connect($config);
     return db::get_columns_hash( $dbh, 'calcms_studio_timeslot_dates' );
@@ -25,8 +25,7 @@ sub get_columns ($){
 # get all studio_timeslot_dates for studio_id within given time range
 # calculate start_date, end_date, weeday, day from start and end(datetime)
 sub get ($$){
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my $date_range_include = 0;
     $date_range_include = 1 if ( defined $condition->{date_range_include} ) && ( $condition->{date_range_include} == 1 );
@@ -113,8 +112,7 @@ sub get ($$){
 
 #get all studio_timeslot_schedules for studio_id and update studio_timeslot_dates
 sub update {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return undef unless defined $entry->{schedule_id};
 
@@ -172,10 +170,8 @@ sub update {
 # calculate all start/end datetimes between start_date and stop_date with a frequency(days)
 # returns list of hashs with start and end
 sub get_dates {
-    my $start_datetime = shift;    # start
-    my $end_datetime   = shift;    # start
-    my $stop_date      = shift;    # limit recurring events
-    my $frequency      = shift;    # in days
+    my ($start_datetime, $end_datetime, $stop_date, $frequency) = @_;
+                                                    #days
 
     my @start = @{ time::datetime_to_array($start_datetime) };
     return unless @start >= 6;
@@ -264,8 +260,7 @@ sub get_dates {
 
 #remove all studio_timeslot_dates for studio_id and schedule_id
 sub delete {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return unless defined $entry->{project_id};
     return unless defined $entry->{studio_id};
@@ -286,8 +281,7 @@ sub delete {
 # time based filter to check if studio is assigned to an studio at a given time range
 # return 1 if there is a schedule date starting before start and ending after end
 sub can_studio_edit_events {
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my @conditions  = ();
     my @bind_values = ();
@@ -350,8 +344,7 @@ sub can_studio_edit_events {
 # returns hashref with start and end of merged slot
 # returns undef if not slot could be found
 sub getMergedDays {
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my @conditions  = ();
     my @bind_values = ();

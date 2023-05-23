@@ -17,16 +17,14 @@ our @EXPORT_OK = qw(get_columns get);
 # audioDuration, eventDuration, rmsLeft, rmsRight
 
 sub get_columns($) {
-    my $config = shift;
-
+    my ($config) = @_;
     my $dbh  = db::connect($config);
     return db::get_columns_hash( $dbh, 'calcms_audio_recordings' );
 }
 
 # get playout entries
 sub get($$) {
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my $date_range_include = 0;
     $date_range_include = 1
@@ -97,9 +95,7 @@ sub get($$) {
 
 # update playout entry if differs to old values
 sub update($$$) {
-    my $config = shift;
-    my $dbh    = shift;
-    my $entry  = shift;
+    my ($config, $dbh, $entry) = @_;
 
     my $day_start = $config->{date}->{day_starting_hour};
 
@@ -134,9 +130,7 @@ sub update($$$) {
 
 # insert playout entry
 sub insert ($$$) {
-    my $config = shift;
-    my $dbh    = shift;
-    my $entry  = shift;
+    my ($config, $dbh, $entry) = @_;
 
     return undef unless defined $entry->{project_id};
     return undef unless defined $entry->{studio_id};
@@ -165,9 +159,7 @@ sub insert ($$$) {
 
 # delete playout entry
 sub delete ($$$) {
-    my $config = shift;
-    my $dbh    = shift;
-    my $entry  = shift;
+    my ($config, $dbh, $entry) = @_;
 
     return undef unless defined $entry->{project_id};
     return undef unless defined $entry->{studio_id};
@@ -187,9 +179,7 @@ sub delete ($$$) {
 }
 
 sub update_active($$$) {
-    my $config = shift;
-    my $dbh    = shift;
-    my $entry  = shift;
+    my ($config, $dbh, $entry) = @_;
 
     return undef unless defined $entry->{project_id};
     return undef unless defined $entry->{studio_id};

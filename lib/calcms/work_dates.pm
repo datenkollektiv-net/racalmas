@@ -20,8 +20,7 @@ use work_schedule();
 our @EXPORT_OK = qw(get_columns get insert update delete get_dates);
 
 sub get_columns($) {
-    my $config = shift;
-
+    my ($config) = @_;
     my $dbh = db::connect($config);
     return db::get_columns_hash( $dbh, 'calcms_work_dates' );
 }
@@ -29,8 +28,7 @@ sub get_columns($) {
 # get all work_dates for studio_id and schedule_id within given time range
 # calculate start_date, end_date, weeday, day from start and end(datetime)
 sub get ($$) {
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my $date_range_include = 0;
     $date_range_include = 1
@@ -118,8 +116,7 @@ sub get ($$) {
 
 #update work dates for all schedules of a work and studio_id
 sub update($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return undef unless defined $entry->{project_id};
     return undef unless defined $entry->{studio_id};
@@ -199,8 +196,7 @@ sub update($$) {
 }
 
 sub get_schedule_dates($$) {
-    my $schedule = shift;
-    my $options  = shift;
+    my ($schedule, $options) = @_;
 
     my $is_exclude = $options->{exclude} || 0;
     my $dates = [];
@@ -223,12 +219,8 @@ sub get_schedule_dates($$) {
 }
 
 sub get_week_of_month_dates($$$$$$) {
-    my $start     = shift;    # datetime string
-    my $end       = shift;    # datetime string
-    my $duration  = shift;    # in minutes
-    my $week      = shift;    # every nth week of month
-    my $weekday   = shift;    # weekday [1..7]
-    my $frequency = shift;    # every 1st,2nd,3th time
+    my ($start, $end, $duration, $week, $weekday, $frequency) = @_;
+    # datetime, datetime, minutes, every nth week of month, weekday [1..7], every 1st,2nd,3th time
 
     return undef if $start eq '';
     return undef if $end eq '';
@@ -267,8 +259,7 @@ sub get_week_of_month_dates($$$$$$) {
 
 #add duration to a single date
 sub get_single_date($$) {
-    my $start_datetime = shift;
-    my $duration       = shift;
+    my ($start_datetime, $duration) = @_;
 
     my @start = @{ time::datetime_to_array($start_datetime) };
     return unless @start >= 6;
@@ -287,11 +278,8 @@ sub get_single_date($$) {
 
 #calculate all dates between start_datetime and end_date with duration(minutes) and frequency(days)
 sub get_dates($$$$) {
-    my $start_datetime = shift;
-    my $end_date       = shift;
-    my $duration       = shift;    # in minutes
-    my $frequency      = shift;    # in days
-         #print "start_datetime:$start_datetime end_date:$end_date duration:$duration frequency:$frequency\n";
+    my ($start_datetime, $end_date, $duration, $frequency) = @_;
+    #duration in seconds, frequency in minutes
 
     my @start = @{ time::datetime_to_array($start_datetime) };
     return unless @start >= 6;
@@ -348,8 +336,7 @@ sub get_dates($$$$) {
 
 #remove all work_dates for studio_id and schedule_id
 sub delete($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return undef unless defined $entry->{project_id};
     return undef unless defined $entry->{studio_id};

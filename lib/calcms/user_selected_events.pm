@@ -12,15 +12,14 @@ use Data::Dumper;
 #           selected_project, selected_studio, selected_series, selected_event <-result
 
 sub get_columns($) {
-    my $config = shift;
+    my ($config) = @_;
 
     my $dbh  = db::connect($config);
     return db::get_columns_hash( $dbh, 'calcms_user_selected_events' );
 }
 
 sub get ($$) {
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my @conditions  = ();
     my @bind_values = ();
@@ -54,8 +53,7 @@ sub get ($$) {
 }
 
 sub insert ($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return unless defined $entry->{user};
     return unless defined $entry->{project_id};
@@ -69,8 +67,7 @@ sub insert ($$) {
 }
 
 sub update($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     my $fields = [ 
         'user', 'project_id', 'studio_id', 'series_id', 
@@ -97,8 +94,7 @@ sub update($$) {
 }
 
 sub delete ($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return unless defined $entry->{user};
     return unless defined $entry->{project_id};

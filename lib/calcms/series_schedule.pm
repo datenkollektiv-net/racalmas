@@ -22,7 +22,7 @@ use series_dates();
 our @EXPORT_OK = qw(get_columns get insert update delete);
 
 sub get_columns ($) {
-    my $config = shift;
+    my ($config) = @_;
 
     my $dbh     = db::connect($config);
     return db::get_columns_hash( $dbh, 'calcms_series_schedule' );
@@ -30,8 +30,7 @@ sub get_columns ($) {
 
 #map schedule id to id
 sub get($$) {
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my $dbh = db::connect($config);
 
@@ -99,8 +98,7 @@ sub get($$) {
 }
 
 sub insert($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return undef unless defined $entry->{project_id};
     return undef unless defined $entry->{studio_id};
@@ -112,8 +110,7 @@ sub insert($$) {
 
 #schedule id to id
 sub update($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return undef unless defined $entry->{project_id};
     return undef unless defined $entry->{studio_id};
@@ -146,8 +143,7 @@ sub update($$) {
 
 #map schedule id to id
 sub delete($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return undef unless defined $entry->{project_id};
     return undef unless defined $entry->{studio_id};

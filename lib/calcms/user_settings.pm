@@ -66,8 +66,7 @@ our $defaultColors = [
 ];
 
 sub getColors($$) {
-    my $config     = shift;
-    my $conditions = shift;
+    my ($config, $conditions) = @_;
 
     return unless defined $conditions->{user};
     my $user = $conditions->{user};
@@ -101,8 +100,8 @@ sub getColors($$) {
 }
 
 sub getColorCss ($$) {
-    my $config     = shift;
-    my $conditions = shift;
+    my ($config, $conditions) = @_;
+
     return unless defined $conditions->{user};
 
     my $shift = 20;
@@ -132,15 +131,14 @@ sub getColorCss ($$) {
 }
 
 sub get_columns($) {
-    my $config = shift;
+    my ($config) = @_;
 
     my $dbh = db::connect($config);
     return db::get_columns_hash( $dbh, 'calcms_user_settings' );
 }
 
 sub get ($$) {
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my $dbh = db::connect($config);
 
@@ -166,8 +164,7 @@ sub get ($$) {
 }
 
 sub insert ($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return unless defined $entry->{user};
    
@@ -176,8 +173,7 @@ sub insert ($$) {
 }
 
 sub update($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return unless ( defined $entry->{user} );
 
@@ -198,8 +194,7 @@ sub update($$) {
 }
 
 sub delete ($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return unless ( defined $entry->{user} );
 

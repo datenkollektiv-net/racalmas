@@ -17,15 +17,13 @@ use db;
 use auth;
 
 sub get_columns ($) {
-    my $config = shift;
-
+    my ($config) = @_;
     my $dbh     = db::connect($config);
     return db::get_columns_hash( $dbh, 'calcms_password_requests' );
 }
 
 sub get ($$) {
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my $dbh = db::connect($config);
 
@@ -56,8 +54,7 @@ sub get ($$) {
 }
 
 sub update($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return unless defined $entry->{user};
 
@@ -76,8 +73,7 @@ sub update($$) {
 }
 
 sub insert ($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return undef unless defined $entry->{user};
 
@@ -86,8 +82,7 @@ sub insert ($$) {
 }
 
 sub delete ($$) {
-    my $config    = shift;
-    my $condition = shift;
+    my ($config, $condition) = @_;
 
     my @conditions  = ();
     my @bind_values = ();
@@ -117,8 +112,7 @@ sub delete ($$) {
 }
 
 sub sendToken ($$) {
-    my $config = shift;
-    my $entry  = shift;
+    my ($config, $entry) = @_;
 
     return undef unless defined $entry->{user};
 
@@ -161,9 +155,7 @@ sub sendToken ($$) {
 }
 
 sub changePassword ($$$) {
-    my $config   = shift;
-    my $request  = shift;
-    my $userName = shift;
+    my ($config, $request, $userName) = @_;
 
     my $params      = $request->{params}->{checked};
     my $permissions = $request->{permissions};
@@ -198,7 +190,7 @@ sub changePassword ($$$) {
 }
 
 sub isPasswordInvalid($) {
-    my $password = shift;
+    my ($password) = @_;
     unless ( defined $password || $password eq '' ) {
         return "The password must not be empty.";
     }
