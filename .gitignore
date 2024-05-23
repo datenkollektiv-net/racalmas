@@ -2,21 +2,17 @@
 sync.data
 old
 config.cgi
-website/agenda_files/media/icons/*
-website/agenda_files/media/image/*
-website/agenda_files/media/images/*
-website/agenda_files/media/thumbs/*
-website/agenda_files/media/upload/*
-website/agenda_files/recordings/*
+website/media/**/*.jpg
+website/media/**/*.jpeg
+website/media/**/*.png
+website/recordings/*
 *.php
 logs/*
 
-# nicht calcms - aber interface:
-website/agenda/player
-website/agenda/image
-website/agenda/img
-website/agenda/css
-website/agenda/script
-website/agenda/mp3
+# static frontend for programm.coloradio.org
+website/programm/*
+!website/programm/.htaccess
+# remove this after a while
+website/bak_to-delete
 
 website/agenda/timestamp.cgi
