@@ -1,0 +1,3 @@
+RedirectMatch ^/$ /programm/
+RedirectMatch ^/agenda/?$ /programm/#programm
+RedirectMatch ^/datenschutzerklaerung/$ https://coloradio.org/?page_id=576

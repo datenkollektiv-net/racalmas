@@ -1,6 +1,8 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
-    RewriteBase /programm
+
+    RewriteRule ^sendung/(\d+)\.html[\?]?(.*)$ /programm/#$1 [L,R=301,NE]
+
     RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})_(\d{4}-\d{2}-\d{2})\.html[\?]?(.*)$   /agenda/aggregate.cgi?from_date=$1&till_date=$2&$3 [L]
     RewriteRule ^kalender/(\d{4}-\d{2}-\d{2})\.html[\?]?(.*)$                       /agenda/aggregate.cgi?date=$1&$2 [L]
     RewriteRule ^sendungen/(\d{4}-\d{2}-\d{2})\.html[\?]?(.*)$                      /agenda/aggregate.cgi?date=$1&$2 [L]
