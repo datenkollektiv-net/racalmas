@@ -1,7 +1,49 @@
-/*
-include in your web page:
-<link rel="stylesheet" type="text/css" media="screen" href="/agenda_files/css/calcms.css" />
-*/
+* {
+    border-radius:4px;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto'), local('Roboto-Regular'),
+       url('../fonts/roboto-v18-latin_latin-ext-regular.woff2') format('woff2'),
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Open Sans Regular'), local('OpenSans-Regular'),
+       url('../fonts/open-sans-v15-latin_latin-ext-regular.woff2') format('woff2'),
+}
+
+@media (prefers-color-scheme: dark) {
+    html,
+    *,
+    .entry-title a,
+    #calcms_calendar table thead a:hover,
+    #calcms_calendar table thead a:link,
+    .main-navigation a:hover, 
+    .main-navigation a:focus
+    {
+        color:white !important;
+        background:black !important;
+    }
+
+    #calcms_list h1.summary{
+        background: none !important;
+    }
+    
+    a.load-prev, a.load-next{
+        color:#999 !important;
+        background:#333 !important;
+    }
+    
+    img.custom-logo{
+        filter: invert(1);
+    }
+}
 
 /* fix drupal */
 input{
@@ -676,23 +718,3 @@ ul.mobileMenu li a:hover{
     line-height:2em;
 }
 
-/*
-pre{
-	text-align:left;
-	font-family:Courier;
-	padding:1em;
-	margin:1em;
-	border:1px solid black;
-}
-
-div.update{
-	position:absolute;
-	bottom:0px;
-}
-
-div.update, div.update a{
-	text-align:left;
-	font-size:6px;
-	color:#bbb;
-}
-*/
